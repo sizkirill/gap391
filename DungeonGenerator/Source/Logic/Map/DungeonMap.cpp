@@ -28,7 +28,6 @@ bool DungeonMap::Init(yang::IVec2 mapSize, yang::IVec2 tileSize)
 void DungeonMap::SetTile(yang::IVec2 position, TileType tileType)
 {
     m_map[GetIndexFromGridPoint(position)] = tileType;
-    //m_dirtyFlag = true;
 }
 
 void DungeonMap::PlaceRoom(yang::IVec2 center, yang::IVec2 dimensions)

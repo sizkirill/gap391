@@ -41,7 +41,5 @@ private:
 
     std::vector<TileType> m_map;
     std::array<yang::IColor, static_cast<size_t>(TileType::kMaxTypes)> m_tileset;
-
-    bool m_dirtyFlag; ///< for future
 };
 
