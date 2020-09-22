@@ -1,0 +1,8 @@
+#include "$app_layer.h"
+
+#include <Logic/$game_layer.h>
+
+std::unique_ptr<yang::IGameLayer> $app_layer::CreateGameLayer()
+{
+	return std::make_unique<$game_layer>();
+}

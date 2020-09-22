@@ -1,0 +1,9 @@
+DungeonGenerator/Builds/
+DungeonGenerator/Temp/
+DungeonGenerator/obj/
+Yangine/Binaries/
+Yangine/Temp/
+Yangine/obj/
+.vs/
+.git/
+.vscode/

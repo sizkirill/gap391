@@ -1,0 +1,22 @@
+#include <Application/$app_layer.h>
+#include <Logic/$game_layer.h>
+
+#ifdef _DEBUG
+#include <VLD/vld.h>
+#endif
+
+int main(int argc, const char** argv)
+{
+    $app_layer app;
+
+    if (!app.Init())
+    {
+        return 1;
+    }
+
+    app.Run();
+
+    app.Cleanup();
+
+    return 0;
+}

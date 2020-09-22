@@ -1,0 +1,12 @@
+<MapGen>
+    <TurnSettings chance="5" step="5" />
+    <RoomSettings chance="5" step="3" />
+    <Room count="35" />
+    <RoomWidthRange x="2" y="6" />
+    <RoomHeightRange x="2" y="6" />
+    <Map>
+        <Size x="80" y="45" />
+        <TileSize x="16" y="16" />
+        <StartPos x="40" y="22" />
+    </Map>
+</MapGen>

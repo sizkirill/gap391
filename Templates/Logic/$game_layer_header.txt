@@ -1,0 +1,43 @@
+#pragma once
+
+#include <Logic/IGameLayer.h>
+
+/** \file $game_layer.h */
+/** TODO: File Purpose */
+
+/** \class $game_layer */
+class $game_layer : public yang::IGameLayer
+{
+public:
+	// --------------------------------------------------------------------- //
+	// Public Member Variables
+	// --------------------------------------------------------------------- //
+
+
+	// --------------------------------------------------------------------- //
+	// Public Member Functions
+	// --------------------------------------------------------------------- //
+	/** Default Constructor */
+	$game_layer() = default;
+
+	/** Default Destructor */
+	~$game_layer() = default;
+
+	const char* GetGameName() const override final { return "$project_name"; }
+    virtual bool Init(const yang::ApplicationLayer& app) override final;
+
+private:
+	// --------------------------------------------------------------------- //
+	// Private Member Variables
+	// --------------------------------------------------------------------- //
+
+	// --------------------------------------------------------------------- //
+	// Private Member Functions
+	// --------------------------------------------------------------------- //
+public:
+	// --------------------------------------------------------------------- //
+	// Accessors & Mutators
+	// --------------------------------------------------------------------- //
+
+
+};

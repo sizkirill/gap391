@@ -1,0 +1,55 @@
+#pragma once
+/** \file $file_name.h */
+/** TODO: File Purpose */
+
+#include <Logic/Components/IComponent.h>
+
+//! \namespace yang Contains all Yangine code
+namespace yang
+{
+/** \class $class_name */
+/** TODO: Class Purpose */
+class $class_name
+	: public yang::IComponent
+{
+public:
+	// --------------------------------------------------------------------- //
+	// Public Member Variables
+	// --------------------------------------------------------------------- //
+
+
+	// --------------------------------------------------------------------- //
+	// Public Member Functions
+	// --------------------------------------------------------------------- //
+	/** Default Constructor */
+	$class_name(yang::Actor* pOwner);
+
+	/// The name of this component
+	/// \return "$class_name"
+	static constexpr const char* GetName() {return "$class_name"; }
+
+	/// Initializes $class_name from XMLElement
+	/// \param pData - pointer to XMLElement to initialize $class_name from.
+	/// \return true if initialized successfully
+	virtual bool Init(tinyxml2::XMLElement* pData) override final;
+	
+
+private:
+	// --------------------------------------------------------------------- //
+	// Private Member Variables
+	// --------------------------------------------------------------------- //
+
+
+	// --------------------------------------------------------------------- //
+	// Private Member Functions
+	// --------------------------------------------------------------------- //
+
+
+public:
+	// --------------------------------------------------------------------- //
+	// Accessors & Mutators
+	// --------------------------------------------------------------------- //
+
+
+};
+}

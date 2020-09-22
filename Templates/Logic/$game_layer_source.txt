@@ -1,0 +1,15 @@
+#include "$game_layer.h"
+#include <Utils/Logger.h>
+
+bool $game_layer::Init(const yang::ApplicationLayer& app)
+{
+    LOG_CATEGORY("$project_name", 0, Green, Dark);
+
+    if (!yang::IGameLayer::Init(app))
+    {
+        LOG(Error, "Failed to initialize GameLayer");
+        return false;
+    }
+
+    return true;
+}
