@@ -14,6 +14,7 @@ public:
         kTunnel,
         kWall,
         kPlayer,
+        kDoor,
         kMaxTypes
     };
 public:
@@ -33,8 +34,12 @@ public:
     size_t GetIndexFromGridPoint(yang::IVec2 point) const;
     yang::IVec2 GetGridPointFromIndex(size_t index) const;
 
+    void PlaceDoors();
+
     static constexpr size_t IndexFromTileType(TileType t) { return static_cast<size_t>(t); }
     static constexpr TileType TileTypeFromIndex(size_t index) { return static_cast<TileType>(index); }
+private:
+    bool CheckShape(size_t tileIndex);
 private:
     yang::IVec2 m_mapSize;
     yang::IVec2 m_tileSize;

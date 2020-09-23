@@ -21,6 +21,7 @@ bool DungeonMap::Init(yang::IVec2 mapSize, yang::IVec2 tileSize)
     m_tileset[IndexFromTileType(TileType::kWall)] = yang::IColor(0x000000ff);
     m_tileset[IndexFromTileType(TileType::kTunnel)] = yang::IColor(127,127,127,255);
     m_tileset[IndexFromTileType(TileType::kPlayer)] = yang::IColor(200,50,50,255);
+    m_tileset[IndexFromTileType(TileType::kDoor)] = yang::IColor(255, 124, 0, 255);
 
     return true;
 }
@@ -78,4 +79,204 @@ yang::IVec2 DungeonMap::GetGridPointFromIndex(size_t index) const
 {
     assert(m_mapSize.x != 0 && m_mapSize.y != 0);
     return yang::IVec2(static_cast<int>(index) % m_mapSize.x, static_cast<int>(index) / m_mapSize.x);
+}
+
+void DungeonMap::PlaceDoors()
+{
+    for (size_t i = 0; i < m_map.size(); ++i)
+    {
+        if (CheckShape(i))
+        {
+            m_map[i] = TileType::kDoor;
+        }
+    }
+}
+
+bool DungeonMap::CheckShape(size_t tileIndex)
+{
+    if (m_map[tileIndex] != TileType::kTunnel)
+        return false;
+
+    auto center = GetGridPointFromIndex(tileIndex);
+    
+    // Is on border?
+    if (center.x == 0 || center.x == m_mapSize.x - 1 || center.y == 0 || center.y == m_mapSize.y - 1)
+        return false;
+
+    bool fitsLeft = true;
+    bool fitsTop = true;
+    bool fitsRight = true;
+    bool fitsDown = true;
+
+    // Maybe the thing below can be done smarter, but no time to think haha
+
+    // top left
+    switch (m_map[tileIndex - m_mapSize.x - 1])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = fitsTop && true;
+        fitsRight = false;
+        fitsDown = false;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = false;
+        fitsTop = false;
+        fitsRight = fitsRight && true;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    }
+
+    // top
+    switch (m_map[tileIndex - m_mapSize.x])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = false;
+        fitsTop = fitsTop && true;
+        fitsRight = false;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = false;
+        fitsRight = fitsRight && true;
+        fitsDown = false;
+        break;
+    }
+    }
+
+    // top right
+    switch (m_map[tileIndex - m_mapSize.x + 1])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = false;
+        fitsTop = fitsTop && true;
+        fitsRight = fitsRight && true;
+        fitsDown = false;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = false;
+        fitsRight = false;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    }
+
+    // left
+    switch (m_map[tileIndex - 1])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = false;
+        fitsRight = fitsRight && true;
+        fitsDown = false;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = false;
+        fitsTop = fitsTop && true;
+        fitsRight = false;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    }
+
+    // right
+    switch (m_map[tileIndex + 1])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = false;
+        fitsRight = fitsRight && true;
+        fitsDown = false;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = false;
+        fitsTop = fitsTop && true;
+        fitsRight = false;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    }
+
+    // down left
+    switch (m_map[tileIndex + m_mapSize.x - 1])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = false;
+        fitsRight = false;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = false;
+        fitsTop = fitsTop && true;
+        fitsRight = fitsRight && true;
+        fitsDown = false;
+        break;
+    }
+    }
+
+    // down
+    switch (m_map[tileIndex + m_mapSize.x])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = false;
+        fitsTop = fitsTop && true;
+        fitsRight = false;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = false;
+        fitsRight = fitsRight && true;
+        fitsDown = false;
+        break;
+    }
+    }
+
+    // down right
+    switch (m_map[tileIndex + m_mapSize.x + 1])
+    {
+    case TileType::kTunnel:
+    {
+        fitsLeft = false;
+        fitsTop = false;
+        fitsRight = fitsRight && true;
+        fitsDown = fitsDown && true;
+        break;
+    }
+    case TileType::kWall:
+    {
+        fitsLeft = fitsLeft && true;
+        fitsTop = fitsLeft && true;
+        fitsRight = false;
+        fitsDown = false;
+        break;
+    }
+    }
+
+    return fitsLeft || fitsTop || fitsDown || fitsRight;
 }

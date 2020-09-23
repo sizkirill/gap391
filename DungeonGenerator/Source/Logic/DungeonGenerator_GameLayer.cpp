@@ -28,11 +28,12 @@ bool DungeonGenerator_GameLayer::Init(const yang::ApplicationLayer& app)
         return false;
     }
 
-    MapGenerator mapGen(42424242); //< some seed for debug. Put nothing to have a random seed
+    MapGenerator mapGen{ 42424242 }; //< some seed for debug. Put nothing to have a random seed
 
     mapGen.Init("Assets/Maps/MapGen.xml");
 
     m_map = mapGen.GenerateMap();
+    m_map.PlaceDoors();
 
     pCameraView->SetControlledActor(pCamera);
     pCameraView->Init(app);
