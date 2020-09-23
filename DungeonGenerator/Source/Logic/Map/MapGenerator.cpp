@@ -115,7 +115,7 @@ bool MapGenerator::Init(std::string_view pathToSettings)
 DungeonMap MapGenerator::GenerateMap()
 {
     DungeonMap generatedMap;
-    generatedMap.Init(m_mapSize, m_tileSize);
+    generatedMap.Init(m_mapSize, m_tileSize, m_startPos);
 
     yang::IVec2 currentDirection = RandomDirection(m_rngdevice);
 
@@ -124,7 +124,8 @@ DungeonMap MapGenerator::GenerateMap()
 
     yang::Vector2<int> diggerPos = m_startPos;
 
-    assert(diggerPos.x >= 0 && diggerPos.x < m_mapSize.x&& diggerPos.y >= 0 && diggerPos.y < m_mapSize.y);
+    assert(diggerPos.x >= 0 && diggerPos.x < m_mapSize.x && diggerPos.y >= 0 && diggerPos.y < m_mapSize.y);
+    generatedMap.SetTile(diggerPos, DungeonMap::TileType::kTunnel);
 
     while (!IsDone())
     {
