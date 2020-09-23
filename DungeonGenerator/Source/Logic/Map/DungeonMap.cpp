@@ -143,7 +143,11 @@ void DungeonMap::GenerateRoomGraph()
         }
 
         size_t roomIndex = m_roomGraph.AddNewRoom();
-        m_roomGraph.AddTileToRoom(roomIndex, startIndex);
+
+        if (m_map[startIndex].m_tileType != TileType::kDoor)
+        {
+            m_roomGraph.AddTileToRoom(roomIndex, startIndex);
+        }
 
         if (prevRoomIndex != static_cast<size_t>(-1))
         {
@@ -163,7 +167,7 @@ void DungeonMap::GenerateRoomGraph()
             {
                 for (auto maybeIndex : GetAdjacentTiles(tileIndex))
                 {
-                    if (maybeIndex && m_map[*maybeIndex].m_tileType == TileType::kTunnel && discoveredTiles.count(*maybeIndex) == 0)
+                    if (maybeIndex && m_map[*maybeIndex].m_tileType != TileType::kWall && discoveredTiles.count(*maybeIndex) == 0)
                     {
                         roomOpenSet.push(*maybeIndex);
                         break;
