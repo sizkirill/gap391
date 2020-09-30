@@ -124,7 +124,7 @@ void yang::TransformComponent::RegisterToLua(const LuaManager& manager)
 void yang::TransformComponent::UpdateTransformMatrix()
 {
 	m_transformMatrix = Matrix();
-	m_transformMatrix.Scale(m_scale, m_rotationPoint - m_position).Rotate(m_rotationAngle, m_rotationPoint - m_position).Translate(m_position);
+	m_transformMatrix.Scale(m_scale, m_rotationPoint).Rotate(m_rotationAngle, m_rotationPoint).Translate(m_position);
 }
 
 yang::Matrix& yang::TransformComponent::GetCurrentTransform()

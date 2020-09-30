@@ -7,6 +7,8 @@
 #include <Utils/Vector2.h>
 #include <Utils/Rectangle.h>
 #include <Utils/Color.h>
+
+#include <memory>
 /** \file IGraphics.h */
 /** Graphics system interface description */
 
@@ -17,6 +19,7 @@ namespace yang
 	class IWindow;
     class ITexture;
     class IResource;
+    class Sprite;
 
 /** \enum FlipDirection */
 /** Specifies the flip configuration of TextureDrawParams */
@@ -99,6 +102,16 @@ public:
     /// \param drawParams - parameters to draw the texture. Defaulted to a default constructed TextureDrawParams. \see yang::IGraphics::TextureDrawParams. 
     /// \return true if successful
     virtual bool DrawTexture(ITexture* pTexture, const IRect& src, const IRect& dest, const TextureDrawParams& drawParams = TextureDrawParams{}) = 0;
+
+    /// Draw the the sprite at specified position
+    /// \param pSprite - sprite to draw;
+    /// \param dst - destination rectangle where to draw
+    bool DrawSprite(std::shared_ptr<Sprite> pSprite, const IRect& dst);
+
+    /// Draw the the sprite at specified position
+    /// \param pSprite - sprite to draw;
+    /// \param position - position where to draw
+    bool DrawSprite(std::shared_ptr<Sprite> pSprite, IVec2 position = { 0,0 });
 
     /// Draw the rectangle borders on the screen
     /// \param rect - The rectangle to draw (in pixels)

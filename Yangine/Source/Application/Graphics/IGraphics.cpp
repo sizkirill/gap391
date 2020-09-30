@@ -1,5 +1,6 @@
 #include "IGraphics.h"
 #include <Application/Graphics/SDLRenderer.h>
+#include <Application/Graphics/Textures/Sprite.h>
 
 using yang::IGraphics;
 
@@ -58,6 +59,35 @@ bool yang::IGraphics::FillTriangle(FVec2 points[3], const IColor& color)
 		return false;
 	}
 	return FillTriangle(points);
+}
+
+bool yang::IGraphics::DrawSprite(std::shared_ptr<Sprite> pSprite, const IRect& dst)
+{
+	if (!pSprite)
+		return false;
+
+	if (auto pTexture = pSprite->GetSourceTexture().lock(); pTexture != nullptr)
+	{
+		return DrawTexture(pTexture.get(), pSprite->GetSourceRect(), dst, pSprite->GetDrawParams());
+	}
+	return false;
+}
+
+bool yang::IGraphics::DrawSprite(std::shared_ptr<Sprite> pSprite, IVec2 position)
+{
+	if (!pSprite) 
+		return false;
+
+	if (auto pTexture = pSprite->GetSourceTexture().lock(); pTexture != nullptr)
+	{
+		auto sourceRect = pSprite->GetSourceRect();
+		auto dstRect = sourceRect;
+		dstRect.x = position.x;
+		dstRect.y = position.y;
+
+		return DrawTexture(pTexture.get(), sourceRect, dstRect, pSprite->GetDrawParams());
+	}
+	return false;
 }
 
 bool yang::IGraphics::DrawRect(const IRect& rect, const IColor& color)

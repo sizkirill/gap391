@@ -37,8 +37,9 @@ public:
     /// Typedef for TypeTraits
     typedef T ValueType;
 
-    T x = static_cast<T>(0);    ///< X value
-    T y = static_cast<T>(0);    ///< Y value
+    // yep, for simplicity - giving up on standards
+    T x;    ///< X value
+    T y;    ///< Y value
 
     /// Default constructor
     constexpr Vector2() = default;
@@ -84,6 +85,17 @@ public:
         return Math::Sqrt(SqrdLength());
     }
 
+    /// <summary>
+    /// Makes a normalized vector from angle
+    /// </summary>
+    /// <param name="angle">angle in radians clockwise from (1,0)</param>
+    /// <returns></returns>
+    template <typename = IsFloatingPoint<T>>
+    static Vector2<T> FromAngle(T angle)
+    {
+        return {std::cos(angle), std::sin(angle)};
+    }
+
     /// \brief Multiplies vectors component-wise.
     /// Every component in the result is a component of this vector multiplied by the same component of other.
     /// \param other - vector to scale by
@@ -102,6 +114,13 @@ public:
     {
         lhs.Scale(rhs);
         return lhs;
+    }
+
+    template <typename = IsFloatingPoint<T>>
+    static constexpr Vector2 Normalized(Vector2 v)
+    {
+        v.Normalize();
+        return v;
     }
 
     /// Constexpr version of normalize the vector (make the length = 1)

@@ -16,16 +16,6 @@ yang::IColor yang::FColor::ToIColor() const
         , static_cast<ui8>(a * 255.f));
 }
 
-yang::IColor::IColor(ui8 r, ui8 g, ui8 b, ui8 a)
-    :m_color(r << 24 | g << 16 | b << 8 | a)
-{
-}
-
-yang::IColor::IColor(uint32_t color)
-    : m_color(color)
-{
-}
-
 yang::FColor yang::IColor::ToFColor() const
 {
     FColor retColor;
@@ -35,24 +25,4 @@ yang::FColor yang::IColor::ToFColor() const
     retColor.a = static_cast<f32>(Alpha()) / 255.f;
 
     return retColor;
-}
-
-uint8_t yang::IColor::Red() const
-{
-    return (m_color >> 24) & 0xFF;
-}
-
-uint8_t yang::IColor::Green() const
-{
-    return (m_color >> 16) & 0xFF;
-}
-
-uint8_t yang::IColor::Blue() const
-{
-    return (m_color >> 8) & 0xFF;
-}
-
-uint8_t yang::IColor::Alpha() const
-{
-    return m_color & 0xFF;
 }

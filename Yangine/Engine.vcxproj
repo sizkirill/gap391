@@ -173,6 +173,7 @@
     <ClInclude Include="Source\Application\Graphics\SDLRenderer.h" />
     <ClInclude Include="Source\Application\Graphics\Textures\ITexture.h" />
     <ClInclude Include="Source\Application\Graphics\Textures\SDLTexture.h" />
+    <ClInclude Include="Source\Application\Graphics\Textures\Sprite.h" />
     <ClInclude Include="Source\Application\Input\IKeyboard.h" />
     <ClInclude Include="Source\Application\Input\IMouse.h" />
     <ClInclude Include="Source\Application\OS\IOpSys.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Source\Logic\Components\Kinematic\KinematicComponent.h" />
     <ClInclude Include="Source\Logic\Components\MouseInputListener.h" />
     <ClInclude Include="Source\Logic\Components\MoveComponent.h" />
+    <ClInclude Include="Source\Logic\Components\Particle\ParticleEmitterComponent.h" />
     <ClInclude Include="Source\Logic\Components\Physics\Box2DPhysicsComponent.h" />
     <ClInclude Include="Source\Logic\Components\Physics\IPhysicsComponent.h" />
     <ClInclude Include="Source\Logic\Components\RotationComponent.h" />
@@ -215,6 +217,7 @@
     <ClInclude Include="Source\Logic\Physics\IContactListener.h" />
     <ClInclude Include="Source\Logic\Physics\IPhysicsSimulation.h" />
     <ClInclude Include="Source\Logic\Process\Animation\AnimationProcess.h" />
+    <ClInclude Include="Source\Logic\Process\BaseProcess.h" />
     <ClInclude Include="Source\Logic\Process\IProcess.h" />
     <ClInclude Include="Source\Logic\Process\Kinematic\Rotation.h" />
     <ClInclude Include="Source\Logic\Process\ProcessManager.h" />
@@ -258,6 +261,7 @@
     <ClCompile Include="Source\Application\Graphics\SDLRenderer.cpp" />
     <ClCompile Include="Source\Application\Graphics\Textures\ITexture.cpp" />
     <ClCompile Include="Source\Application\Graphics\Textures\SDLTexture.cpp" />
+    <ClCompile Include="Source\Application\Graphics\Textures\Sprite.cpp" />
     <ClCompile Include="Source\Application\Input\IKeyboard.cpp" />
     <ClCompile Include="Source\Application\Input\IMouse.cpp" />
     <ClCompile Include="Source\Application\OS\IOpSys.cpp" />
@@ -277,6 +281,7 @@
     <ClCompile Include="Source\Logic\Components\Kinematic\KinematicComponent.cpp" />
     <ClCompile Include="Source\Logic\Components\MouseInputListener.cpp" />
     <ClCompile Include="Source\Logic\Components\MoveComponent.cpp" />
+    <ClCompile Include="Source\Logic\Components\Particle\ParticleEmitterComponent.cpp" />
     <ClCompile Include="Source\Logic\Components\Physics\Box2DPhysicsComponent.cpp" />
     <ClCompile Include="Source\Logic\Components\Physics\IPhysicsComponent.cpp" />
     <ClCompile Include="Source\Logic\Components\RotationComponent.cpp" />

@@ -30,6 +30,9 @@
     <ClInclude Include="Source\Views\CameraView.h">
       <Filter>Views</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Logic\Map\BspTree.h">
+      <Filter>Logic\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\DungeonGenerator_AppLayer.cpp">
@@ -49,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="Source\Views\CameraView.cpp">
       <Filter>Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Map\BspTree.cpp">
+      <Filter>Logic\Map</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

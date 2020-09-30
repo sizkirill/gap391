@@ -5,6 +5,7 @@
 #include <Utils/Typedefs.h>
 #include <Utils/Matrix.h>
 #include <Utils/Logger.h>
+#include <Utils/StringHash.h>
 /** \file Actor.h */
 /** Actor class description */
 
@@ -84,7 +85,7 @@ public:
     ComponentType* GetComponent() const;
 
 	/// Gets the component with specified name
-	/// Implementation mostly for lua exposure, prefer other two overloads
+	/// Implementation mostly for lua exposure, prefer other overloads
 	/// \param name - component name
 	/// \return IComponent* - pointer to an abstract component or nullptr if actor doesn't have such component
 	IComponent* GetComponent(const char* name) const;
@@ -111,6 +112,8 @@ private:
 	// Private Member Functions
 	// --------------------------------------------------------------------- //
 
+    template <uint32_t ComponentHashName>
+    IComponent* GetComponent() const;
 
 public:
 	// --------------------------------------------------------------------- //
@@ -134,6 +137,8 @@ public:
     uint32_t GetHashTag() const { return m_hashTag; }
 };
 
+// this actually doesn't work right now.
+// TODO(ksizykh): right now when calling this function, the component is not getting initialized.
 template<class ComponentType, class ...Args>
 inline bool Actor::AddComponent(Args&& ...args)
 {
@@ -152,6 +157,18 @@ template<class ComponentType>
 inline ComponentType* Actor::GetComponent() const
 {
     static_assert(std::is_base_of_v<IComponent, ComponentType>, "ComponentType is not child of IComponent");
-    return static_cast<ComponentType*>(GetComponent(IComponent::HashName(ComponentType::GetName())));
+    return static_cast<ComponentType*>(GetComponent<StringHash32(ComponentType::GetName())>());
+}
+
+template<uint32_t ComponentHashName>
+inline IComponent* Actor::GetComponent() const
+{
+    auto itr = m_components.find(ComponentHashName);
+    if (itr == m_components.end())
+    {
+        LOG(Warning, "Actor (ID: %d) doesn't have that component (ID: %d)", m_id, ComponentHashName);
+        return nullptr;
+    }
+    return itr->second.get();
 }
 }

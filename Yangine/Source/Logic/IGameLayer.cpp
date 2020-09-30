@@ -13,6 +13,7 @@
 #include <Logic/Components/RotationComponent.h>
 #include <Logic/Components/Colliders/ColliderComponent.h>
 #include <Logic/Components/Kinematic/KinematicComponent.h>
+#include <Logic/Components/Particle/ParticleEmitterComponent.h>
 #include <Logic/Collisions/CollisionSystem.h>
 #include <Logic/Event/Events/CreateActorEvent.h>
 #include <Logic/Event/Events/DestroyActorEvent.h>
@@ -221,6 +222,7 @@ void yang::IGameLayer::RegisterComponents()
     m_actorFactory.RegisterComponent<RotationComponent>();
     m_actorFactory.RegisterComponent<ColliderComponent>(m_pCollisionSystem.get());
     m_actorFactory.RegisterComponent<KinematicComponent>();
+    m_actorFactory.RegisterComponent<ParticleEmitterComponent>();
     //m_actorFactory.RegisterComponent<RectangleShape>();
 }
 

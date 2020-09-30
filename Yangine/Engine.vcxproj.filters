@@ -55,6 +55,9 @@
     <Filter Include="Logic\Components\Kinematic">
       <UniqueIdentifier>{EC930713-D8A3-B3E3-415D-18022D8CA27C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logic\Components\Particle">
+      <UniqueIdentifier>{CBF007AD-37B3-3B37-8063-CAC3EC641415}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Logic\Components\Physics">
       <UniqueIdentifier>{3AB7CAFE-26DC-197F-4F27-FF0E3BAB189D}</UniqueIdentifier>
     </Filter>
@@ -153,6 +156,9 @@
     <ClInclude Include="Source\Application\Graphics\Textures\SDLTexture.h">
       <Filter>Application\Graphics\Textures</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Application\Graphics\Textures\Sprite.h">
+      <Filter>Application\Graphics\Textures</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Application\Input\IKeyboard.h">
       <Filter>Application\Input</Filter>
     </ClInclude>
@@ -212,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="Source\Logic\Components\MoveComponent.h">
       <Filter>Logic\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Components\Particle\ParticleEmitterComponent.h">
+      <Filter>Logic\Components\Particle</Filter>
     </ClInclude>
     <ClInclude Include="Source\Logic\Components\Physics\Box2DPhysicsComponent.h">
       <Filter>Logic\Components\Physics</Filter>
@@ -278,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="Source\Logic\Process\Animation\AnimationProcess.h">
       <Filter>Logic\Process\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Process\BaseProcess.h">
+      <Filter>Logic\Process</Filter>
     </ClInclude>
     <ClInclude Include="Source\Logic\Process\IProcess.h">
       <Filter>Logic\Process</Filter>
@@ -404,6 +416,9 @@
     <ClCompile Include="Source\Application\Graphics\Textures\SDLTexture.cpp">
       <Filter>Application\Graphics\Textures</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application\Graphics\Textures\Sprite.cpp">
+      <Filter>Application\Graphics\Textures</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Application\Input\IKeyboard.cpp">
       <Filter>Application\Input</Filter>
     </ClCompile>
@@ -460,6 +475,9 @@
     </ClCompile>
     <ClCompile Include="Source\Logic\Components\MoveComponent.cpp">
       <Filter>Logic\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Components\Particle\ParticleEmitterComponent.cpp">
+      <Filter>Logic\Components\Particle</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic\Components\Physics\Box2DPhysicsComponent.cpp">
       <Filter>Logic\Components\Physics</Filter>

@@ -50,7 +50,7 @@ std::optional<bool> yang::TiledMap::TilesetData::GetProperty(int tileId, const c
     assert(tileId < m_tileCount);
     assert(propertyName);
 
-    if (tileId >= m_tileProperties.size())
+    if (static_cast<size_t>(tileId) >= m_tileProperties.size())
     {
         return {};
     }
@@ -79,7 +79,7 @@ std::optional<std::string> yang::TiledMap::TilesetData::GetProperty(int tileId, 
     assert(tileId < m_tileCount);
     assert(propertyName);
 
-    if (tileId >= m_tileProperties.size())
+    if (static_cast<size_t>(tileId) >= m_tileProperties.size())
     {
         return {};
     }
@@ -108,7 +108,7 @@ std::optional<int> yang::TiledMap::TilesetData::GetProperty(int tileId, const ch
     assert(tileId < m_tileCount);
     assert(propertyName);
 
-    if (tileId >= m_tileProperties.size())
+    if (static_cast<size_t>(tileId) >= m_tileProperties.size())
     {
         return {};
     }
@@ -137,7 +137,7 @@ std::optional<float> yang::TiledMap::TilesetData::GetProperty(int tileId, const 
     assert(tileId < m_tileCount);
     assert(propertyName);
 
-    if (tileId >= m_tileProperties.size())
+    if (static_cast<size_t>(tileId) >= m_tileProperties.size())
     {
         return {};
     }

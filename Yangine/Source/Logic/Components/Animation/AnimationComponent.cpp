@@ -1,6 +1,8 @@
 #include <cassert>
 #include "AnimationComponent.h"
 #include <Logic/Scripting/LuaManager.h>
+#include <Application/Graphics/Textures/Sprite.h>
+#include <Application/Resources/ResourceCache.h>
 #include <Utils/TinyXml2/tinyxml2.h>
 #include <Utils/Logger.h>
 #include <Utils/StringHash.h>
@@ -52,7 +54,8 @@ bool yang::AnimationComponent::Init(tinyxml2::XMLElement* pData)
         LOG(Error, "Animation component requires default src path to a texture");
         return false;
     }
-    m_defaultTexturePath = pDefaultSrcPath;
+
+    auto pDefaultTexture = ResourceCache::Get()->Load<ITexture>(pDefaultSrcPath);
 
     m_defaultFrameRate = pData->FloatAttribute("defaultFrameRate");
     if (m_defaultFrameRate == 0)
@@ -101,13 +104,11 @@ bool yang::AnimationComponent::Init(tinyxml2::XMLElement* pData)
         }
 
         const char* pTextureSrc = pSequence->Attribute("src");
-        if (pTextureSrc && std::string_view(pTextureSrc) != m_defaultTexturePath)
+        std::shared_ptr<ITexture> pSequenceTexture = pDefaultTexture;
+
+        if (pTextureSrc)
         {
-            sequence.m_texturePath = pTextureSrc;
-        }
-        else
-        {
-            sequence.m_texturePath = {};
+            pSequenceTexture = ResourceCache::Get()->Load<ITexture>(pTextureSrc);
         }
 
         float framerate = pSequence->FloatAttribute("framerate");
@@ -149,34 +150,24 @@ bool yang::AnimationComponent::Init(tinyxml2::XMLElement* pData)
                 LOG(Error, "Frame rect height coordinate should be initialized");
                 return false;
             }
-            frame.m_frameRect = frameRect;
+
+            //frame.m_frameRect = frameRect;
 
             const char* pTextureSrc = pFrame->Attribute("src");
+            std::shared_ptr<ITexture> pFrameTexture = pSequenceTexture;
+
             if (pTextureSrc)
             {
-                bool isNotSameAsDefault = std::string_view(pTextureSrc) != m_defaultTexturePath;
-                bool isNotSameAsSequenceDefault = sequence.m_texturePath && std::string_view(pTextureSrc) != *sequence.m_texturePath;
-                if (isNotSameAsDefault && isNotSameAsSequenceDefault)
-                {
-                    frame.m_texturePath = pTextureSrc;
-                }
-                else
-                {
-                    frame.m_texturePath = {};
-                }
+                pFrameTexture = ResourceCache::Get()->Load<ITexture>(pTextureSrc);
             }
 
             float duration = pFrame->FloatAttribute("duration");
             if (duration == 0)
             {
-                frame.m_duration = 1.f / sequence.m_framerate;
-            }
-            else
-            {
-                frame.m_duration = duration;
+                duration = 1.f / sequence.m_framerate;
             }
 
-            sequence.m_frameData.push_back(std::move(frame));
+            sequence.m_frameData.push_back({ std::make_shared<Sprite>(pFrameTexture, frameRect, TextureDrawParams{}), duration });
         }
 
         m_sequences.emplace(pSeqName, std::move(sequence));
@@ -213,22 +204,22 @@ void yang::AnimationComponent::SetActiveSequence(const std::string& name)
     }
 }
 
-const std::string& yang::AnimationComponent::GetCurrentTexturePath() const
-{
-    assert(m_pActiveSequence);
-    auto& frameTexturePath = m_pActiveSequence->m_frameData[m_pActiveSequence->m_currentFrameIndex].m_texturePath;
-    auto& sequenceTexturePath = m_pActiveSequence->m_texturePath;
-    if (frameTexturePath.has_value())
-    {
-        return *frameTexturePath;
-    }
-    else if (sequenceTexturePath.has_value())
-    {
-        return *sequenceTexturePath;
-    }
-    else
-    {
-        return m_defaultTexturePath;
-    }
-
-}
+//const std::string& yang::AnimationComponent::GetCurrentTexturePath() const
+//{
+//    assert(m_pActiveSequence);
+//    auto& frameTexturePath = m_pActiveSequence->m_frameData[m_pActiveSequence->m_currentFrameIndex].m_texturePath;
+//    auto& sequenceTexturePath = m_pActiveSequence->m_texturePath;
+//    if (frameTexturePath.has_value())
+//    {
+//        return *frameTexturePath;
+//    }
+//    else if (sequenceTexturePath.has_value())
+//    {
+//        return *sequenceTexturePath;
+//    }
+//    else
+//    {
+//        return m_defaultTexturePath;
+//    }
+//
+//}

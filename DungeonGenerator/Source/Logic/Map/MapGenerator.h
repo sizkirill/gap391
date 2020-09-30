@@ -3,6 +3,8 @@
 #include <Utils/Vector2.h>
 #include "DungeonMap.h"
 #include <string_view>
+#include <unordered_map>
+#include <Application/Graphics/Textures/Sprite.h>
 
 class MapGenerator
 {
@@ -16,14 +18,8 @@ public:
 private:
     bool IsDone() const;
 private:
-    /// <summary>
-    /// Default RNG params
-    /// </summary>
-    static constexpr int kDefaultTurnChance = 5;
-    static constexpr int kDefaultRoomChance = 5;
+
     static constexpr int kDesiredRoomCount = 16;
-    static constexpr int kDefaultTurnChanceStep = 5;
-    static constexpr int kDefaultRoomChanceStep = 5;
 
     /// <summary>
     /// Room default properties
@@ -40,11 +36,6 @@ private:
 
     yang::XorshiftRNG m_rngdevice;    ///< RNG seed for this gen
 
-    int m_initialTurnChance = kDefaultTurnChance;
-    int m_initialRoomChance = kDefaultRoomChance;
-    int m_turnChanceStep = kDefaultTurnChanceStep;
-    int m_roomChanceStep = kDefaultRoomChanceStep;
-
     int m_desiredRoomCount = kDesiredRoomCount;
     int m_currentRoomCount = 0;
 
@@ -55,4 +46,5 @@ private:
 
     yang::IVec2 m_mapSize = kDefaultMapSize;
     yang::IVec2 m_tileSize = kDefaultTileSize;
+    std::unordered_map<uint32_t, std::shared_ptr<yang::Sprite>> m_tileSpriteMap;
 };

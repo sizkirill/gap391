@@ -34,8 +34,8 @@ bool DungeonGenerator_GameLayer::Init(const yang::ApplicationLayer& app)
     mapGen.Init("Assets/Maps/MapGen.xml");
 
     m_map = mapGen.GenerateMap();
-    m_map.PlaceDoors();
-    m_map.GenerateRoomGraph();
+    //m_map.PlaceDoors();
+    //m_map.GenerateRoomGraph();
 
     pCameraView->SetControlledActor(pCamera);
     pCameraView->Init(app);

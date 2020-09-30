@@ -2,34 +2,12 @@
 #include <Utils/TinyXml2/tinyxml2.h>
 #include <Utils/XMLHelpers.h>
 #include <Utils/Logger.h>
+#include <Logic/Map/BspTree.h>
+#include <Application/Resources/ResourceCache.h>
+#include <Application/Graphics/Textures/ITexture.h>
+#include <Utils/StringHash.h>
 
 using namespace tinyxml2;
-
-enum class Direction
-{
-    kRight,
-    kDown,
-    kLeft,
-    kUp,
-    MAX_DIRECTIONS
-};
-
-static yang::IVec2 Vec2FromDirection(Direction dir)
-{
-    switch (dir)
-    {
-    case Direction::kRight: return { 1,0 };
-    case Direction::kLeft: return { -1,0 };
-    case Direction::kDown: return { 0,1 };
-    case Direction::kUp: return { 0,-1 };
-    default: return { 0,0 };
-    }
-}
-
-static yang::IVec2 RandomDirection(yang::XorshiftRNG& rngDevice)
-{
-    return Vec2FromDirection(static_cast<Direction>(rngDevice.Rand(static_cast<int>(Direction::MAX_DIRECTIONS))));
-}
 
 MapGenerator::MapGenerator(uint64_t seed)
     :m_rngdevice(seed)
@@ -50,22 +28,6 @@ bool MapGenerator::Init(std::string_view pathToSettings)
     }
 
     XMLElement* pRoot = doc.RootElement();
-
-    XMLElement* pTurnSettings = pRoot->FirstChildElement("TurnSettings");
-
-    if (pTurnSettings)
-    {
-        m_initialTurnChance = pTurnSettings->IntAttribute("chance", kDefaultTurnChance);
-        m_turnChanceStep = pTurnSettings->IntAttribute("step", kDefaultTurnChanceStep);
-    }
-
-    XMLElement* pRoomSettings = pRoot->FirstChildElement("RoomSettings");
-
-    if (pRoomSettings)
-    {
-        m_initialRoomChance = pRoomSettings->IntAttribute("chance", kDefaultRoomChance);
-        m_roomChanceStep = pRoomSettings->IntAttribute("step", kDefaultRoomChanceStep);
-    }
 
     XMLElement* pRoom = pRoot->FirstChildElement("Room");
     if (pRoom)
@@ -109,65 +71,47 @@ bool MapGenerator::Init(std::string_view pathToSettings)
         }
     }
 
+    XMLElement* pMapTileset = pRoot->FirstChildElement("Tileset");
+
+    if (pMapTileset)
+    {
+        const char* pTextureSrc = pMapTileset->Attribute("src");
+
+        if (!pTextureSrc)
+        {
+            LOG(Error, "Texture haven't been found");
+            return false;
+        }
+
+        auto pTilesetTexture = yang::ResourceCache::Get()->Load<yang::ITexture>(pTextureSrc);
+
+        for (XMLElement* pSprite = pMapTileset->FirstChildElement("Sprite"); pSprite != nullptr; pSprite = pSprite->NextSiblingElement("Sprite"))
+        {
+            const char* pSpriteName = pSprite->Attribute("name");
+            if (!pSpriteName)
+            {
+                LOG(Warning, "Sprite doesn't have a name");
+                continue;
+            }
+
+            m_tileSpriteMap[StringHash32(pSpriteName)] = std::make_shared<yang::Sprite>(pTilesetTexture, yang::IRectFromXML(pSprite->FirstChildElement("SourceRect")), yang::TextureDrawParams{});
+        }
+    }
+
     return true;
 }
 
 DungeonMap MapGenerator::GenerateMap()
 {
     DungeonMap generatedMap;
-    generatedMap.Init(m_mapSize, m_tileSize, m_startPos);
+    generatedMap.Init(m_mapSize, m_tileSize, m_startPos, m_tileSpriteMap);
 
-    yang::IVec2 currentDirection = RandomDirection(m_rngdevice);
+    std::shared_ptr<BspTreeNode> pRoot = std::make_shared<BspTreeNode>(yang::IRect{ 0,0,m_mapSize.x, m_mapSize.y }, &m_rngdevice, m_roomHeightRange, m_roomWidthRange);
+    auto pRoomNodes = BspTreeNode::Split(pRoot.get(), m_desiredRoomCount);
+    generatedMap.GenerateRoomGraph(pRoot.get());
 
-    int roomChance = m_initialRoomChance;
-    int turnChance = m_initialTurnChance;
-
-    yang::Vector2<int> diggerPos = m_startPos;
-
-    assert(diggerPos.x >= 0 && diggerPos.x < m_mapSize.x && diggerPos.y >= 0 && diggerPos.y < m_mapSize.y);
-    generatedMap.SetTile(diggerPos, DungeonMap::TileType::kTunnel);
-
-    while (!IsDone())
-    {
-        diggerPos += currentDirection;
-
-        while (diggerPos.x >= m_mapSize.x - 1 || diggerPos.y >= m_mapSize.y - 1 || diggerPos.x < 1 || diggerPos.y < 1)
-        {
-            diggerPos = diggerPos - currentDirection;
-            currentDirection = RandomDirection(m_rngdevice);
-            diggerPos += currentDirection;
-        }
-
-        generatedMap.SetTile(diggerPos, DungeonMap::TileType::kTunnel);
-
-        int choice = m_rngdevice.Rand(100);
-        if (choice < turnChance)
-        {
-            currentDirection = RandomDirection(m_rngdevice);
-            turnChance = 0;
-        }
-        else
-        {
-            turnChance += 5;
-        }
-
-        choice = m_rngdevice.Rand(100);
-
-        if (choice < roomChance)
-        {
-            int width = m_rngdevice.Rand(m_roomWidthRange.x, m_roomWidthRange.y);
-            int height = m_rngdevice.Rand(m_roomHeightRange.x, m_roomHeightRange.y);
-        
-            generatedMap.PlaceRoom(diggerPos, { width, height });
-            ++m_currentRoomCount;
-
-            roomChance = 0;
-        }
-        else
-        {
-            roomChance += 5;
-        }
-    }
+    generatedMap.SetMapTree(pRoot);
+    generatedMap.SetLeaves(std::move(pRoomNodes));
 
     return generatedMap;
 }

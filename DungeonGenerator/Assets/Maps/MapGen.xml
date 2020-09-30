@@ -1,12 +1,47 @@
 <MapGen>
     <TurnSettings chance="5" step="5" />
     <RoomSettings chance="5" step="3" />
-    <Room count="35" />
-    <RoomWidthRange x="2" y="6" />
-    <RoomHeightRange x="2" y="6" />
+    <Room count="15" />
+    <RoomWidthRange x="10" y="15" />
+    <RoomHeightRange x="10" y="15" />
     <Map>
         <Size x="80" y="45" />
         <TileSize x="16" y="16" />
         <StartPos x="40" y="22" />
     </Map>
+    <Tileset src="Assets/Tilesets/Dungeon.png">
+        <Sprite name="topLeftWall">
+            <SourceRect x="0" y="0" width="16" height="16" />
+        </Sprite>
+        <Sprite name="topWall">
+            <SourceRect x="16" y="0" width="16" height="16" />
+        </Sprite>
+        <Sprite name="topRightWall">
+            <SourceRect x="32" y="0" width="16" height="16" />
+        </Sprite>
+        <Sprite name="leftWall">
+            <SourceRect x="0" y="16" width="16" height="16" />
+        </Sprite>
+        <Sprite name="room">
+            <SourceRect x="16" y="16" width="16" height="16" />
+        </Sprite>
+        <Sprite name="rightWall">
+            <SourceRect x="32" y="16" width="16" height="16" />
+        </Sprite>
+        <Sprite name="downLeftWall">
+            <SourceRect x="0" y="32" width="16" height="16" />
+        </Sprite>
+        <Sprite name="downWall">
+            <SourceRect x="16" y="32" width="16" height="16" />
+        </Sprite>
+        <Sprite name="downRightWall">
+            <SourceRect x="32" y="32" width="16" height="16" />
+        </Sprite>
+        <Sprite name="nothing">
+            <SourceRect x="48" y="0" width="16" height="16" />
+        </Sprite>
+        <Sprite name="player">
+            <SourceRect x="48" y="16" width="16" height="16" />
+        </Sprite>
+    </Tileset>
 </MapGen>

@@ -5,6 +5,7 @@
 /** TODO: SpriteComponent class description */
 
 #include <Application/Graphics/IGraphics.h>
+#include <Application/Graphics/Textures/Sprite.h>
 #include ".\IComponent.h"
 
 //! \namespace yang Contains all Yangine code
@@ -62,15 +63,15 @@ private:
 	// --------------------------------------------------------------------- //
 	// Private Member Variables
 	// --------------------------------------------------------------------- //
-    IRect m_textureSourceRect;              ///< Portion of the texture to draw
-    IVec2 m_spriteDimensions;               ///< Dimensions with which the sprite will be drawn
+ //   IRect m_textureSourceRect;              ///< Portion of the texture to draw
 
-	//TODO: Assign draw params at textures, not in the sprite component
-	TextureDrawParams m_textureDrawParams;  ///< Texture draw parameters. \see yang::ITexture::TextureDrawParams
+	////TODO: Assign draw params at textures, not in the sprite component
+	//TextureDrawParams m_textureDrawParams;  ///< Texture draw parameters. \see yang::ITexture::TextureDrawParams
 
     TransformComponent* m_pTransform;       ///< Owner actor's transform component
 
-	std::shared_ptr<ITexture> m_pTexture;   ///< Texture to render
+    std::shared_ptr<Sprite> m_pSprite;      ///< Sprite to render
+    IVec2 m_spriteDimensions;               ///< Dimensions with which the sprite will be drawn
 
 	// --------------------------------------------------------------------- //
 	// Private Member Functions
@@ -82,25 +83,29 @@ public:
 	// Accessors & Mutators
 	// --------------------------------------------------------------------- //
 
-    /// Get the source rect that defines the portion of image to draw
-    const IRect& GetSourceRect() const { return m_textureSourceRect; }
+    std::weak_ptr<Sprite> GetSprite() const { return m_pSprite; }
+
+    void SetSprite(std::shared_ptr<Sprite> pSprite) { m_pSprite = pSprite; }
+
+    ///// Get the source rect that defines the portion of image to draw
+    //const IRect& GetSourceRect() const { return m_textureSourceRect; }
 
     /// Get dimensions of the sprite to draw
     const IVec2& GetDimensions() const { return m_spriteDimensions; }
 
-    /// Get the texture
-    /// \return shared pointer to the texture
-    std::shared_ptr<ITexture> GetTexture() const { return m_pTexture; }
+    ///// Get the texture
+    ///// \return shared pointer to the texture
+    //std::shared_ptr<ITexture> GetTexture() const { return m_pTexture; }
 
-    /// Set the source rect for the portion of the image to draw
-    void SetSourceRect(const IRect& rect) { m_textureSourceRect = rect; }
+    ///// Set the source rect for the portion of the image to draw
+    //void SetSourceRect(const IRect& rect) { m_textureSourceRect = rect; }
 
     /// Set the dimensions of the sprite to draw
     void SetDimensions(const IVec2& dimensions) { m_spriteDimensions = dimensions; }
 
-    /// Set the texture
-    /// \param pTexture - shared pointer to a new texture
-    void SetTexture(std::shared_ptr<ITexture> pTexture) { m_pTexture = pTexture; }
+    ///// Set the texture
+    ///// \param pTexture - shared pointer to a new texture
+    //void SetTexture(std::shared_ptr<ITexture> pTexture) { m_pTexture = pTexture; }
 
     /// Set rotation angle of the texture draw parameters
     /// \param angle - angle in radians

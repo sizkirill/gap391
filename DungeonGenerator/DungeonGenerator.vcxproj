@@ -198,6 +198,7 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
   <ItemGroup>
     <ClInclude Include="Source\Application\DungeonGenerator_AppLayer.h" />
     <ClInclude Include="Source\Logic\DungeonGenerator_GameLayer.h" />
+    <ClInclude Include="Source\Logic\Map\BspTree.h" />
     <ClInclude Include="Source\Logic\Map\DungeonMap.h" />
     <ClInclude Include="Source\Logic\Map\MapGenerator.h" />
     <ClInclude Include="Source\Views\CameraView.h" />
@@ -206,6 +207,7 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
     <ClCompile Include="Source\Application\DungeonGenerator_AppLayer.cpp" />
     <ClCompile Include="Source\Application\Main.cpp" />
     <ClCompile Include="Source\Logic\DungeonGenerator_GameLayer.cpp" />
+    <ClCompile Include="Source\Logic\Map\BspTree.cpp" />
     <ClCompile Include="Source\Logic\Map\DungeonMap.cpp" />
     <ClCompile Include="Source\Logic\Map\MapGenerator.cpp" />
     <ClCompile Include="Source\Views\CameraView.cpp" />

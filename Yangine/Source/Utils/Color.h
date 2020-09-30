@@ -49,34 +49,40 @@ public:
 class IColor
 {
 public:
-    uint32_t m_color;   ///< 4 integer components of a color in a one unsigned int
+    uint32_t m_color = 0;   ///< 4 integer components of a color in a one unsigned int
 
     /// Default constructor
-    IColor() = default;
+    constexpr IColor() = default;
 
     /// Constructor
     /// \param r - red value in range [0 - 255]
     /// \param g - green value in range [0 - 255]
     /// \param b - blue value in range [0 - 255]
     /// \param a - transparency value in range [0 - 255]
-    IColor(ui8 r, ui8 g, ui8 b, ui8 a);
+    constexpr IColor(ui8 r, ui8 g, ui8 b, ui8 a) : m_color(r << 24 | g << 16 | b << 8 | a) {};
 
     /// Constructor
     /// \param color - unsigned int that contains all 4 components
-    IColor(uint32_t color);
+    constexpr IColor(uint32_t color) : m_color(color) {};
 
     /// Convert to floating point color
     /// \return converted color
     FColor ToFColor() const;
 
     /// Get red component value
-    uint8_t Red() const;
+    constexpr uint8_t Red() const { return (m_color >> 24) & 0xFF; }
     /// Get green component value
-    uint8_t Green() const;
+    constexpr uint8_t Green() const { return (m_color >> 16) & 0xFF; }
     /// Get blue component value
-    uint8_t Blue() const;
+    constexpr uint8_t Blue() const { return (m_color >> 8) & 0xFF; }
     /// Get transparency component value
-    uint8_t Alpha() const;
+    constexpr uint8_t Alpha() const { return m_color & 0xFF; }
+
+    static constexpr uint32_t kWhite = 0xffffffff;
+    static constexpr uint32_t kBlack = 0x000000ff;
+
+    static constexpr IColor White() { return yang::IColor(kWhite); }
+    static constexpr IColor Black() { return yang::IColor(kBlack); }
 };
 
 } // namespace yang
