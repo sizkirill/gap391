@@ -47,12 +47,14 @@ private:
 
     yang::IVec2 m_mapSize;
     yang::IVec2 m_tileSize;
+    //yang::FVec2 m_tileScaleFactors;
     yang::FVec2 m_noiseSize;
     yang::XorshiftRNG m_rng;
 
     std::vector<Biome> m_biomes;
     std::array<std::shared_ptr<yang::Sprite>, static_cast<size_t>(Biome::kMaxBiomes)> m_biomeToSpriteArray;
-    size_t m_eventListenerIndex;
+    size_t m_keyboardListenerIndex;
+    //size_t m_mouseListenerIndex;
 
     int m_numOctaves;
     float m_persistance;
@@ -72,4 +74,5 @@ private:
     
     std::shared_ptr<yang::Sprite> GetSpriteFromBiome(Biome biome) const;
     void HandleInputEvent(yang::IEvent* pEvent);
+    void HandleWheelEvent(yang::IEvent* pEvent);
 };

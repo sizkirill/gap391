@@ -11,12 +11,13 @@
 #include <Utils/StringHash.h>
 #include <Application/Resources/ResourceCache.h>
 #include <Application/Graphics/Textures/Sprite.h>
+#include <Logic/Event/Input/MouseWheelEvent.h>
 #include <thread>
 #include <cassert>
 
 WorldMap::~WorldMap()
 {
-    yang::EventDispatcher::Get()->RemoveEventListener(yang::KeyboardInputEvent::kEventId, m_eventListenerIndex);
+    yang::EventDispatcher::Get()->RemoveEventListener(yang::KeyboardInputEvent::kEventId, m_keyboardListenerIndex);
 }
 
 bool WorldMap::Init(yang::IVec2 mapSize, yang::IVec2 tileSize, yang::FVec2 noiseSize, yang::IGraphics* pGraphics)
@@ -30,7 +31,8 @@ bool WorldMap::Init(yang::IVec2 mapSize, yang::IVec2 tileSize, yang::FVec2 noise
     m_biomes.resize(mapSize.x * mapSize.y);
     m_numOctaves = 4;
     m_persistance = 0.5f;
-    m_eventListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::KeyboardInputEvent::kEventId, [this](yang::IEvent* pEvent) {HandleInputEvent(pEvent); });
+    m_keyboardListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::KeyboardInputEvent::kEventId, [this](yang::IEvent* pEvent) {HandleInputEvent(pEvent); });
+    //m_mouseListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::MouseWheelEvent::kEventId, [this](yang::IEvent* pEvent) {HandleWheelEvent(pEvent); });
     return true;
 }
 
@@ -58,10 +60,10 @@ bool WorldMap::Init(std::string_view pathToSettings)
     XMLElement* pTileSize = pRoot->FirstChildElement("TileSize");
     if (pTileSize)
     {
-        m_tileSize = yang::IVectorFromXML(pTileSize);
+        m_tileSize = yang::FVectorFromXML(pTileSize);
     }
 
-    XMLElement* pNoiseSize = pRoot->FirstChildElement("TileSize");
+    XMLElement* pNoiseSize = pRoot->FirstChildElement("NoiseSize");
     if (pNoiseSize)
     {
         m_noiseSize = yang::FVectorFromXML(pNoiseSize);
@@ -75,7 +77,11 @@ bool WorldMap::Init(std::string_view pathToSettings)
     m_numOctaves = pRoot->IntAttribute("octaves", 4);
     m_persistance = pRoot->FloatAttribute("persistance", 0.5f);
 
-    m_eventListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::KeyboardInputEvent::kEventId, [this](yang::IEvent* pEvent) {HandleInputEvent(pEvent); });
+    //float scale = pRoot->FloatAttribute("initialScale", 1.f);
+    //m_tileScaleFactors = { scale,scale };
+
+    m_keyboardListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::KeyboardInputEvent::kEventId, [this](yang::IEvent* pEvent) {HandleInputEvent(pEvent); });
+    //m_mouseListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::MouseWheelEvent::kEventId, [this](yang::IEvent* pEvent) {HandleWheelEvent(pEvent); });
 
     XMLElement* pMapTileset = pRoot->FirstChildElement("Tileset");
 
@@ -158,29 +164,16 @@ void WorldMap::Generate(uint64_t seed)
 
 bool WorldMap::Render(yang::IGraphics* pGraphics) const
 {
-    int y0 = m_center.y - (int)yang::kWindowHeight / (2 * m_tileSize.y);
-    int y1 = m_center.y + (int)yang::kWindowHeight / (2 * m_tileSize.y);
-    int x0 = m_center.x - (int)yang::kWindowWidth / (2 * m_tileSize.x);
-    int x1 = m_center.x + (int)yang::kWindowWidth / (2 * m_tileSize.x);
-
-    for (int y = y0; y < y1 + 1; ++y)
+    for (int y = 0; y < m_mapSize.y; ++y)
     {
-        for (int x = x0; x < x1 + 1; ++x)
+        for (int x = 0; x < m_mapSize.x; ++x)
         {
             yang::IRect toDraw;
-            toDraw.x = (x - x0) * m_tileSize.x;
-            toDraw.y = (y - y0) * m_tileSize.y;
+            toDraw.x = x * m_tileSize.x;
+            toDraw.y = y * m_tileSize.y;
             toDraw.width = m_tileSize.x;
             toDraw.height = m_tileSize.y;
-
-            if (CheckBounds(x, y))
-            {
-                pGraphics->DrawSprite(GetSpriteFromBiome(m_biomes[GetIndexFromGridPoint(x, y)]), toDraw);
-            }
-            else
-            {
-                pGraphics->FillRect(toDraw, yang::IColor::kBlack);
-            }
+            pGraphics->DrawSprite(GetSpriteFromBiome(m_biomes[GetIndexFromGridPoint(x, y)]), toDraw);
         }
     }
 
@@ -333,3 +326,15 @@ void WorldMap::HandleInputEvent(yang::IEvent* pEvent)
         }
     }
 }
+
+//void WorldMap::HandleWheelEvent(yang::IEvent* pEvent)
+//{
+//    using namespace yang;
+//
+//    assert(MouseWheelEvent::kEventId == pEvent->GetEventId());
+//
+//    MouseWheelEvent* pResult = static_cast<MouseWheelEvent*>(pEvent);
+//
+//    float amount = pResult->GetScrollAmount().y;
+//    m_tileScaleFactors *= (1 + amount / 10.f);
+//}

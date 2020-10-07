@@ -1,5 +1,5 @@
 <Actor>
-  <CameraComponent moveSpeed="350" senseDistance="80" startScale="25.0">
+  <CameraComponent moveSpeed="350" senseDistance="80" startScale="1">
     <StartLocation x="0" y="0" />
   </CameraComponent>
   <TransformComponent>

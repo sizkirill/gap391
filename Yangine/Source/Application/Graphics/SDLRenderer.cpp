@@ -145,9 +145,9 @@ bool yang::SDLRenderer::DrawTexture(ITexture* pTexture, const IRect& src, const 
     }
 
     SDL_Rect source = ToSDLRect(src);
-	FVec2 destOrigin = m_cameraTransform.TransformPoint(FVec2((float)dest.x, (float)dest.y));
-    //SDL_FRect destination = ToSDLFRect(m_cameraTransform.TransformAARect(dest));
-	SDL_FRect destination {destOrigin.x, destOrigin.y, (float)(dest.width+1) * m_cameraScaleFactors.x, (float)(dest.height+1) * m_cameraScaleFactors.y};
+	//FVec2 destOrigin = m_cameraTransform.TransformPoint(FVec2((float)dest.x, (float)dest.y));
+    SDL_FRect destination = ToSDLFRect(m_cameraTransform.TransformAARect(dest));
+	//SDL_FRect destination {destOrigin.x, destOrigin.y, (float)(dest.width+1) * m_cameraScaleFactors.x, (float)(dest.height+1) * m_cameraScaleFactors.y};
     SDL_Texture* pSDLTexture = reinterpret_cast<SDL_Texture*>(pTexture->GetNativeTexture());
 
 	SDL_FPoint pointToRotate;

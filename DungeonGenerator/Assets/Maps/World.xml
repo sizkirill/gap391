@@ -1,7 +1,7 @@
-<MapGen>
-    <MapSize x="320" y="180" />
-    <TileSize x="4" y="4" />
-    <NoiseSize x="17" y="10" />
+<MapGen numOctaves="3" persistance="0.5">
+    <MapSize x="640" y="360" />
+    <TileSize x="2" y="2" />
+    <NoiseSize x="4" y="4" />
     <Tileset src="Assets/Tilesets/World.png">
         <Sprite name="temperateRainforest">
             <SourceRect x="0" y="0" width="32" height="32" />
