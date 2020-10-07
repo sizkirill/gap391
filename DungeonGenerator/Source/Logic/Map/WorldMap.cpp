@@ -14,6 +14,7 @@
 #include <Logic/Event/Input/MouseWheelEvent.h>
 #include <thread>
 #include <cassert>
+#include <set>
 
 WorldMap::~WorldMap()
 {
@@ -28,11 +29,10 @@ bool WorldMap::Init(yang::IVec2 mapSize, yang::IVec2 tileSize, yang::FVec2 noise
     m_moistureMap.Init(mapSize, tileSize, noiseSize);
     m_center = mapSize / 2;
     m_pGraphics = pGraphics;
-    m_biomes.resize(mapSize.x * mapSize.y);
+    m_tiles.resize(mapSize.x * mapSize.y);
     m_numOctaves = 4;
     m_persistance = 0.5f;
     m_keyboardListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::KeyboardInputEvent::kEventId, [this](yang::IEvent* pEvent) {HandleInputEvent(pEvent); });
-    //m_mouseListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::MouseWheelEvent::kEventId, [this](yang::IEvent* pEvent) {HandleWheelEvent(pEvent); });
     return true;
 }
 
@@ -72,16 +72,12 @@ bool WorldMap::Init(std::string_view pathToSettings)
     m_elevationMap.Init(m_mapSize, m_tileSize, m_noiseSize);
     m_moistureMap.Init(m_mapSize, m_tileSize, m_noiseSize);
     m_center = m_mapSize / 2;
-    m_biomes.resize(m_mapSize.x * m_mapSize.y);
+    m_tiles.resize(m_mapSize.x * m_mapSize.y);
 
     m_numOctaves = pRoot->IntAttribute("octaves", 4);
     m_persistance = pRoot->FloatAttribute("persistance", 0.5f);
 
-    //float scale = pRoot->FloatAttribute("initialScale", 1.f);
-    //m_tileScaleFactors = { scale,scale };
-
     m_keyboardListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::KeyboardInputEvent::kEventId, [this](yang::IEvent* pEvent) {HandleInputEvent(pEvent); });
-    //m_mouseListenerIndex = yang::EventDispatcher::Get()->AddEventListener(yang::MouseWheelEvent::kEventId, [this](yang::IEvent* pEvent) {HandleWheelEvent(pEvent); });
 
     XMLElement* pMapTileset = pRoot->FirstChildElement("Tileset");
 
@@ -134,6 +130,34 @@ bool WorldMap::Init(std::string_view pathToSettings)
             m_biomeToSpriteArray[spriteLambda(pSpriteName, "default"_hash32)] = std::make_shared<yang::Sprite>(pTilesetTexture, yang::IRectFromXML(pSprite->FirstChildElement("SourceRect")), yang::TextureDrawParams{});
         }
     }
+
+    pMapTileset = pMapTileset->NextSiblingElement("Tileset");
+
+    if (pMapTileset)
+    {
+        const char* pTextureSrc = pMapTileset->Attribute("src");
+
+        if (!pTextureSrc)
+        {
+            LOG(Error, "Texture haven't been found");
+            return false;
+        }
+
+        auto pTilesetTexture = yang::ResourceCache::Get()->Load<yang::ITexture>(pTextureSrc);
+
+        for (XMLElement* pSprite = pMapTileset->FirstChildElement("Sprite"); pSprite != nullptr; pSprite = pSprite->NextSiblingElement("Sprite"))
+        {
+            const char* pSpriteName = pSprite->Attribute("name");
+            if (!pSpriteName)
+            {
+                LOG(Warning, "Sprite doesn't have a name");
+                continue;
+            }
+
+            m_objectSprites.push_back(std::make_shared<yang::Sprite>(pTilesetTexture, yang::IRectFromXML(pSprite->FirstChildElement("SourceRect")), yang::TextureDrawParams{}));
+        }
+    }
+
     return true;
 }
 
@@ -148,13 +172,65 @@ void WorldMap::Generate(uint64_t seed)
 
     auto start = std::chrono::steady_clock::now();
 
+    static constexpr size_t kNumThreads = 8;
+    std::thread jobs[kNumThreads];
+    size_t jobSize = m_tiles.size() / kNumThreads;
+    for (size_t i = 0; i < kNumThreads; ++i)
+    {
+        size_t startIndex = i * jobSize;
+        size_t endIndex = (i == kNumThreads - 1 ? m_tiles.size() : (i + 1) * jobSize);
+        jobs[i] = std::thread([startIndex, endIndex, this]()
+            {
+                for (size_t i = startIndex; i < endIndex; ++i)
+                {
+                    m_tiles[i].m_containedObject = nullptr;
+                }
+            });
+    }
+
+
     std::thread elevationsJob([this, elevationSeed, &elevationValues]() {elevationValues = m_elevationMap.Generate(static_cast<uint32_t>(elevationSeed), m_numOctaves, m_persistance); });
     std::thread moisturesJob([this, moistureSeed, &moistureValues]() {moistureValues = m_elevationMap.Generate(static_cast<uint32_t>(moistureSeed), m_numOctaves, m_persistance); });
 
+    for (auto& t : jobs)
+    {
+        t.join();
+    }
     elevationsJob.join();
     moisturesJob.join();
 
     AssignBiomes(elevationValues, moistureValues);
+
+    for (size_t i = 0; i < elevationValues.size(); ++i)
+    {
+        bool isMaxima = CheckMaxima(i, elevationValues);
+
+        if (!isMaxima)
+            continue;
+
+        if (m_tiles[i].m_biome == Biome::kBorealForest)
+        {
+            m_tiles[i].m_containedObject = m_objectSprites[0];
+        }
+        else if (m_tiles[i].m_biome == Biome::kTropicalRainforest)
+        {
+            m_tiles[i].m_containedObject = m_objectSprites[1];
+        }
+        else if (m_tiles[i].m_biome == Biome::kTemperateSeasonalForest)
+        {
+            m_tiles[i].m_containedObject = m_rng.Rand(100) > 80 ? m_objectSprites[0] : m_objectSprites[1];
+        }
+        else if (m_tiles[i].m_biome == Biome::kTemperateRainforest)
+        {
+            m_tiles[i].m_containedObject = m_rng.Rand(100) > 80 ? m_objectSprites[1] : m_objectSprites[0];
+        }
+        else if (m_tiles[i].m_biome == Biome::kShrubland)
+        {
+            m_tiles[i].m_containedObject = m_objectSprites[2];
+        }
+    }
+
+
 
     auto end = std::chrono::steady_clock::now();
 
@@ -173,14 +249,44 @@ bool WorldMap::Render(yang::IGraphics* pGraphics) const
             toDraw.y = y * m_tileSize.y;
             toDraw.width = m_tileSize.x;
             toDraw.height = m_tileSize.y;
-            pGraphics->DrawSprite(GetSpriteFromBiome(m_biomes[GetIndexFromGridPoint(x, y)]), toDraw);
+            pGraphics->DrawSprite(GetSpriteFromBiome(m_tiles[GetIndexFromGridPoint(x, y)].m_biome), toDraw);
+
+            if (auto pObjectSprite = m_tiles[GetIndexFromGridPoint(x, y)].m_containedObject; pObjectSprite != nullptr)
+            {
+                auto sourceRect = pObjectSprite->GetSourceRect();
+                yang::FVec2 dimensions = { (float)sourceRect.width, (float)sourceRect.height };
+
+                if (dimensions.x > m_tileSize.x)
+                {
+                    float factor = (float)dimensions.x / m_tileSize.x;
+                    dimensions.x = (float)m_tileSize.x;
+
+                    dimensions.y = (float)(dimensions.y) / factor;
+                }
+
+                if (dimensions.y > m_tileSize.y)
+                {
+                    float factor = (float)dimensions.y / m_tileSize.y;
+                    dimensions.y = (float)m_tileSize.y;
+
+                    dimensions.x = (float)(dimensions.x) / factor;
+                }
+
+                yang::IRect toDraw;
+                toDraw.x = x * m_tileSize.x + m_tileSize.x / 2 - (int)dimensions.x / 2;
+                toDraw.y = y * m_tileSize.y + m_tileSize.y / 2 - (int)dimensions.y / 2;
+                toDraw.width = (int)dimensions.x;
+                toDraw.height = (int)dimensions.y;
+
+                pGraphics->DrawSprite(pObjectSprite, toDraw);
+            }
         }
     }
 
     return true;
 }
 
-void WorldMap::AssignBiomes(const std::vector<float>& elevations, const std::vector<float>& moistures)
+void WorldMap::AssignBiomes(std::vector<float>& elevations, std::vector<float>& moistures)
 {
     static constexpr size_t kNumJobs = 8;
     std::thread jobs[kNumJobs];
@@ -193,8 +299,8 @@ void WorldMap::AssignBiomes(const std::vector<float>& elevations, const std::vec
             {
                 for (size_t i = startIndex; i < endIndex; ++i)
                 {
-                    float e = (1.f + elevations[i] - DistanceToCenter(static_cast<int>(i))) / 2.f;
-                    m_biomes[i] = BiomeFromNoise(e, moistures[i]);
+                    elevations[i] = (1.f + elevations[i] - DistanceToCenter(static_cast<int>(i))) / 2.f;
+                    m_tiles[i].m_biome = BiomeFromNoise(elevations[i], moistures[i]);
                 }
             });
     }
@@ -220,23 +326,32 @@ Biome WorldMap::BiomeFromNoise(float elevation, float moisture)
         if (moisture < 0.6f) return Biome::kTundra;
         return Biome::kSnow;
     }
-    if (elevation > 0.67f) 
+
+    if (elevation > 0.7f)
     {
-        if (moisture < 0.5f) return Biome::kShrubland;
-        if (moisture < 0.7f) return Biome::kGrassland;
-        return Biome::kTemperateSeasonalForest;
-    }
-    if (elevation > 0.55f) {
-        if (moisture < 0.3f) return Biome::kSubtropicalDesert;
-        if (moisture < 0.45f) return Biome::kShrubland;
-        if (moisture < 0.65f) return Biome::kGrassland;
-        return Biome::kTemperateRainforest;
+        if (moisture < 0.3f) return Biome::kGrassland;
+        return Biome::kBorealForest;
     }
 
-    if (moisture < 0.3f) return Biome::kSubtropicalDesert;
+    if (elevation > 0.62f) 
+    {
+        if (moisture < 0.5f) return Biome::kGrassland;
+        if (moisture < 0.6f) return Biome::kShrubland;
+        if (moisture < 0.8f) return Biome::kTemperateSeasonalForest;
+        return Biome::kTemperateRainforest;
+    }
+    if (elevation > 0.52f) {
+        if (moisture < 0.2f) return Biome::kSubtropicalDesert;
+        if (moisture < 0.3f) return Biome::kGrassland;
+        if (moisture < 0.56f) return Biome::kShrubland;
+        if (moisture < 0.75f) return Biome::kTemperateSeasonalForest;
+        return Biome::kTropicalRainforest;
+    }
+
+    if (moisture < 0.2f) return Biome::kSubtropicalDesert;
     if (moisture < 0.5f) return Biome::kSavanna;
     if (moisture < 0.67f) return Biome::kTemperateRainforest;
-    return Biome::kTropicalRainForest;
+    return Biome::kTropicalRainforest;
 } 
 
 int WorldMap::GetIndexFromGridPoint(int x, int y) const
@@ -276,6 +391,37 @@ float WorldMap::GetRadiusSqrd() const
 bool WorldMap::CheckBounds(int x, int y) const
 {
     return !(x < 0 || x >= m_mapSize.x || y < 0 || y >= m_mapSize.y);
+}
+
+bool WorldMap::CheckMaximaForOneTile(size_t indexToCheck, int x, int y, const std::vector<float>& noise)
+{
+    if (CheckBounds(x, y))
+    {
+        if (noise[static_cast<size_t>(GetIndexFromGridPoint(x, y))] > noise[indexToCheck])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool WorldMap::CheckMaxima(size_t indexToCheck, const std::vector<float>& noise)
+{
+    auto point = GetGridPointFromIndex(static_cast<int>(indexToCheck));
+    bool isMaxima = true;
+    for (int y = point.y - 1; y <= point.y + 1; ++y)
+    {
+        for (int x = point.x - 1; x <= point.x + 1; ++x)
+        {
+            if (x == point.x && y == point.y)
+                continue;
+
+            isMaxima = isMaxima && CheckMaximaForOneTile(indexToCheck, x, y, noise);
+        }
+    }
+
+    return isMaxima;
 }
 
 std::shared_ptr<yang::Sprite> WorldMap::GetSpriteFromBiome(Biome biome) const
@@ -326,15 +472,3 @@ void WorldMap::HandleInputEvent(yang::IEvent* pEvent)
         }
     }
 }
-
-//void WorldMap::HandleWheelEvent(yang::IEvent* pEvent)
-//{
-//    using namespace yang;
-//
-//    assert(MouseWheelEvent::kEventId == pEvent->GetEventId());
-//
-//    MouseWheelEvent* pResult = static_cast<MouseWheelEvent*>(pEvent);
-//
-//    float amount = pResult->GetScrollAmount().y;
-//    m_tileScaleFactors *= (1 + amount / 10.f);
-//}
