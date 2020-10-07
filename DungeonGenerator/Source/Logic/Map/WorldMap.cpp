@@ -201,36 +201,48 @@ void WorldMap::Generate(uint64_t seed)
 
     AssignBiomes(elevationValues, moistureValues);
 
-    for (size_t i = 0; i < elevationValues.size(); ++i)
+    for (size_t i = 0; i < kNumThreads; ++i)
     {
-        bool isMaxima = CheckMaxima(i, elevationValues);
+        size_t startIndex = i * jobSize;
+        size_t endIndex = (i == kNumThreads - 1 ? m_tiles.size() : (i + 1) * jobSize);
+        jobs[i] = std::thread([startIndex, endIndex, this, &elevationValues]()
+            {
+                yang::XorshiftRNG rng;
+                for (size_t i = startIndex; i < endIndex; ++i)
+                {
+                    bool isMaxima = CheckMaxima(i, elevationValues);
 
-        if (!isMaxima)
-            continue;
+                    if (!isMaxima)
+                        continue;
 
-        if (m_tiles[i].m_biome == Biome::kBorealForest)
-        {
-            m_tiles[i].m_containedObject = m_objectSprites[0];
-        }
-        else if (m_tiles[i].m_biome == Biome::kTropicalRainforest)
-        {
-            m_tiles[i].m_containedObject = m_objectSprites[1];
-        }
-        else if (m_tiles[i].m_biome == Biome::kTemperateSeasonalForest)
-        {
-            m_tiles[i].m_containedObject = yang::XorshiftRNG::GlobalRNG.Rand(100) > 80 ? m_objectSprites[0] : m_objectSprites[1];
-        }
-        else if (m_tiles[i].m_biome == Biome::kTemperateRainforest)
-        {
-            m_tiles[i].m_containedObject = yang::XorshiftRNG::GlobalRNG.Rand(100) > 80 ? m_objectSprites[1] : m_objectSprites[0];
-        }
-        else if (m_tiles[i].m_biome == Biome::kShrubland)
-        {
-            m_tiles[i].m_containedObject = m_objectSprites[2];
-        }
+                    if (m_tiles[i].m_biome == Biome::kBorealForest)
+                    {
+                        m_tiles[i].m_containedObject = m_objectSprites[0];
+                    }
+                    else if (m_tiles[i].m_biome == Biome::kTropicalRainforest)
+                    {
+                        m_tiles[i].m_containedObject = m_objectSprites[1];
+                    }
+                    else if (m_tiles[i].m_biome == Biome::kTemperateSeasonalForest)
+                    {
+                        m_tiles[i].m_containedObject = rng.Rand(100) > 80 ? m_objectSprites[0] : m_objectSprites[1];
+                    }
+                    else if (m_tiles[i].m_biome == Biome::kTemperateRainforest)
+                    {
+                        m_tiles[i].m_containedObject = rng.Rand(100) > 80 ? m_objectSprites[1] : m_objectSprites[0];
+                    }
+                    else if (m_tiles[i].m_biome == Biome::kShrubland)
+                    {
+                        m_tiles[i].m_containedObject = m_objectSprites[2];
+                    }
+                }
+            });
     }
 
-
+    for (auto& t : jobs)
+    {
+        t.join();
+    }
 
     auto end = std::chrono::steady_clock::now();
 
