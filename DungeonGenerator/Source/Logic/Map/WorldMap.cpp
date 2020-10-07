@@ -218,11 +218,11 @@ void WorldMap::Generate(uint64_t seed)
         }
         else if (m_tiles[i].m_biome == Biome::kTemperateSeasonalForest)
         {
-            m_tiles[i].m_containedObject = m_rng.Rand(100) > 80 ? m_objectSprites[0] : m_objectSprites[1];
+            m_tiles[i].m_containedObject = yang::XorshiftRNG::GlobalRNG.Rand(100) > 80 ? m_objectSprites[0] : m_objectSprites[1];
         }
         else if (m_tiles[i].m_biome == Biome::kTemperateRainforest)
         {
-            m_tiles[i].m_containedObject = m_rng.Rand(100) > 80 ? m_objectSprites[1] : m_objectSprites[0];
+            m_tiles[i].m_containedObject = yang::XorshiftRNG::GlobalRNG.Rand(100) > 80 ? m_objectSprites[1] : m_objectSprites[0];
         }
         else if (m_tiles[i].m_biome == Biome::kShrubland)
         {
