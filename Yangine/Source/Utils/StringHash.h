@@ -23,3 +23,19 @@ inline constexpr uint32_t StringHash32(const char* const str, const uint32_t val
 inline constexpr uint64_t StringHash64(const char* const str, const uint64_t value = kVal64) noexcept {
     return (str[0] == '\0') ? value : StringHash64(&str[1], (value ^ uint64_t(str[0])) * kPrime64);
 }
+
+namespace yang
+{
+    namespace literals
+    {
+        constexpr uint32_t operator "" _hash32(const char* const val, size_t len) 
+        {
+            return StringHash32(val);
+        };
+
+        constexpr uint64_t operator "" _hash64(const char* const val, size_t len) 
+        {
+            return StringHash64(val);
+        }
+    }
+}

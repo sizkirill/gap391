@@ -66,6 +66,11 @@ public:
 	/// \param amount - amount to scale by
 	void Scale(float amount);
 
+	/// Scale actor by some amount in both axis
+	/// \param amount - amount to scale by
+	/// \param center - point to scale about
+	void Scale(float amount, FVec2 center);
+
 	/// Scale actor by amount.x in x axis and amount.y in y axis
 	/// \param amount - amount to scale by
 	void Scale(FVec2 amount);
@@ -87,6 +92,7 @@ private:
 	FVec2 m_rotationPoint;				///< Transform rotation point
 	float m_rotationAngle;				///< Actor's rotation (in radians, clockwise from initial point. 0 is considered pointing to the right)
 	FVec2 m_scale;						///< Actor's scale
+	FVec2 m_scalePoint;					///< Transform scale point
 	TransformType m_transformType;      ///< Type of position. \see yang::TransformComponent::TransformType
 
 	Matrix m_transformMatrix;			///< Matrix representing the current transform
@@ -137,6 +143,10 @@ public:
 	void SetRotationPoint(FVec2 rotationPoint) { m_rotationPoint = rotationPoint; }
 
 	FVec2 GetScaleFactors() const {return m_scale;}
+
+	FVec2 GetScalePoint() const { return m_scalePoint; }
+
+	void SetScalePoint(FVec2 scalePoint) { m_scalePoint = scalePoint; };
 };
 
 }

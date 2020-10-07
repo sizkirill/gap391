@@ -14,6 +14,8 @@
 /** \file Logger.h */
 /** Logger class description */
 
+static std::mutex g_logMutex;
+
 /// \def LOG_CATEGORY(Name, Severity, Color, Intensity)
 /// Defines Log category
 /// \a Name - name of the log category
@@ -21,7 +23,7 @@
 /// \a Color - color to log
 /// \a Intensity - intensity of the color to log
 #define LOG_CATEGORY(Name, Severity, Color, Intensity) \
-	yang::Logger::Get()->AddCategory(#Name, Severity, yang::ConsoleColor::k##Color, yang::ColorIntensity::k##Intensity);
+	yang::Logger::Get()->AddCategory(#Name, Severity, yang::ConsoleColor::k##Color, yang::ColorIntensity::k##Intensity); \
 	
 /// \def LOG(Category, format, ...)
 /// Adds log to a logging queue
@@ -29,8 +31,9 @@
 /// \a format - string to log
 /// \a ... - format arguments for the string above
 #define LOG(Category, format, ...) \
-	yang::Logger::Get()->AddLog(#Category, __LINE__, __FILE__, format, __VA_ARGS__);
-
+	g_logMutex.lock(); \
+	yang::Logger::Get()->AddLog(#Category, __LINE__, __FILE__, format, __VA_ARGS__);\
+	g_logMutex.unlock();
 
 // Little gross way of logging once xD
 /// \def LOG_ONCE(Category, Identifier, format, ...)

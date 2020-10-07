@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Application\ApplicationConstants.h" />
     <ClInclude Include="Source\Application\ApplicationLayer.h" />
     <ClInclude Include="Source\Application\Audio\IAudio.h" />
     <ClInclude Include="Source\Application\Audio\Music\IMusic.h" />
@@ -235,6 +236,7 @@
     <ClInclude Include="Source\Utils\Logger.h" />
     <ClInclude Include="Source\Utils\Math.h" />
     <ClInclude Include="Source\Utils\Matrix.h" />
+    <ClInclude Include="Source\Utils\PerlinNoise.h" />
     <ClInclude Include="Source\Utils\Random.h" />
     <ClInclude Include="Source\Utils\Rectangle.h" />
     <ClInclude Include="Source\Utils\StringHash.h" />
@@ -316,6 +318,7 @@
     <ClCompile Include="Source\Logic\Shapes\RectangleShape.cpp" />
     <ClCompile Include="Source\Utils\Color.cpp" />
     <ClCompile Include="Source\Utils\Logger.cpp" />
+    <ClCompile Include="Source\Utils\PerlinNoise.cpp" />
     <ClCompile Include="Source\Utils\Random.cpp" />
     <ClCompile Include="Source\Utils\TinyXml2\tinyxml2.cpp" />
     <ClCompile Include="Source\Utils\XMLHelpers.cpp" />

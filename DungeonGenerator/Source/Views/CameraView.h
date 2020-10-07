@@ -2,6 +2,7 @@
 
 #include <Views/IView.h>
 #include <Utils/Vector2.h>
+#include <memory>
 
 namespace yang
 {
@@ -11,10 +12,12 @@ namespace yang
     class IAudio;
     class IGameLayer;
     class IEvent;
+    class ITexture;
 }
 
 class DungeonMap;
 class GraphSearcher;
+class WorldMap;
 
 class CameraView : public yang::IView
 {
@@ -26,7 +29,7 @@ public:
     virtual bool Init(const yang::ApplicationLayer& app) override final;
     virtual void UpdateInput() override final;
     virtual void ViewScene() override final;
-    void SetMap(DungeonMap* pMap);
+    void SetMap(WorldMap* pMap);
 private:
     yang::IGraphics* m_pGraphics;
     yang::IKeyboard* m_pKeyboard;
@@ -34,5 +37,5 @@ private:
     yang::IAudio* m_pAudio;
     yang::IGameLayer* m_pGameLayer;
 
-    DungeonMap* m_pMap;
+    WorldMap* m_pMap;
 };

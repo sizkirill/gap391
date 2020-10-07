@@ -1,10 +1,13 @@
 #include "CameraView.h"
 #include <Application/ApplicationLayer.h>
 #include <Application/Graphics/IGraphics.h>
+#include <Application/Graphics/Textures/ITexture.h>
 #include <Logic/Actor/Actor.h>
 #include <Logic/Event/EventDispatcher.h>
 #include <Logic/Event/Input/MouseButtonEvent.h>
-#include <Logic/Map/DungeonMap.h>
+#include <Logic/Map/WorldMap.h>
+
+#include <Utils/Random.h>
 
 CameraView::CameraView()
     :m_pGraphics(nullptr)
@@ -50,8 +53,10 @@ void CameraView::ViewScene()
     m_pGraphics->EndDrawing();
 }
 
-void CameraView::SetMap(DungeonMap* pMap)
+void CameraView::SetMap(WorldMap* pMap)
 {
     m_pMap = pMap;
+    m_pMap->Init("Assets/Maps/World.xml");
+    m_pMap->Generate(0x1298736);
 }
 

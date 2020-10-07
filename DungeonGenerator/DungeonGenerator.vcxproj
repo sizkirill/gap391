@@ -197,19 +197,21 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\DungeonGenerator_AppLayer.h" />
+    <ClInclude Include="Source\Logic\Components\CameraComponent.h" />
     <ClInclude Include="Source\Logic\DungeonGenerator_GameLayer.h" />
-    <ClInclude Include="Source\Logic\Map\BspTree.h" />
-    <ClInclude Include="Source\Logic\Map\DungeonMap.h" />
-    <ClInclude Include="Source\Logic\Map\MapGenerator.h" />
+    <ClInclude Include="Source\Logic\Map\NoiseMap.h" />
+    <ClInclude Include="Source\Logic\Map\WorldMap.h" />
+    <ClInclude Include="Source\Logic\System\CameraSystem.h" />
     <ClInclude Include="Source\Views\CameraView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\DungeonGenerator_AppLayer.cpp" />
     <ClCompile Include="Source\Application\Main.cpp" />
+    <ClCompile Include="Source\Logic\Components\CameraComponent.cpp" />
     <ClCompile Include="Source\Logic\DungeonGenerator_GameLayer.cpp" />
-    <ClCompile Include="Source\Logic\Map\BspTree.cpp" />
-    <ClCompile Include="Source\Logic\Map\DungeonMap.cpp" />
-    <ClCompile Include="Source\Logic\Map\MapGenerator.cpp" />
+    <ClCompile Include="Source\Logic\Map\NoiseMap.cpp" />
+    <ClCompile Include="Source\Logic\Map\WorldMap.cpp" />
+    <ClCompile Include="Source\Logic\System\CameraSystem.cpp" />
     <ClCompile Include="Source\Views\CameraView.cpp" />
   </ItemGroup>
   <ItemGroup>

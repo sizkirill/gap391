@@ -13,6 +13,12 @@
     <Filter Include="Views">
       <UniqueIdentifier>{B38C4E0E-1FA1-76BF-E822-1A1F54F672F0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logic\System">
+      <UniqueIdentifier>{bc65e8a7-6241-4d5d-8623-b97f091afdcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logic\Components">
+      <UniqueIdentifier>{0ee573ef-1727-4823-b9b8-ccd5d5cac8fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\DungeonGenerator_AppLayer.h">
@@ -21,17 +27,20 @@
     <ClInclude Include="Source\Logic\DungeonGenerator_GameLayer.h">
       <Filter>Logic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Map\DungeonMap.h">
-      <Filter>Logic\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Logic\Map\MapGenerator.h">
-      <Filter>Logic\Map</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Views\CameraView.h">
       <Filter>Views</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Map\BspTree.h">
+    <ClInclude Include="Source\Logic\Map\NoiseMap.h">
       <Filter>Logic\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Map\WorldMap.h">
+      <Filter>Logic\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\System\CameraSystem.h">
+      <Filter>Logic\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Components\CameraComponent.h">
+      <Filter>Logic\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -44,17 +53,20 @@
     <ClCompile Include="Source\Logic\DungeonGenerator_GameLayer.cpp">
       <Filter>Logic</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Logic\Map\DungeonMap.cpp">
-      <Filter>Logic\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Logic\Map\MapGenerator.cpp">
-      <Filter>Logic\Map</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Views\CameraView.cpp">
       <Filter>Views</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Logic\Map\BspTree.cpp">
+    <ClCompile Include="Source\Logic\Map\NoiseMap.cpp">
       <Filter>Logic\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Map\WorldMap.cpp">
+      <Filter>Logic\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\System\CameraSystem.cpp">
+      <Filter>Logic\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Components\CameraComponent.cpp">
+      <Filter>Logic\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

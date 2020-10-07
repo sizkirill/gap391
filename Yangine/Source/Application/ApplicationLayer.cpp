@@ -2,6 +2,7 @@
 
 #include <Utils/Math.h>
 #include <Application/Resources/ResourceCache.h>
+#include <Application/ApplicationConstants.h>
 
 // TODO: remove after doing all implementation
 #include <Application/Graphics/Fonts/SDLFontLoader.h>
@@ -69,7 +70,7 @@ bool yang::ApplicationLayer::Init()
 	}
 	LOG(Info, "Game: %s", m_pGameLayer->GetGameName());
 
-	m_pWindow = m_pSystem->CreateSystemWindow(m_pGameLayer->GetGameName(), 1280, 720);
+	m_pWindow = m_pSystem->CreateSystemWindow(m_pGameLayer->GetGameName(), kWindowWidth, kWindowHeight);
 
 	m_pGraphics = IGraphics::Create();
 	if (!m_pGraphics)

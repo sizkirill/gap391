@@ -97,6 +97,24 @@ namespace Math {
         static_assert(std::is_floating_point_v<T>, "Function is defined for floating point types only");
         return Detail::Abs(first - second) < epsilon;
     }
+
+    template <typename FloatingPoint>
+    FloatingPoint constexpr SmootherStep(FloatingPoint x)
+    {
+        static_assert(std::is_floating_point_v<FloatingPoint>, "Function is defined for floating point types only");
+        if (x <= static_cast<FloatingPoint>(0)) return static_cast<FloatingPoint>(0);
+        if (x >= static_cast<FloatingPoint>(1)) return static_cast<FloatingPoint>(1);
+
+        return x * x * x * (x * (x * 6 - 15) + 10);
+    }
+
+    // TODO(ksizykh) Support for different input types, or just wait for C++20 std::lerp
+    template <typename FloatingPoint>
+    FloatingPoint constexpr Lerp(FloatingPoint a, FloatingPoint b, FloatingPoint t)
+    {
+        static_assert(std::is_floating_point_v<FloatingPoint>, "Function is defined for floating point types only");
+        return a + t*(b - a);
+    }
 }
 
 //! namespace yang Contains all Yangine code

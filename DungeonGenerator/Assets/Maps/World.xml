@@ -1,0 +1,43 @@
+<MapGen>
+    <MapSize x="320" y="180" />
+    <TileSize x="4" y="4" />
+    <NoiseSize x="17" y="10" />
+    <Tileset src="Assets/Tilesets/World.png">
+        <Sprite name="temperateRainforest">
+            <SourceRect x="0" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="tropicalRainforest">
+            <SourceRect x="32" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="savanna">
+            <SourceRect x="64" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="temperateSeasonalForest">
+            <SourceRect x="96" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="borealForest">
+            <SourceRect x="128" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="shrubland">
+            <SourceRect x="160" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="subtropicalDesert">
+            <SourceRect x="192" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="grassland">
+            <SourceRect x="224" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="snow">
+            <SourceRect x="0" y="32" width="32" height="32" />
+        </Sprite>
+        <Sprite name="ocean">
+            <SourceRect x="32" y="32" width="32" height="32" />
+        </Sprite>
+        <Sprite name="beach">
+            <SourceRect x="64" y="32" width="32" height="32" />
+        </Sprite>
+        <Sprite name="tundra">
+            <SourceRect x="96" y="32" width="32" height="32" />
+        </Sprite>
+    </Tileset>
+</MapGen>

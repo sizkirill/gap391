@@ -14,6 +14,16 @@ yang::XorshiftRNG::XorshiftRNG()
     m_state = rd();
 }
 
+uint64_t yang::XorshiftRNG::operator()()
+{
+    return GetNext();
+}
+
+void yang::XorshiftRNG::Seed(uint64_t seed)
+{
+    m_state = seed;
+}
+
 uint64_t yang::XorshiftRNG::GetNext()
 {
     uint64_t x = m_state;

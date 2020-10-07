@@ -25,6 +25,11 @@ public:
     template<typename FloatingPoint>
     FloatingPoint FRand();
 
+    uint64_t operator()();
+
+    void Seed(uint64_t seed);
+    uint64_t GetState() const { return m_state; }
+
     static XorshiftRNG GlobalRNG;
 private:
     uint64_t m_state;

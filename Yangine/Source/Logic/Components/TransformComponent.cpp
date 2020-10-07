@@ -57,6 +57,7 @@ bool yang::TransformComponent::Init(tinyxml2::XMLElement* pData)
     }
 
 	m_rotationPoint = FVectorFromXML(pData->FirstChildElement("RotationPoint"));
+	m_scalePoint = FVectorFromXML(pData->FirstChildElement("ScalePoint"));
 
     if (pData->BoolAttribute("random"))
     {
@@ -124,7 +125,7 @@ void yang::TransformComponent::RegisterToLua(const LuaManager& manager)
 void yang::TransformComponent::UpdateTransformMatrix()
 {
 	m_transformMatrix = Matrix();
-	m_transformMatrix.Scale(m_scale, m_rotationPoint).Rotate(m_rotationAngle, m_rotationPoint).Translate(m_position);
+	m_transformMatrix.Scale(m_scale, m_scalePoint).Rotate(m_rotationAngle, m_rotationPoint).Translate(m_position);
 }
 
 yang::Matrix& yang::TransformComponent::GetCurrentTransform()
@@ -190,6 +191,12 @@ void yang::TransformComponent::Scale(float amount)
 	m_transformNeedUpdate = m_transformNeedUpdate || !Math::IsExtremelyClose(amount,1.f);
 
 	m_scale *= amount;
+}
+
+void yang::TransformComponent::Scale(float amount, FVec2 center)
+{
+	m_scalePoint = center;
+	Scale(amount);
 }
 
 void yang::TransformComponent::Scale(FVec2 amount)

@@ -39,7 +39,7 @@ protected:
     float m_radius;
 public:
     FVec2 GetCenter() const { return m_localCenter + m_center; }
-    float GetRadius() const { return m_radius; }
+    float GetRadiusSqrd() const { return m_radius; }
 
     void SetCenter(FVec2 center) { m_center = center; }
     void SetRadius(float radius) { m_radius = radius; }
