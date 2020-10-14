@@ -6,15 +6,15 @@
 #include <deque>
 #include <future>
 #include <thread>
+#include <atomic>
 #include <mutex>
+#include <string_view>
 #include <condition_variable>
 
 #include <Application/OS/IOpSys.h>
 
 /** \file Logger.h */
 /** Logger class description */
-
-static std::mutex g_logMutex;
 
 /// \def LOG_CATEGORY(Name, Severity, Color, Intensity)
 /// Defines Log category
@@ -31,9 +31,7 @@ static std::mutex g_logMutex;
 /// \a format - string to log
 /// \a ... - format arguments for the string above
 #define LOG(Category, format, ...) \
-	g_logMutex.lock(); \
-	yang::Logger::Get()->AddLog(#Category, __LINE__, __FILE__, format, __VA_ARGS__);\
-	g_logMutex.unlock();
+	yang::Logger::Get()->AddLog(#Category, __LINE__, __FILE__, format, __VA_ARGS__);
 
 // Little gross way of logging once xD
 /// \def LOG_ONCE(Category, Identifier, format, ...)
@@ -91,8 +89,7 @@ public:
 	static Logger* Get();
 
     /// Function that prints logs to the console and to the file. Called from different thread
-    /// \param future - Exit signal. When future receives the value, Logger processes all logs that it has left and joins the thread
-	void Print(std::future<void> future);
+	void Print();
 
     /// Adds the log category to the lookup table
     /// \param name - Log category name
@@ -124,20 +121,15 @@ private:
 	// Private Member Variables
 	// --------------------------------------------------------------------- //
 	IOpSys* m_pOpSys;                                                 ///< Operating system object to handle the colored console output
-	std::promise<void> m_exitSignal;                                  ///< Exit signal for the logger thread
+	std::atomic<bool> m_exitSignal;                                   ///< Exit signal for the logger thread
 	std::thread m_loggerThread;                                       ///< Thread where logging actually happens
 
 	std::ofstream m_outFile;                                          ///< Path to the file where to output logs
 
-	std::stringstream m_stringStream;                                 ///< Builds the final log output. Made member to not initialize new string stream every time we log something
-    std::string m_filename;                                           ///< String for the file path for the log output. Made member not to make a new string each time we log something
-    std::string m_shortFileName;                                      ///< String for the short file path for the log output. Made member not to make a new string each time we log something
-
-	char m_messageBuffer[512];                                        ///< Buffer to store the log into calling sprintf_s
-
 	std::unordered_map<std::string, LogCategory> m_logCategories;     ///< Lookup map for log categories
 
-    std::mutex m_logMutex;                                            ///< Mutex for the log buffer that is accessed from different threads
+    std::mutex m_logMutex;                                            ///< Mutex for the log buffer
+	std::mutex m_threadMutex;										  ///< Mutex for logging from different threads
 	std::vector<Log> m_buffer;                                        ///< Vector of actual logs. Main thread writes in it, logger thread reads from it
 	std::condition_variable m_hasMoreWork;                            ///< Condition variable that signals logger thread when to sleep and when to wake up
 
@@ -166,18 +158,19 @@ inline void Logger::AddLog(const std::string& categoryName, int line, const char
 {
 	if (m_logCategories.count(categoryName))
 	{
+		char buf[256];
+		memset(buf, 0, sizeof(buf));
+		sprintf_s(buf, format, args...);
 
-		sprintf_s(m_messageBuffer, format, args...);
+		std::stringstream ss;
 
-		m_stringStream.str("");
+		std::string_view filename = file;
+		std::string_view shortFileName = filename.substr(filename.rfind('\\') + 1);
 
-        m_filename = file;
-        m_shortFileName = m_filename.substr(m_filename.rfind('\\') + 1);
+		ss << "[" << Timestamp() << "]" << " [" << categoryName << "]: (" << shortFileName << ":" << line << ") " << buf << std::endl;
 
-		m_stringStream << "[" << Timestamp() << "]" << " [" << categoryName << "]: (" << m_shortFileName << ":" << line << ") " << m_messageBuffer << std::endl;
-
-        m_logMutex.lock();
-		m_buffer.emplace_back(categoryName , m_stringStream.str());
+		m_logMutex.lock();
+		m_buffer.emplace_back(categoryName , ss.str());
         m_logMutex.unlock();
 
 		m_hasMoreWork.notify_one();

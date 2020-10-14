@@ -7,3 +7,7 @@ Yangine/obj/
 .vs/
 .git/
 .vscode/
+*/obj/
+*/Temp/
+*/Binaries/
+*/Builds/

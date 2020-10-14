@@ -13,14 +13,15 @@ Logger* yang::Logger::Get()
 	return &s_instance;
 }
 
-void yang::Logger::Print(std::future<void> future)
+void yang::Logger::Print()
 {
 	using namespace std::chrono_literals;
 
-	while (future.wait_for(std::chrono::milliseconds(0)) == std::future_status::timeout)
+	while (!m_exitSignal)
 	{
 		std::unique_lock<std::mutex> lock(m_logMutex);
-		m_hasMoreWork.wait(lock, [this, &future]() {return !m_buffer.empty() || future.valid(); });
+		m_hasMoreWork.wait(lock, [this]() {return !m_buffer.empty() || m_exitSignal; });
+
 		std::vector<Log> buffer = std::move(m_buffer);
 		lock.unlock();
 
@@ -35,7 +36,6 @@ void yang::Logger::Print(std::future<void> future)
 			m_pOpSys->SetConsoleColor(ConsoleColor::kWhite, ColorIntensity::kDark);
 		}
 		buffer.clear();
-
 	}
 }
 
@@ -50,12 +50,11 @@ bool yang::Logger::Init(IOpSys* pOpSys)
 	using std::chrono::system_clock;
 
 	m_pOpSys = pOpSys;
-	std::string outputFile = "./Temp/Yang_Log_" + std::to_string(system_clock::to_time_t(system_clock::now())) + ".log";
+	std::string outputFile = "./Logs/Yang_Log_" + std::to_string(system_clock::to_time_t(system_clock::now())) + ".log";
 	m_outFile.open(outputFile.c_str(), 
 		std::ios_base::out | std::ios_base::trunc);
 
-	std::future futureObj = m_exitSignal.get_future();
-	m_loggerThread = std::thread(&Logger::Print, this, std::move(futureObj));
+	m_loggerThread = std::thread(&Logger::Print, this);
 
 	if (!m_outFile.is_open())
 	{
@@ -68,13 +67,14 @@ bool yang::Logger::Init(IOpSys* pOpSys)
 void yang::Logger::Finish()
 {
 	// Waiting for logger thread to finish properly
-	while (!m_buffer.empty())
-	{
-		using namespace std::chrono_literals;
-		std::this_thread::sleep_for(0.01s);
-	}
+	//while (!m_buffer.empty())
+	//{
+	//	using namespace std::chrono_literals;
+	//	std::this_thread::sleep_for(0.01s);
+	//}
 
-	m_exitSignal.set_value();
+	m_exitSignal = true;
+	m_hasMoreWork.notify_one();
 	m_loggerThread.join();
     m_buffer.clear();
     if (m_outFile.is_open())
@@ -105,7 +105,6 @@ std::string yang::Logger::Timestamp() const
 Logger::Logger()
 	:m_pOpSys(nullptr)
 {
-	memset(m_messageBuffer, 0, sizeof(m_messageBuffer));
 }
 
 Logger::~Logger()

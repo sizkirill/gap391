@@ -111,6 +111,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Application\ApplicationConstants.h">
+      <Filter>Application</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Application\ApplicationLayer.h">
       <Filter>Application</Filter>
     </ClInclude>
@@ -342,6 +345,9 @@
     <ClInclude Include="Source\Utils\Matrix.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Utils\PerlinNoise.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Utils\Random.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -368,12 +374,6 @@
     </ClInclude>
     <ClInclude Include="Source\Views\IView.h">
       <Filter>Views</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Utils\PerlinNoise.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\ApplicationConstants.h">
-      <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -587,6 +587,9 @@
     <ClCompile Include="Source\Utils\Logger.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Utils\PerlinNoise.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Utils\Random.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -598,9 +601,6 @@
     </ClCompile>
     <ClCompile Include="Source\Views\IView.cpp">
       <Filter>Views</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utils\PerlinNoise.cpp">
-      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

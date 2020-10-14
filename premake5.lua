@@ -88,7 +88,7 @@ newaction {
 }
 
 workspace "GAP391_KirillSizykh"
-	startproject "DungeonGenerator"
+	startproject "CellularAutomata"
 	configurations {"Debug", "Release"}
 	platforms {"x86", "x64"}
 	language "C++"
@@ -124,11 +124,11 @@ project "Engine"
         defines { "NDEBUG" }
         optimize "Full"
 	
-project "DungeonGenerator"
+project "PerlinNoiseWorld"
 	kind "ConsoleApp"
-	location "DungeonGenerator"
-	includedirs {"Yangine/Source", "Toolset/Include", "DungeonGenerator/Source"}
-	files {"DungeonGenerator/Source/**.h", "DungeonGenerator/Source/**.cpp"}
+	location "PerlinNoiseWorld"
+	includedirs {"Yangine/Source", "Toolset/Include", "PerlinNoiseWorld/Source"}
+	files {"PerlinNoiseWorld/Source/**.h", "PerlinNoiseWorld/Source/**.cpp"}
 	links {"Engine", "vld", "Box2D_$(PlatformShortName)_$(Configuration)", "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf", "SDL2main", "Lua-5.3.5_$(PlatformShortName)_$(Configuration)"}
 	
 	postbuildcommands { 'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.dll" "$(OutDir)" /d /i /y',
@@ -144,22 +144,166 @@ project "DungeonGenerator"
 	
 	filter {"configurations:Debug", "platforms:x86"}
 		architecture "x86"
-		targetdir "DungeonGenerator/Builds/Debug_x86"
+		targetdir "PerlinNoiseWorld/Builds/Debug_x86"
 		libdirs "Yangine/Binaries/Debug_x86"
 		
 	filter {"configurations:Release", "platforms:x86"}
 		architecture "x86"
-		targetdir "DungeonGenerator/Builds/Release_x86"
+		targetdir "PerlinNoiseWorld/Builds/Release_x86"
 		libdirs "Yangine/Binaries/Release_x86"
 		
 	filter {"configurations:Debug", "platforms:x64"}
 		architecture "x86_64"
-		targetdir "DungeonGenerator/Builds/Debug_x64"
+		targetdir "PerlinNoiseWorld/Builds/Debug_x64"
 		libdirs "Yangine/Binaries/Debug_x64"
 		
 	filter {"configurations:Release", "platforms:x64"}
 		architecture "x86_64"
-		targetdir "DungeonGenerator/Builds/Release_x64"
+		targetdir "PerlinNoiseWorld/Builds/Release_x64"
+		libdirs "Yangine/Binaries/Release_x64"
+	
+	filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+		postbuildcommands {'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.pdb" "$(OutDir)" /d /i /y'}
+
+    filter "configurations:Release"
+        defines { "NDEBUG" }
+        optimize "Full"
+		
+	
+project "CellularAutomata"
+	kind "ConsoleApp"
+	location "CellularAutomata"
+	includedirs {"Yangine/Source", "Toolset/Include", "CellularAutomata/Source"}
+	files {"CellularAutomata/Source/**.h", "CellularAutomata/Source/**.cpp"}
+	links {"Engine", "vld", "Box2D_$(PlatformShortName)_$(Configuration)", "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf", "SDL2main", "Lua-5.3.5_$(PlatformShortName)_$(Configuration)"}
+	
+	postbuildcommands { 'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.dll" "$(OutDir)" /d /i /y',
+	'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.manifest" "$(OutDir)" /d /i /y',
+	'xcopy "$(ProjectDir)\\Assets" "$(OutDir)Assets" /e /s /h /i /y',
+	'xcopy "$(ProjectDir)\\Data" "$(OutDir)Data" /e /s /h /i /y'}
+	
+	filter {"platforms:x86"}
+		libdirs{"Toolset/x86"}
+		
+	filter {"platforms:x64"}
+		libdirs{"Toolset/x64"}
+	
+	filter {"configurations:Debug", "platforms:x86"}
+		architecture "x86"
+		targetdir "CellularAutomata/Builds/Debug_x86"
+		libdirs "Yangine/Binaries/Debug_x86"
+		
+	filter {"configurations:Release", "platforms:x86"}
+		architecture "x86"
+		targetdir "CellularAutomata/Builds/Release_x86"
+		libdirs "Yangine/Binaries/Release_x86"
+		
+	filter {"configurations:Debug", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "CellularAutomata/Builds/Debug_x64"
+		libdirs "Yangine/Binaries/Debug_x64"
+		
+	filter {"configurations:Release", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "CellularAutomata/Builds/Release_x64"
+		libdirs "Yangine/Binaries/Release_x64"
+	
+	filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+		postbuildcommands {'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.pdb" "$(OutDir)" /d /i /y'}
+
+    filter "configurations:Release"
+        defines { "NDEBUG" }
+        optimize "Full"
+		
+	
+project "GameOfLife"
+	kind "ConsoleApp"
+	location "GameOfLife"
+	includedirs {"Yangine/Source", "Toolset/Include", "GameOfLife/Source"}
+	files {"GameOfLife/Source/**.h", "GameOfLife/Source/**.cpp"}
+	links {"Engine", "vld", "Box2D_$(PlatformShortName)_$(Configuration)", "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf", "SDL2main", "Lua-5.3.5_$(PlatformShortName)_$(Configuration)"}
+	
+	postbuildcommands { 'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.dll" "$(OutDir)" /d /i /y',
+	'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.manifest" "$(OutDir)" /d /i /y',
+	'xcopy "$(ProjectDir)\\Assets" "$(OutDir)Assets" /e /s /h /i /y',
+	'xcopy "$(ProjectDir)\\Data" "$(OutDir)Data" /e /s /h /i /y'}
+	
+	filter {"platforms:x86"}
+		libdirs{"Toolset/x86"}
+		
+	filter {"platforms:x64"}
+		libdirs{"Toolset/x64"}
+	
+	filter {"configurations:Debug", "platforms:x86"}
+		architecture "x86"
+		targetdir "GameOfLife/Builds/Debug_x86"
+		libdirs "Yangine/Binaries/Debug_x86"
+		
+	filter {"configurations:Release", "platforms:x86"}
+		architecture "x86"
+		targetdir "GameOfLife/Builds/Release_x86"
+		libdirs "Yangine/Binaries/Release_x86"
+		
+	filter {"configurations:Debug", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "GameOfLife/Builds/Debug_x64"
+		libdirs "Yangine/Binaries/Debug_x64"
+		
+	filter {"configurations:Release", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "GameOfLife/Builds/Release_x64"
+		libdirs "Yangine/Binaries/Release_x64"
+	
+	filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+		postbuildcommands {'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.pdb" "$(OutDir)" /d /i /y'}
+
+    filter "configurations:Release"
+        defines { "NDEBUG" }
+        optimize "Full"
+		
+	
+project "CellularAutomataWorld"
+	kind "ConsoleApp"
+	location "CellularAutomataWorld"
+	includedirs {"Yangine/Source", "Toolset/Include", "CellularAutomataWorld/Source"}
+	files {"CellularAutomataWorld/Source/**.h", "CellularAutomataWorld/Source/**.cpp"}
+	links {"Engine", "vld", "Box2D_$(PlatformShortName)_$(Configuration)", "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf", "SDL2main", "Lua-5.3.5_$(PlatformShortName)_$(Configuration)"}
+	
+	postbuildcommands { 'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.dll" "$(OutDir)" /d /i /y',
+	'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.manifest" "$(OutDir)" /d /i /y',
+	'xcopy "$(ProjectDir)\\Assets" "$(OutDir)Assets" /e /s /h /i /y',
+	'xcopy "$(ProjectDir)\\Data" "$(OutDir)Data" /e /s /h /i /y'}
+	
+	filter {"platforms:x86"}
+		libdirs{"Toolset/x86"}
+		
+	filter {"platforms:x64"}
+		libdirs{"Toolset/x64"}
+	
+	filter {"configurations:Debug", "platforms:x86"}
+		architecture "x86"
+		targetdir "CellularAutomataWorld/Builds/Debug_x86"
+		libdirs "Yangine/Binaries/Debug_x86"
+		
+	filter {"configurations:Release", "platforms:x86"}
+		architecture "x86"
+		targetdir "CellularAutomataWorld/Builds/Release_x86"
+		libdirs "Yangine/Binaries/Release_x86"
+		
+	filter {"configurations:Debug", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "CellularAutomataWorld/Builds/Debug_x64"
+		libdirs "Yangine/Binaries/Debug_x64"
+		
+	filter {"configurations:Release", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "CellularAutomataWorld/Builds/Release_x64"
 		libdirs "Yangine/Binaries/Release_x64"
 	
 	filter "configurations:Debug"

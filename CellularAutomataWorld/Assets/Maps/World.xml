@@ -1,0 +1,18 @@
+<MapGen frameRate="0.06" threads="8">
+    <MapSize x="256" y="144" />
+    <TileSize x="4" y="4" />
+    <Tileset src="Assets/Tilesets/World.png">
+        <Sprite name="forest">
+            <SourceRect x="32" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="lake">
+            <SourceRect x="32" y="32" width="32" height="32" />
+        </Sprite>
+        <Sprite name="grass">
+            <SourceRect x="128" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="village">
+            <SourceRect x="160" y="0" width="32" height="32" />
+        </Sprite>
+    </Tileset>
+</MapGen>

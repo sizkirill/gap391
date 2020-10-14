@@ -44,7 +44,7 @@ float yang::PerlinNoise::NormalizedNoise(int x, int y, int maxX, int maxY, FVec2
     float totalAmplitude = 0;
     yang::XorshiftRNG rng(m_seed);
 
-    for (size_t octave = 0; octave < numOctaves; ++octave)
+    for (int octave = 0; octave < numOctaves; ++octave)
     {
         totalAmplitude += currentAmplitude;
         float localNoise = GetNoise(x, y, maxX, maxY, inputRange, static_cast<uint32_t>(rng()));
