@@ -203,6 +203,9 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
     <ClInclude Include="Source\Logic\Map\Generators\ForestPropagator.h" />
     <ClInclude Include="Source\Logic\Map\Generators\Generator.h" />
     <ClInclude Include="Source\Logic\Map\Generators\LakeGenerator.h" />
+    <ClInclude Include="Source\Logic\Map\Generators\RockGenerator.h" />
+    <ClInclude Include="Source\Logic\Map\Generators\VillageGenerator.h" />
+    <ClInclude Include="Source\Logic\Map\NoiseMap.h" />
     <ClInclude Include="Source\Logic\Map\TileStatus.h" />
     <ClInclude Include="Source\Views\CameraView.h" />
   </ItemGroup>
@@ -214,6 +217,9 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
     <ClCompile Include="Source\Logic\Map\Generators\ForestGenerator.cpp" />
     <ClCompile Include="Source\Logic\Map\Generators\ForestPropagator.cpp" />
     <ClCompile Include="Source\Logic\Map\Generators\LakeGenerator.cpp" />
+    <ClCompile Include="Source\Logic\Map\Generators\RockGenerator.cpp" />
+    <ClCompile Include="Source\Logic\Map\Generators\VillageGenerator.cpp" />
+    <ClCompile Include="Source\Logic\Map\NoiseMap.cpp" />
     <ClCompile Include="Source\Views\CameraView.cpp" />
   </ItemGroup>
   <ItemGroup>

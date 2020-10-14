@@ -1,11 +1,11 @@
 #include "LakeGenerator.h"
 #include <Logic/Map/CellularWorldMap.h>
 
-LakeGenerator::LakeGenerator(int iterations, int neighborhoodSize, int threshold, float percentage)
+LakeGenerator::LakeGenerator(int iterations, int neighborhoodSize, int threshold, const std::vector<float>& moistureMap)
     :Generator(iterations)
     ,m_neighborhoodSize(neighborhoodSize)
     ,m_threshold(threshold)
-    ,m_percentage(percentage)
+    ,m_moistureMap(moistureMap)
 {
 }
 
@@ -16,7 +16,7 @@ void LakeGenerator::Propagate(int index, const std::vector<TileStatus>& currentT
     {
         buffer[static_cast<size_t>(index)] = TileStatus::kLake;
     }
-    else if (waterCount >= m_threshold && rng.FRand<float>() < m_percentage)
+    else if (waterCount >= m_threshold && rng.FRand<float>() < m_moistureMap[index] * 0.5f)
     {
         buffer[static_cast<size_t>(index)] = TileStatus::kLake;
     }

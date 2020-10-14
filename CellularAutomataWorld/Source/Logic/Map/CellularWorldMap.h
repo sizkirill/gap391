@@ -78,6 +78,8 @@ private:
     yang::IVec2 m_tileSize;
     std::vector<TileStatus> m_currentTiles;
     std::vector<TileStatus> m_tileBuffer;
+    std::vector<float> m_moistureMap;
+    std::vector<float> m_elevationMap;
     std::array<Drawable, static_cast<size_t>(TileStatus::kMaxTiles)> m_tileStatusToDrawable;
     TileUpdater m_tileUpdater;
 };

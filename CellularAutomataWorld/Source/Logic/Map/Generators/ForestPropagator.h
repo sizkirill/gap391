@@ -15,9 +15,9 @@ class ForestPropagator : public Generator
 private:
     ScoreFuncWrapper m_pNearbyWaterScoreFunc;
     ScoreFuncWrapper m_pNearbyForestScoreFunc;
-    ScoreFuncWrapper m_pMoistureScoreFunc;
+    const std::vector<float>& m_moistureMap;
 public:
-    ForestPropagator(int iterations, ScoreFuncWrapper pWaterScoreFunc, ScoreFuncWrapper pForestScoreFunc, ScoreFuncWrapper pMoistureScoreFunc);
+    ForestPropagator(int iterations, ScoreFuncWrapper pWaterScoreFunc, ScoreFuncWrapper pForestScoreFunc, const std::vector<float>& moistureMap);
     virtual void Propagate(int index, const std::vector<TileStatus>& currentTiles, std::vector<TileStatus>& buffer, const CellularWorldMap& owner, yang::XorshiftRNG& rng) override final;
 
 };

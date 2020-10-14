@@ -1,6 +1,7 @@
-<MapGen frameRate="0.06" threads="8">
+<MapGen frameRate="0.06" threads="8" numOctaves="6" persistance="0.3">
     <MapSize x="256" y="144" />
     <TileSize x="4" y="4" />
+    <NoiseSize x="7" y="7" />
     <Tileset src="Assets/Tilesets/World.png">
         <Sprite name="forest">
             <SourceRect x="32" y="0" width="32" height="32" />
@@ -13,6 +14,12 @@
         </Sprite>
         <Sprite name="village">
             <SourceRect x="160" y="0" width="32" height="32" />
+        </Sprite>
+        <Sprite name="ice">
+            <SourceRect x="0" y="32" width="32" height="32" />
+        </Sprite>
+        <Sprite name="rock">
+            <SourceRect x="96" y="32" width="32" height="32" />
         </Sprite>
     </Tileset>
 </MapGen>

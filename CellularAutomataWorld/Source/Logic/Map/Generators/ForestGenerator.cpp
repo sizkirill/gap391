@@ -1,10 +1,11 @@
 #include "ForestGenerator.h"
 #include "../CellularWorldMap.h"
+#include <cmath>
 
-ForestGenerator::ForestGenerator(int iterations, int neighborhoodSize, float percentage, ScoreFunc pScoreFunc)
+ForestGenerator::ForestGenerator(int iterations, int neighborhoodSize, const std::vector<float>& moistureMap, ScoreFunc pScoreFunc)
     :Generator(iterations)
     ,m_neighborhoodSize(neighborhoodSize)
-    ,m_percentage(percentage)
+    ,m_moistureMap(moistureMap)
     ,m_pScoreFunc(pScoreFunc)
 {
 }
@@ -18,7 +19,7 @@ void ForestGenerator::Propagate(int index, const std::vector<TileStatus>& curren
     }
 
     int waterCount = owner.GetNeighborTileCount(index, TileStatus::kLake, m_neighborhoodSize);
-    float score = m_pScoreFunc(waterCount) + m_percentage;
+    float score = std::max(m_pScoreFunc(waterCount) , m_moistureMap[index] * 0.001f);
 
     if (rng.FRand<float>() < score)
     {

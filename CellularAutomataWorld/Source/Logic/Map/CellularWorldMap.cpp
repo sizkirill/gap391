@@ -9,6 +9,9 @@
 #include <Logic/Map/Generators/LakeGenerator.h>
 #include <Logic/Map/Generators/ForestGenerator.h>
 #include <Logic/Map/Generators/ForestPropagator.h>
+#include <Logic/Map/Generators/VillageGenerator.h>
+#include <Logic/Map/Generators/RockGenerator.h>
+#include "NoiseMap.h"
 #include <cassert>
 
 CellularWorldMap::CellularWorldMap()
@@ -57,7 +60,9 @@ bool CellularWorldMap::Init(std::string_view pathToSettings)
 	"grass"_hash32,
 	"lake"_hash32,
 	"forest"_hash32,
-	"village"_hash32
+	"village"_hash32,
+	"ice"_hash32,
+	"rock"_hash32
 	};
 
 	auto spriteLambda = [](std::string_view spriteName, uint32_t defaultVal)
@@ -93,6 +98,19 @@ bool CellularWorldMap::Init(std::string_view pathToSettings)
 	}
 
 	yang::XorshiftRNG rng;
+
+	auto noiseSize = yang::FVectorFromXML(pRoot->FirstChildElement("NoiseSize"));
+	int numOctaves = pRoot->IntAttribute("numOctaves", 4);
+	float persistance = pRoot->FloatAttribute("persistance", 0.5f);
+
+	NoiseMap moisture;
+	moisture.Init(m_mapSize, m_tileSize, noiseSize);
+	m_moistureMap = moisture.Generate(static_cast<uint32_t>(rng()), numOctaves, persistance);
+
+	NoiseMap elevation;
+	elevation.Init(m_mapSize, m_tileSize, noiseSize);
+	m_elevationMap = elevation.Generate(static_cast<uint32_t>(rng()), numOctaves, persistance);
+
 	std::generate(m_tileBuffer.begin(), m_tileBuffer.end(), [rng]() mutable 
 		{
 			if (rng.FRand<float>() < 0.0005f)
@@ -106,13 +124,18 @@ bool CellularWorldMap::Init(std::string_view pathToSettings)
 	size_t numThreads = pRoot->UnsignedAttribute("threads", 8);
 
 	m_tileUpdater.Init(numThreads, rng.GetState());
-	m_tileUpdater.AddGenerator(std::make_shared<LakeGenerator>(16, 1, 1, 0.3f));
-	m_tileUpdater.AddGenerator(std::make_shared<ForestGenerator>(1, 3, 0.001f, [](int count) {return Math::SmootherStep(static_cast<float>(count) / 100.f); }));
-	m_tileUpdater.AddGenerator(std::make_shared<ForestPropagator>(14, 
-		ScoreFuncWrapper{3, [](int count) {return Math::SmootherStep(static_cast<float>(count) / 100.f); } },
-		ScoreFuncWrapper{1, [](int count) {return Math::SmootherStep(static_cast<float>(count) / 5.f); } },
-		ScoreFuncWrapper()
+	m_tileUpdater.AddGenerator(std::make_shared<LakeGenerator>(15, 1, 1, m_moistureMap));
+	m_tileUpdater.AddGenerator(std::make_shared<ForestGenerator>(1, 3, m_moistureMap, [](int count) {return Math::SmootherStep(static_cast<float>(count) / 200.f); }));
+	m_tileUpdater.AddGenerator(std::make_shared<ForestPropagator>(15, 
+		ScoreFuncWrapper{3, [](int count) {return Math::SmootherStep(static_cast<float>(count) / 50.f); } },
+		ScoreFuncWrapper{1, [](int count) {return Math::SmootherStep(static_cast<float>(count) / 4.f); } },
+		m_moistureMap
 		));
+	m_tileUpdater.AddGenerator(std::make_shared<VillageGenerator>(25, 4, 1, 
+		[](int count) { return Math::SmootherStep(static_cast<float>(count) / 20.f); },
+		[](int count) { return Math::SmootherStep(static_cast<float>(count) / 3.5f); }
+	));
+	m_tileUpdater.AddGenerator(std::make_shared<RockGenerator>(8, 2, 2, m_moistureMap, m_elevationMap));
 
 	return true;
 }
@@ -268,7 +291,7 @@ void CellularWorldMap::TileUpdater::UpdateFrame()
 
 	auto pGenerator = m_generators[m_currentGeneratorIndex];
 
-	if (pGenerator && pGenerator->Iterations() <= 0)
+	if (pGenerator && pGenerator->Iterations() < 0)
 	{
 		std::unique_lock lock(m_mutex);
 		++m_currentGeneratorIndex;

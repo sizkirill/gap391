@@ -6,5 +6,7 @@ enum class TileStatus
     kLake,
     kForest,
     kVillage,
+    kIce,
+    kRock,
     kMaxTiles
 };

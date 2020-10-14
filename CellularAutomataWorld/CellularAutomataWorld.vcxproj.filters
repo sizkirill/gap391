@@ -45,6 +45,15 @@
     <ClInclude Include="Source\Logic\Map\Generators\ForestGenerator.h">
       <Filter>Logic\Map\Generators</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Logic\Map\NoiseMap.h">
+      <Filter>Logic\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Map\Generators\VillageGenerator.h">
+      <Filter>Logic\Map\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Map\Generators\RockGenerator.h">
+      <Filter>Logic\Map\Generators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\CellularAutomata_AppLayer.cpp">
@@ -69,6 +78,15 @@
       <Filter>Logic\Map\Generators</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic\Map\Generators\ForestGenerator.cpp">
+      <Filter>Logic\Map\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Map\NoiseMap.cpp">
+      <Filter>Logic\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Map\Generators\VillageGenerator.cpp">
+      <Filter>Logic\Map\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Map\Generators\RockGenerator.cpp">
       <Filter>Logic\Map\Generators</Filter>
     </ClCompile>
   </ItemGroup>
