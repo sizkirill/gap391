@@ -1,4 +1,4 @@
-<CustomThing state="F" stepAmount="15" numIterations="6">
+<CustomThing state="CF" stepAmount="15" numIterations="6">
     <Position x="640" y="360" />
     <Orientation angle="-90" />
     <Ruleset src="Assets/Scripts/SomeRandomStuff.lua" />

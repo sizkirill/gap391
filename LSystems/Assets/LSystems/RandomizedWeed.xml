@@ -1,5 +1,5 @@
 <CustomThing state="F" stepAmount="4" numIterations="6">
-    <Position x="640" y="720" />
+    <Position x="640" y="360" />
     <Orientation angle="-90" />
     <Ruleset src="Assets/Scripts/RandomizedWeed.lua" />
     <Rule var="F" result="B" probability="0.3" />
