@@ -71,21 +71,23 @@ Lua script: [Seaweed.lua](LSystems/Assets/Scripts/Seaweed.lua)
 
 #### 6. Some highly random curve
 Variables: F, B  
-Constants: +, -, [, ]
+Constants: +, -, [, ]  
 Initial state: F  
-Rules:  F -> B (probability 0.3)
-        F -> BFB (probability 0.5)
-        F -> F (probability 0.2)
-        B -> -FB[+BF] (probability 0.3)
-        B -> +FB[-BF] (probability 0.3)
-        B -> -F[B]BF (probability 0.2)
-        B -> +F[B]FB (probability 0.2)
-Meanings: F - draw forward
-          + - rotate clockwise 15-22 degrees (at random)
-          - - rotate counterclockwise 15-22 degrees (at random)
+Rules:  F -> B (probability 0.3)  
+        F -> BFB (probability 0.5)  
+        F -> F (probability 0.2)  
+        B -> -FB[+BF] (probability 0.3)  
+        B -> +FB[-BF] (probability 0.3)  
+        B -> -F[B]BF (probability 0.2)  
+        B -> +F[B]FB (probability 0.2)  
+Meanings: F - draw forward  
+          + - rotate clockwise 15-22 degrees (at random)  
+          - - rotate counterclockwise 15-22 degrees (at random)  
           [ - push transform  
           ] - pop transform  
-Produces highly random curve, which may look like some kind of a plant, but more looks like a river or paths in a cave. With some rule and number tweaks can actually look good, especially on low numbers of iterations (with high numbers it explodes)
+Produces highly random curve, which may look like some kind of a plant, but more looks like a river or paths in a cave. With some rule and number tweaks can actually look good, especially on low numbers of iterations (with high numbers it explodes)  
+XML file: [RandomizedWeed.xml](LSystems/Assets/LSystems/RandomizedWeed.xml)  
+Lua script: [RandomizedWeed.lua](LSystems/Assets/Scripts/RandomizedWeed.lua) 
 
 ### Controls
 
