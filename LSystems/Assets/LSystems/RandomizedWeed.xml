@@ -1,0 +1,16 @@
+<CustomThing state="F" stepAmount="4" numIterations="6">
+    <Position x="640" y="720" />
+    <Orientation angle="-90" />
+    <Ruleset src="Assets/Scripts/RandomizedWeed.lua" />
+    <Rule var="F" result="B" probability="0.3" />
+    <Rule var="F" result="BFB" probability="0.5" />
+    <Rule var="F" result="F" probability="0.2" />
+    <Rule var="B" result="-FB[+BF]" probability="0.3" />
+    <Rule var="B" result="+FB[-BF]" probability="0.3" />
+    <Rule var="B" result="-F[B]BF" probability="0.2" />
+    <Rule var="B" result="+F[B]FB" probability="0.2" />
+    <Constant var="[" />
+    <Constant var="]" />
+    <Constant var="+" />
+    <Constant var="-" />
+</CustomThing>

@@ -109,6 +109,14 @@ void CameraView::HandleInputEvent(yang::IEvent* pEvent)
                 m_pSystem->BuildLines(m_pGraphics);
             }
 
+            else if (pKeyboardEvent->GetKeyCode() == yang::KeyboardInputEvent::KeyCode::k6)
+            {
+                m_pSystem->Reset();
+                m_pSystem->Init("Assets/LSystems/RandomizedWeed.xml");
+                m_pSystem->Process();
+                m_pSystem->BuildLines(m_pGraphics);
+            }
+
             else if (pKeyboardEvent->GetKeyCode() == yang::KeyboardInputEvent::KeyCode::kSPACE)
             {
                 m_pSystem->Reset();
