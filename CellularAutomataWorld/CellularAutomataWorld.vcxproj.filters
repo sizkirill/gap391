@@ -10,11 +10,11 @@
     <Filter Include="Logic\Map">
       <UniqueIdentifier>{601450EC-CC7E-0463-15BD-B5088166E2B7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logic\Map\Generators">
+      <UniqueIdentifier>{8909F77C-7598-8046-1EB7-94410A2591EC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Views">
       <UniqueIdentifier>{B38C4E0E-1FA1-76BF-E822-1A1F54F672F0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Logic\Map\Generators">
-      <UniqueIdentifier>{e7e4b0f7-f002-40ec-979d-942bb0d34113}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,14 +24,14 @@
     <ClInclude Include="Source\Logic\CellularAutomata_GameLayer.h">
       <Filter>Logic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Views\CameraView.h">
-      <Filter>Views</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Logic\Map\CellularWorldMap.h">
       <Filter>Logic\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Map\TileStatus.h">
-      <Filter>Logic\Map</Filter>
+    <ClInclude Include="Source\Logic\Map\Generators\ForestGenerator.h">
+      <Filter>Logic\Map\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Map\Generators\ForestPropagator.h">
+      <Filter>Logic\Map\Generators</Filter>
     </ClInclude>
     <ClInclude Include="Source\Logic\Map\Generators\Generator.h">
       <Filter>Logic\Map\Generators</Filter>
@@ -39,20 +39,20 @@
     <ClInclude Include="Source\Logic\Map\Generators\LakeGenerator.h">
       <Filter>Logic\Map\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Map\Generators\ForestPropagator.h">
+    <ClInclude Include="Source\Logic\Map\Generators\RockGenerator.h">
       <Filter>Logic\Map\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Map\Generators\ForestGenerator.h">
+    <ClInclude Include="Source\Logic\Map\Generators\VillageGenerator.h">
       <Filter>Logic\Map\Generators</Filter>
     </ClInclude>
     <ClInclude Include="Source\Logic\Map\NoiseMap.h">
       <Filter>Logic\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Map\Generators\VillageGenerator.h">
-      <Filter>Logic\Map\Generators</Filter>
+    <ClInclude Include="Source\Logic\Map\TileStatus.h">
+      <Filter>Logic\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Map\Generators\RockGenerator.h">
-      <Filter>Logic\Map\Generators</Filter>
+    <ClInclude Include="Source\Views\CameraView.h">
+      <Filter>Views</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -65,29 +65,29 @@
     <ClCompile Include="Source\Logic\CellularAutomata_GameLayer.cpp">
       <Filter>Logic</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Views\CameraView.cpp">
-      <Filter>Views</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Logic\Map\CellularWorldMap.cpp">
       <Filter>Logic\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Logic\Map\Generators\LakeGenerator.cpp">
+    <ClCompile Include="Source\Logic\Map\Generators\ForestGenerator.cpp">
       <Filter>Logic\Map\Generators</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic\Map\Generators\ForestPropagator.cpp">
       <Filter>Logic\Map\Generators</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Logic\Map\Generators\ForestGenerator.cpp">
+    <ClCompile Include="Source\Logic\Map\Generators\LakeGenerator.cpp">
+      <Filter>Logic\Map\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Map\Generators\RockGenerator.cpp">
+      <Filter>Logic\Map\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Map\Generators\VillageGenerator.cpp">
       <Filter>Logic\Map\Generators</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic\Map\NoiseMap.cpp">
       <Filter>Logic\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Logic\Map\Generators\VillageGenerator.cpp">
-      <Filter>Logic\Map\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Logic\Map\Generators\RockGenerator.cpp">
-      <Filter>Logic\Map\Generators</Filter>
+    <ClCompile Include="Source\Views\CameraView.cpp">
+      <Filter>Views</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

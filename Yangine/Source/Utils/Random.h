@@ -4,6 +4,8 @@
 
 namespace yang
 {
+class LuaManager;
+
 class XorshiftRNG
 {
 public:
@@ -29,6 +31,8 @@ public:
 
     void Seed(uint64_t seed);
     uint64_t GetState() const { return m_state; }
+
+    static void ExposeToLua(const LuaManager& luaenv);
 
     static XorshiftRNG GlobalRNG;
 private:

@@ -199,7 +199,7 @@ void yang::IGameLayer::RegisterWithLua(lua_State* pState)
 	SpriteComponent::RegisterToLua(m_luaManager);
 	MoveComponent::RegisterToLua(m_luaManager);
 	IGameLayer::RegisterToLua(m_luaManager);
-
+    XorshiftRNG::ExposeToLua(m_luaManager);
 }
 
 void yang::IGameLayer::RegisterToLua(const LuaManager& manager)

@@ -1,0 +1,10 @@
+<DragonCurve state="FX" stepAmount="5" numIterations="11">
+    <Position x="640" y="180" />
+    <Orientation angle="-90" />
+    <Ruleset src="Assets/Scripts/DragonCurve.lua" />
+    <Rule var="X" result="X+YF+" probability="1" />
+    <Rule var="Y" result="-FX-Y" probability="1" />
+    <Constant var="F" />
+    <Constant var="+" />
+    <Constant var="-" />
+</DragonCurve>

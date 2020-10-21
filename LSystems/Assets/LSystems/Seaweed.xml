@@ -1,0 +1,11 @@
+<CustomThing state="X" stepAmount="5" numIterations="3">
+    <Position x="640" y="720" />
+    <Orientation angle="-90" />
+    <Ruleset src="Assets/Scripts/Seaweed.lua" />
+    <Rule var="X" result="FXX-[-X+X+X]+[+X-X-X]" probability="1" />
+    <Constant var="F" />
+    <Constant var="[" />
+    <Constant var="]" />
+    <Constant var="+" />
+    <Constant var="-" />
+</CustomThing>

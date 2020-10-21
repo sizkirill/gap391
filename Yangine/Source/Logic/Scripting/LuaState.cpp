@@ -3,6 +3,11 @@
 
 using yang::LuaState;
 
+void yang::LuaState::DoFile(const char* pFileName) const
+{
+	luaL_dofile(m_pState, pFileName);
+}
+
 LuaState::LuaState()
 	:m_pState(luaL_newstate())
 {

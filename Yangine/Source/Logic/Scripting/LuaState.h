@@ -62,6 +62,8 @@ public:
     /// \return instance of ReturnType returned from Lua function
     template <class ReturnType, class... Args>
     ReturnType CallLuaFunction(const char* functionName, Args&&... args) const;
+
+	void DoFile(const char* pFileName) const;
 private:
     /// Private default constructor
 	LuaState();
