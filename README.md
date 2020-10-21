@@ -1,4 +1,4 @@
-# GAP391 / Procedural Content Generation class / Module 4 work
+# GAP391 / Procedural Content Generation class
 
 [Module 4 (Perlin Noise)](Mod04Readme.md)
 
