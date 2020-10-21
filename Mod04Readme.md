@@ -1,4 +1,4 @@
-##Module 4 - Perlin Noise
+## Module 4 - Perlin Noise
 
 Biome colors are directly taken from https://en.wikipedia.org/wiki/Biome#/media/File:Climate_influence_on_terrestrial_biome.svg plus Ocean, Beach and Snow
 
