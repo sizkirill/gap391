@@ -1,0 +1,20 @@
+<RoadMap state="0" stepAmount="10">
+    <Position x="0" y="360" />
+    <Orientation angle="0" />
+    <Ruleset src="Assets/Scripts/RoadMap.lua" />
+    <Rule var="0" result="B2" probability="0.05" />
+    <Rule var="0" result="F0" probability="0.7" />
+    <Rule var="0" result="F1" probability="0.25" />
+    <Rule var="1" result="F1" probability="0.6" />
+    <Rule var="1" result="L0" probability="0.2" />
+    <Rule var="1" result="R0" probability="0.2" />
+    <Rule var="2" result="F0" probability="0.6" />
+    <Rule var="2" result="3" probability="0.3" />
+    <Rule var="2" result="" probability="0.1" />
+    <Rule var="3" result="P0" probability="1" />
+    <Constant var="B" />
+    <Constant var="F" />
+    <Constant var="L" />
+    <Constant var="R" />
+    <Constant var="P" />
+</DragonCurve>

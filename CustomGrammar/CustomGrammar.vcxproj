@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{89BD02B7-758A-5DC2-9EA3-4B6A8ACF9250}</ProjectGuid>
+    <ProjectGuid>{A72DECD3-13EE-670A-DC28-B18748A8ACE6}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LSystems</RootNamespace>
+    <RootNamespace>CustomGrammar</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -69,28 +69,28 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>Builds\Debug_x86\</OutDir>
     <IntDir>obj\x86\Debug\</IntDir>
-    <TargetName>LSystems</TargetName>
+    <TargetName>CustomGrammar</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>Builds\Debug_x64\</OutDir>
     <IntDir>obj\x64\Debug\</IntDir>
-    <TargetName>LSystems</TargetName>
+    <TargetName>CustomGrammar</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>Builds\Release_x86\</OutDir>
     <IntDir>obj\x86\Release\</IntDir>
-    <TargetName>LSystems</TargetName>
+    <TargetName>CustomGrammar</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>Builds\Release_x64\</OutDir>
     <IntDir>obj\x64\Release\</IntDir>
-    <TargetName>LSystems</TargetName>
+    <TargetName>CustomGrammar</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -196,20 +196,21 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Application\LSystemsApp.h" />
-    <ClInclude Include="Source\Logic\LSystems\LSystem.h" />
-    <ClInclude Include="Source\Logic\LSystems\LineBuilder.h" />
-    <ClInclude Include="Source\Logic\LSystems\RuleContainer.h" />
-    <ClInclude Include="Source\Logic\LSystemsGame.h" />
+    <ClInclude Include="Source\Application\CustomGrammar_AppLayer.h" />
+    <ClInclude Include="Source\Logic\CustomGrammar_GameLayer.h" />
+    <ClInclude Include="Source\Logic\Grammar\LineBuilder.h" />
+    <ClInclude Include="Source\Logic\Grammar\RegularGrammar.h" />
+    <ClInclude Include="Source\Logic\Grammar\RoadGenerator.h" />
+    <ClInclude Include="Source\Logic\Grammar\RuleContainer.h" />
     <ClInclude Include="Source\Views\CameraView.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Application\LSystemsApp.cpp" />
+    <ClCompile Include="Source\Application\CustomGrammar_AppLayer.cpp" />
     <ClCompile Include="Source\Application\Main.cpp" />
-    <ClCompile Include="Source\Logic\LSystems\LSystem.cpp" />
-    <ClCompile Include="Source\Logic\LSystems\LineBuilder.cpp" />
-    <ClCompile Include="Source\Logic\LSystems\RuleContainer.cpp" />
-    <ClCompile Include="Source\Logic\LSystemsGame.cpp" />
+    <ClCompile Include="Source\Logic\CustomGrammar_GameLayer.cpp" />
+    <ClCompile Include="Source\Logic\Grammar\LineBuilder.cpp" />
+    <ClCompile Include="Source\Logic\Grammar\RegularGrammar.cpp" />
+    <ClCompile Include="Source\Logic\Grammar\RuleContainer.cpp" />
     <ClCompile Include="Source\Views\CameraView.cpp" />
   </ItemGroup>
   <ItemGroup>

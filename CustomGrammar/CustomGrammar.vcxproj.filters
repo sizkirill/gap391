@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Application">
+      <UniqueIdentifier>{D9DE78AF-4594-F1A4-CE88-EB7B3A3DE8A8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logic">
+      <UniqueIdentifier>{93E89C0D-FFFC-C4BE-C87E-681E3452C1EF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logic\Grammar">
+      <UniqueIdentifier>{b4c009b7-d87d-4b8a-8672-aaeb10f5a8b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{9771eaa1-db4d-47cf-8fd8-ed69bae1aefa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Application\CustomGrammar_AppLayer.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\CustomGrammar_GameLayer.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Grammar\RegularGrammar.h">
+      <Filter>Logic\Grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Grammar\RuleContainer.h">
+      <Filter>Logic\Grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Grammar\RoadGenerator.h">
+      <Filter>Logic\Grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Grammar\LineBuilder.h">
+      <Filter>Logic\Grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Views\CameraView.h">
+      <Filter>Views</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Application\CustomGrammar_AppLayer.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Main.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\CustomGrammar_GameLayer.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Grammar\RegularGrammar.cpp">
+      <Filter>Logic\Grammar</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Grammar\RuleContainer.cpp">
+      <Filter>Logic\Grammar</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Grammar\LineBuilder.cpp">
+      <Filter>Logic\Grammar</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Views\CameraView.cpp">
+      <Filter>Views</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

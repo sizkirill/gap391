@@ -8,27 +8,27 @@
       <UniqueIdentifier>{93E89C0D-FFFC-C4BE-C87E-681E3452C1EF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Logic\LSystems">
-      <UniqueIdentifier>{ec5f87a2-8bcd-4fce-88ba-af145e164a3c}</UniqueIdentifier>
+      <UniqueIdentifier>{A670DBA0-923E-CFA6-7BD2-3FCD673FAB0B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Views">
-      <UniqueIdentifier>{c2325b08-2be4-4516-87e0-f8a8762b6b37}</UniqueIdentifier>
+      <UniqueIdentifier>{B38C4E0E-1FA1-76BF-E822-1A1F54F672F0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\LSystemsApp.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\LSystemsGame.h">
-      <Filter>Logic</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Logic\LSystems\RuleContainer.h">
-      <Filter>Logic\LSystems</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Logic\LSystems\LSystem.h">
       <Filter>Logic\LSystems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Logic\LSystems\LineBuilder.h">
       <Filter>Logic\LSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\LSystems\RuleContainer.h">
+      <Filter>Logic\LSystems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\LSystemsGame.h">
+      <Filter>Logic</Filter>
     </ClInclude>
     <ClInclude Include="Source\Views\CameraView.h">
       <Filter>Views</Filter>
@@ -41,17 +41,17 @@
     <ClCompile Include="Source\Application\Main.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Logic\LSystemsGame.cpp">
-      <Filter>Logic</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Logic\LSystems\RuleContainer.cpp">
-      <Filter>Logic\LSystems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Logic\LSystems\LSystem.cpp">
       <Filter>Logic\LSystems</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic\LSystems\LineBuilder.cpp">
       <Filter>Logic\LSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\LSystems\RuleContainer.cpp">
+      <Filter>Logic\LSystems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\LSystemsGame.cpp">
+      <Filter>Logic</Filter>
     </ClCompile>
     <ClCompile Include="Source\Views\CameraView.cpp">
       <Filter>Views</Filter>

@@ -1,0 +1,25 @@
+<DragonCurve state="0">
+    <Rule var="0" result="N1" probability="0.65" />
+    <Rule var="0" result="C4" probability="0.35" />
+    <Rule var="1" result="4" probability="0.6" />
+    <Rule var="1" result="E2" probability="0.2" />
+    <Rule var="1" result="P3" probability="0.2" />
+    <Rule var="2" result="4" probability="0.75" />
+    <Rule var="2" result="P4" probability="0.25" />
+    <Rule var="3" result="4" probability="0.75" />
+    <Rule var="3" result="E4" probability="0.25" />
+    <Rule var="4" result="S" probability="0.2" />
+    <Rule var="4" result="A" probability="0.2" />
+    <Rule var="4" result="B" probability="0.2" />
+    <Rule var="4" result="M" probability="0.2" />
+    <Rule var="4" result="D" probability="0.2" />
+    <Constant var="S" />
+    <Constant var="A" />
+    <Constant var="B" />
+    <Constant var="M" />
+    <Constant var="D" />
+    <Constant var="N" />
+    <Constant var="C" />
+    <Constant var="E" />
+    <Constant var="P" />
+</DragonCurve>

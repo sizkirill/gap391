@@ -362,5 +362,52 @@ project "LSystems"
     filter "configurations:Release"
         defines { "NDEBUG" }
         optimize "Full"
+	
+project "CustomGrammar"
+	kind "ConsoleApp"
+	location "CustomGrammar"
+	includedirs {"Yangine/Source", "Toolset/Include", "CustomGrammar/Source"}
+	files {"CustomGrammar/Source/**.h", "CustomGrammar/Source/**.cpp"}
+	links {"Engine", "vld", "Box2D_$(PlatformShortName)_$(Configuration)", "SDL2", "SDL2_image", "SDL2_mixer", "SDL2_ttf", "SDL2main", "Lua-5.3.5_$(PlatformShortName)_$(Configuration)"}
+	
+	postbuildcommands { 'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.dll" "$(OutDir)" /d /i /y',
+	'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.manifest" "$(OutDir)" /d /i /y',
+	'xcopy "$(ProjectDir)\\Assets" "$(OutDir)Assets" /e /s /h /i /y',
+	'xcopy "$(ProjectDir)\\Data" "$(OutDir)Data" /e /s /h /i /y'}
+	
+	filter {"platforms:x86"}
+		libdirs{"Toolset/x86"}
+		
+	filter {"platforms:x64"}
+		libdirs{"Toolset/x64"}
+	
+	filter {"configurations:Debug", "platforms:x86"}
+		architecture "x86"
+		targetdir "CustomGrammar/Builds/Debug_x86"
+		libdirs "Yangine/Binaries/Debug_x86"
+		
+	filter {"configurations:Release", "platforms:x86"}
+		architecture "x86"
+		targetdir "CustomGrammar/Builds/Release_x86"
+		libdirs "Yangine/Binaries/Release_x86"
+		
+	filter {"configurations:Debug", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "CustomGrammar/Builds/Debug_x64"
+		libdirs "Yangine/Binaries/Debug_x64"
+		
+	filter {"configurations:Release", "platforms:x64"}
+		architecture "x86_64"
+		targetdir "CustomGrammar/Builds/Release_x64"
+		libdirs "Yangine/Binaries/Release_x64"
+	
+	filter "configurations:Debug"
+        defines { "DEBUG" }
+        symbols "On"
+		postbuildcommands {'xcopy "$(SolutionDir)Toolset\\$(PlatformShortName)\\*.pdb" "$(OutDir)" /d /i /y'}
+
+    filter "configurations:Release"
+        defines { "NDEBUG" }
+        optimize "Full"
 		
 	

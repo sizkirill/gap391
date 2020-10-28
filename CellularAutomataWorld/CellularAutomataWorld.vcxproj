@@ -230,4 +230,4 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-</Project> 
+</Project>

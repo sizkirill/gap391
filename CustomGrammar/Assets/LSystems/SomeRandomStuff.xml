@@ -1,0 +1,13 @@
+<CustomThing state="CF" stepAmount="15" numIterations="6">
+    <Position x="640" y="360" />
+    <Orientation angle="-90" />
+    <Ruleset src="Assets/Scripts/SomeRandomStuff.lua" />
+    <Rule var="B" result="BF" probability="0.8" />
+    <Rule var="B" result="C[B]C" probability="0.2" />
+    <Rule var="F" result="F" probability="0.7" />
+    <Rule var="F" result="CBC" probability="0.3" />
+    <Rule var="C" result="CC" probability="0.6" />
+    <Rule var="C" result="CB" probability="0.4" />
+    <Constant var="[" />
+    <Constant var="]" />
+</CustomThing>

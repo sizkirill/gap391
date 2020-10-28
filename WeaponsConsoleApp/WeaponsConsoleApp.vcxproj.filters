@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Grammar">
+      <UniqueIdentifier>{5b3b253c-20e1-4bb1-91ba-1b93619ac0b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{3cccc290-868d-427e-9f9c-72d7498bbd45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\TinyXml2">
+      <UniqueIdentifier>{dc8b1add-35af-4241-af31-b759fd89641a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grammar\Weapon.cpp">
+      <Filter>Source Files\Grammar</Filter>
+    </ClCompile>
+    <ClCompile Include="Grammar\RuleContainer.cpp">
+      <Filter>Source Files\Grammar</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Random.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\TinyXml2\tinyxml2.cpp">
+      <Filter>Source Files\Utils\TinyXml2</Filter>
+    </ClCompile>
+    <ClCompile Include="Grammar\RegularGrammar.cpp">
+      <Filter>Source Files\Grammar</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Grammar\RuleContainer.h">
+      <Filter>Source Files\Grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="Grammar\Weapon.h">
+      <Filter>Source Files\Grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="Grammar\RegularGrammar.h">
+      <Filter>Source Files\Grammar</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Random.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\TinyXml2\tinyxml2.h">
+      <Filter>Source Files\Utils\TinyXml2</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
