@@ -1,17 +1,17 @@
-<RoadMap state="0" stepAmount="4" maxStringSize="2048">
+<RoadMap state="0" stepAmount="3" maxStringSize="2048">
     <Position x="640" y="360" />
     <Orientation angle="0" />
     <Ruleset src="Assets/Scripts/RoadMap.lua" />
-    <Rule var="0" result="F0" probability="0.7" />
-    <Rule var="0" result="F1" probability="0.3" />
-    <Rule var="1" result="F1" probability="0.4" />
-    <Rule var="1" result="L3" probability="0.3" />
-    <Rule var="1" result="R3" probability="0.3" />
-    <Rule var="2" result="F3" probability="0.38" />
-    <Rule var="2" result="4" probability="0.6" />
-    <Rule var="2" result="" probability="0.02" />
-    <Rule var="3" result="F3" probability="0.6" />
-    <Rule var="3" result="F1" probability="0.3" />
+    <Rule var="0" result="F0" probability="0.85" />
+    <Rule var="0" result="F1" probability="0.15" />
+    <Rule var="1" result="F1" probability="0.7" />
+    <Rule var="1" result="L3" probability="0.15" />
+    <Rule var="1" result="R3" probability="0.15" />
+    <Rule var="2" result="F3" probability="0.5" />
+    <Rule var="2" result="S0" probability="0.06" />
+    <Rule var="2" result="4" probability="0.44" />
+    <Rule var="3" result="F3" probability="0.7" />
+    <Rule var="3" result="F1" probability="0.2" />
     <Rule var="3" result="B2" probability="0.1" />
     <Rule var="4" result="P0" probability="1" />
     <Constant var="B" />
@@ -19,4 +19,5 @@
     <Constant var="L" />
     <Constant var="R" />
     <Constant var="P" />
+    <Constant var="S" />
 </RoadMap>

@@ -28,6 +28,8 @@ public:
     void AddVertex(uint32_t color);
     void AddRect(int width, int height, uint32_t color);
     void SetTransform(yang::FVec2 position, yang::FVec2 forward);
+    void ResetTransform();
+    void RotateInitialTransform(float amount);
 
     const auto& GetLineList() const { return m_lineList; }
     const auto& GetRectList() const { return m_rectList; }

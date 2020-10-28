@@ -51,6 +51,22 @@ void LineBuilder::SetTransform(yang::FVec2 position, yang::FVec2 forward)
     m_transform = m_initialTransform;
 }
 
+void LineBuilder::ResetTransform()
+{
+    m_transform = m_initialTransform;
+    while (!m_transformQueue.empty())
+    {
+        m_transformQueue.pop();
+    }
+}
+
+void LineBuilder::RotateInitialTransform(float amount)
+{
+    yang::Matrix m;
+    m.Rotate(Math::ToRadians(amount));
+    m_initialTransform.m_forward = m.TransformPoint(m_initialTransform.m_forward);
+}
+
 void LineBuilder::ExposeToLua(const yang::LuaManager& luaenv)
 {
     luaenv.ExposeToLua("AddVertex", &LineBuilder::AddVertex);
@@ -59,6 +75,8 @@ void LineBuilder::ExposeToLua(const yang::LuaManager& luaenv)
     luaenv.ExposeToLua("RotateTransform", &LineBuilder::RotateTransform);
     luaenv.ExposeToLua("MoveTransform", &LineBuilder::MoveTransform);
     luaenv.ExposeToLua("AddRect", &LineBuilder::AddRect);
+    luaenv.ExposeToLua("ResetTransform", &LineBuilder::ResetTransform);
+    luaenv.ExposeToLua("RotateInitialTransform", &LineBuilder::RotateInitialTransform);
 }
 
 void LineBuilder::Reset()
