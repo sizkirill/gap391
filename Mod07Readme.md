@@ -4,10 +4,10 @@ Mostly took logic from previous module and slightly changed it for this assignme
 
 ### 1. [Weapon Name Generator](WeaponsConsoleApp/)  
 
-Meanings:  
+#### Meanings:  
 Non terminating symbols are just stages in generating a name, while terminating symbols later translate into appropriate words.  
 
-Rules:  
+#### Rules:  
 Starting stage - figuring out if a weapon is cursed or enchanted:  
 0 -> N1 (probability 0.65)  0.65 probability that weapon becomes enchanted (from 0 to 3) and go to stage 1  
 0 -> C4 (probability 0.35)  0.35 probability that weapon is cursed (from -1 to -3) and go to the last stage immediately  
@@ -32,7 +32,7 @@ Stage 4: - finalizing the weapon - assigning the weapon type.
 4 -> M (probability 0.2)    - mace  
 4 -> D (probability 0.2)    - dagger  
 
-Terminating symbols:  
+#### Terminating symbols:  
 S,
 A,
 B,
@@ -43,17 +43,21 @@ C,
 E,
 P
 
-Non terminating symbols:  
+#### Non terminating symbols:  
 0, 1, 2, 3, 4
 
-Start state: 0  
+#### Start state: 0  
 
-### 1. [Custom Grammar](CustomGrammar/)  
+#### Controls:  
+'q' - to exit
+any key - to generate a new weapon
+
+### 2. [Custom Grammar](CustomGrammar/)  
 
 Here I used the LineBuilder class from previous assignment with slight changes, to generate a drawable thing based on the result string.
 With these rules, the result string is infinite, so the result string length can be tuned in the XML file, and in drawing process non terminating symbols are skipped.
 
-Rules:  
+#### Rules:  
 0 -> F0 (probability 0.85)
 0 -> F1 (probability 0.15)  
 1 -> F1 (probability 0.8)  
@@ -67,7 +71,7 @@ Rules:
 3 -> B2 (probability 0.1)  
 4 -> P0 (probability 1)  
 
-Terminating symbols:  
+#### Terminating symbols:  
 F - draw forward,  
 B - draw a green rectangle at current position,  
 L - rotate counter counterclockwise, push transform and rotate clockwise twice the angle,  
@@ -75,7 +79,10 @@ R - rotate counter clockwise, push transform and rotate counterclockwise twice t
 P - pop transform from the stack,
 S - reset transform to the very beginning (center of screen) and rotate it (rotation sums up every time we hit S)
 
-Non terminating symbols:  
+#### Non terminating symbols:  
 0, 1, 2, 3, 4  
 
-Start state: 0  
+#### Start state: 0  
+
+#### Controls:  
+SPACE - to regenerate  
