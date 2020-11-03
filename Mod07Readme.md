@@ -46,4 +46,36 @@ P
 Non terminating symbols:  
 0, 1, 2, 3, 4
 
-Start state: 0
+Start state: 0  
+
+### 1. [Custom Grammar](CustomGrammar/)  
+
+Here I used the LineBuilder class from previous assignment with slight changes, to generate a drawable thing based on the result string.
+With these rules, the result string is infinite, so the result string length can be tuned in the XML file, and in drawing process non terminating symbols are skipped.
+
+Rules:  
+0 -> F0 (probability 0.85)
+0 -> F1 (probability 0.15)  
+1 -> F1 (probability 0.8)  
+1 -> L3 (probability 0.1)  
+1 -> R3 (probability 0.1)  
+2 -> F3 (probability 0.5)  
+2 -> S0 (probability 0.06)  
+2 -> 4 (probability 0.44)  
+3 -> F3 (probability 0.7)  
+3 -> F1 (probability 0.2)  
+3 -> B2 (probability 0.1)  
+4 -> P0 (probability 1)  
+
+Terminating symbols:  
+F - draw forward,  
+B - draw a green rectangle at current position,  
+L - rotate counter counterclockwise, push transform and rotate clockwise twice the angle,  
+R - rotate counter clockwise, push transform and rotate counterclockwise twice the angle,  
+P - pop transform from the stack,
+S - reset transform to the very beginning (center of screen) and rotate it (rotation sums up every time we hit S)
+
+Non terminating symbols:  
+0, 1, 2, 3, 4  
+
+Start state: 0  
