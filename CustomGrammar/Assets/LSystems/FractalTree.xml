@@ -1,9 +1,0 @@
-<FractalTree state="0" stepAmount="512" numIterations="10">
-    <Position x="640" y="720" />
-    <Orientation angle="-90" />
-    <Ruleset src="Assets/Scripts/FractalTree.lua" />
-    <Rule var="0" result="1[0]0" probability="1" />
-    <Rule var="1" result="11" probability="1" />
-    <Constant var="[" />
-    <Constant var="]" />
-</FractalTree>
