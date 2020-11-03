@@ -21,7 +21,7 @@ Stage 2: - if we get here, we have a weapon with an elemental effect. Either we 
 2 -> 4 (probability 0.75)   0.75 probability that weapon with elemental effect doesn't get the special property  
 2 -> P4 (probability 0.25)  0.25 probability that weapon with elemental effect also gets the special property  
 
-Stage 3: - if we get here, we have a weapon with a special property. Either we go to the final stage or also assign an elemental effect: 
+Stage 3: - if we get here, we have a weapon with a special property. Either we go to the final stage or also assign an elemental effect:  
 3 -> 4 (probability 0.75)   0.75 probability that weapon with elemental effect doesn't get the elemental effect  
 3 -> E4 (probability 0.25)  0.25 probability that weapon with elemental effect also gets the elemental effect  
 
@@ -58,7 +58,7 @@ Here I used the LineBuilder class from previous assignment with slight changes, 
 With these rules, the result string is infinite, so the result string length can be tuned in the XML file, and in drawing process non terminating symbols are skipped.
 
 #### Rules:  
-0 -> F0 (probability 0.85)
+0 -> F0 (probability 0.85)  
 0 -> F1 (probability 0.15)  
 1 -> F1 (probability 0.8)  
 1 -> L3 (probability 0.1)  
