@@ -1,6 +1,8 @@
 #pragma once
 #include "Graph.h"
 #include "GraphCommons.h"
+#include <string>
+#include <string_view>
 
 namespace tinyxml2
 {
@@ -16,12 +18,14 @@ public:
 private:
     NodeType m_sourceNodeType;
     Graph m_resultGraph;
-    float m_weight;
+    std::string m_name;
+    int m_weight;
     bool m_shouldUseOnce;
 public:
     const Graph& GetResultGraph() const { return m_resultGraph; }
     NodeType GetSourceNodeType() const { return m_sourceNodeType; }
-    float GetWeight() const { return m_weight; }
+    std::string_view GetName() const { return m_name; }
+    int GetWeight() const { return m_weight; }
     bool ShouldBeUsedOnce() const { return m_shouldUseOnce; }
     void ResetWeight() { m_weight = 0; }
 };

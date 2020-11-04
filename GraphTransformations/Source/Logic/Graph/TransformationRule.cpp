@@ -10,8 +10,13 @@ TransformationRule::TransformationRule(tinyxml2::XMLElement* pData)
     using namespace yang::literals;
 
     assert(StringHash32(pData->Name()) == "Rule"_hash32);
-    m_weight = pData->FloatAttribute("weight", 0.f);
+    m_weight = pData->IntAttribute("weight", 0);
     m_shouldUseOnce = pData->BoolAttribute("shouldUseOnce", false);
+
+    if (const char* pName = pData->Attribute("name"); pName != nullptr)
+    {
+        m_name = pName;
+    }
 
     if (XMLElement* pFrom = pData->FirstChildElement("From"); pFrom != nullptr)
     {

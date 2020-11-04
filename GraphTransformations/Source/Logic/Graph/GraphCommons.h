@@ -15,6 +15,7 @@ enum class NodeType
     kGoal,
     kStart,
     kTask,
+    kMiniboss,
     kMonster,
     kPuzzle,
     kRest,

@@ -7,6 +7,9 @@
     <Filter Include="Logic">
       <UniqueIdentifier>{93E89C0D-FFFC-C4BE-C87E-681E3452C1EF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logic\Graph">
+      <UniqueIdentifier>{5303bf5c-165a-4b2c-bf1b-cfcefe3cbabb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\GraphApp.h">
@@ -14,6 +17,21 @@
     </ClInclude>
     <ClInclude Include="Source\Logic\GraphGame.h">
       <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Graph\RuleContainer.h">
+      <Filter>Logic\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Graph\TransformationRule.h">
+      <Filter>Logic\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Graph\Graph.h">
+      <Filter>Logic\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Graph\GraphCommons.h">
+      <Filter>Logic\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Graph\GraphPrinter.h">
+      <Filter>Logic\Graph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -25,6 +43,18 @@
     </ClCompile>
     <ClCompile Include="Source\Logic\GraphGame.cpp">
       <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Graph\Graph.cpp">
+      <Filter>Logic\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Graph\GraphCommons.cpp">
+      <Filter>Logic\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Graph\TransformationRule.cpp">
+      <Filter>Logic\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Graph\RuleContainer.cpp">
+      <Filter>Logic\Graph</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

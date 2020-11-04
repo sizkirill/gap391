@@ -198,11 +198,20 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
   <ItemGroup>
     <ClInclude Include="Source\Application\GraphApp.h" />
     <ClInclude Include="Source\Logic\GraphGame.h" />
+    <ClInclude Include="Source\Logic\Graph\Graph.h" />
+    <ClInclude Include="Source\Logic\Graph\GraphCommons.h" />
+    <ClInclude Include="Source\Logic\Graph\GraphPrinter.h" />
+    <ClInclude Include="Source\Logic\Graph\RuleContainer.h" />
+    <ClInclude Include="Source\Logic\Graph\TransformationRule.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\GraphApp.cpp" />
     <ClCompile Include="Source\Application\Main.cpp" />
     <ClCompile Include="Source\Logic\GraphGame.cpp" />
+    <ClCompile Include="Source\Logic\Graph\Graph.cpp" />
+    <ClCompile Include="Source\Logic\Graph\GraphCommons.cpp" />
+    <ClCompile Include="Source\Logic\Graph\RuleContainer.cpp" />
+    <ClCompile Include="Source\Logic\Graph\TransformationRule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Yangine\Engine.vcxproj">

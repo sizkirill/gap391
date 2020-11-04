@@ -1,6 +1,42 @@
 <Ruleset>
-    <Rule weight="100" shouldUseOnce="true">
+    <Rule name="Start" weight="99999999" shouldUseOnce="true">
         <From type="Start" />
         <To src="Assets/Graphs/RuleGraphs/StartRuleGraph.xml" />
+    </Rule>
+    <Rule name="Task after entrance" weight="8">
+        <From type="Entrance" />
+        <To src="Assets/Graphs/RuleGraphs/EntranceRuleGraph.xml" />
+    </Rule>
+    <Rule name="Miniboss before item" weight="5" shouldUseOnce="true">
+        <From type="Item" />
+        <To src="Assets/Graphs/RuleGraphs/MinibossRuleGraph.xml" />
+    </Rule>
+    <Rule name="Multiply Task" weight="10">
+        <From type="Task" />
+        <To src="Assets/Graphs/RuleGraphs/MultiplyTaskRuleGraph.xml" />
+    </Rule>
+    <Rule name="Split Task" weight="25">
+        <From type="Task" />
+        <To src="Assets/Graphs/RuleGraphs/SplitTaskRuleGraph.xml" />
+    </Rule>
+    <Rule name="Task with rest" weight="15">
+        <From type="Task" />
+        <To src="Assets/Graphs/RuleGraphs/TaskRestRuleGraph.xml" />
+    </Rule>
+    <Rule name="Diamond Split Task" weight="8">
+        <From type="Task" />
+        <To src="Assets/Graphs/RuleGraphs/DiamondSplitRuleGraph.xml" />
+    </Rule>
+    <Rule name="Add monster" weight="5">
+        <From type="Task" />
+        <To src="Assets/Graphs/RuleGraphs/AddMonsterRuleGraph.xml" />
+    </Rule>
+    <Rule name="Add puzzle" weight="5">
+        <From type="Task" />
+        <To src="Assets/Graphs/RuleGraphs/AddPuzzleRuleGraph.xml" />
+    </Rule>
+    <Rule name="Add treasure" weight="5">
+        <From type="Task" />
+        <To src="Assets/Graphs/RuleGraphs/AddTreasureRuleGraph.xml" />
     </Rule>
 </Ruleset>

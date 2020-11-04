@@ -2,6 +2,7 @@
 #include <Utils/StringHash.h>
 #include <Utils/TinyXml2/tinyxml2.h>
 #include <Utils/Logger.h>
+#include <numeric>
 #include <cassert>
 
 RuleContainer::RuleContainer(std::string_view pathToXml)
@@ -21,8 +22,13 @@ RuleContainer::RuleContainer(std::string_view pathToXml)
     XMLElement* pRoot = doc.RootElement();
     assert(pRoot && (StringHash32(pRoot->Name()) == "Ruleset"_hash32));
 
-    for (XMLElement* pRuleElement = pRoot->FirstChildElement("Rule"); pRuleElement = pRuleElement->NextSiblingElement("Rule"); pRuleElement != nullptr)
+    for (XMLElement* pRuleElement = pRoot->FirstChildElement("Rule"); pRuleElement != nullptr; pRuleElement = pRuleElement->NextSiblingElement("Rule"))
     {
         m_ruleContainer.emplace_back(pRuleElement);
     }
+}
+
+int RuleContainer::GetTotalWeight() const
+{
+    return std::accumulate(m_ruleContainer.begin(), m_ruleContainer.end(), 0, [](int weight, auto& rule) {return weight + rule.GetWeight(); });
 }

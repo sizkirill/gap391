@@ -17,6 +17,7 @@ NodeType FromString(std::string_view str)
     case "Puzzle"_hash32: return NodeType::kPuzzle;
     case "Rest"_hash32: return NodeType::kRest;
     case "Treasure"_hash32: return NodeType::kTreasure;
+    case "Miniboss"_hash32: return NodeType::kMiniboss;
     default: return NodeType::kMaxTypes;
     }
 }
@@ -36,6 +37,7 @@ std::string ToString(NodeType type)
     case NodeType::kGoal: return "Goal";
     case NodeType::kStart: return "Start";
     case NodeType::kTask: return "Task";
+    case NodeType::kMiniboss: return "Miniboss";
     case NodeType::kMonster: return "Monster";
     case NodeType::kPuzzle: return "Puzzle";
     case NodeType::kRest: return "Rest";

@@ -4,7 +4,10 @@
 #include <type_traits>
 #include <unordered_map>
 #include <string_view>
+#include <cassert>
 #include "GraphCommons.h"
+
+class TransformationRule;
 
 struct Node
 {
@@ -24,6 +27,9 @@ public:
     NodeId AddNode(NodeType type);
     void DeleteNode(NodeId id);
     void SpliceSubGraph(NodeId nodeIdToReplace, const Graph& subGraph);
+
+    std::vector<NodeIndex> FindNodeIndicesByType(NodeType type);
+
     static Graph BuildGraphFromXML(std::string_view pathToXml);
 
     template <class F>
@@ -36,7 +42,7 @@ public:
     void ForEachOutEdge(NodeIndex fromIndex, F&& doStuff) const;
 
     template <class NodeFunc, class EdgeFunc>
-    void ForEachNodeAndEdge(NodeFunc&& nodeFunc, EdgeFunc&& edgeFunc);
+    void ForEachNodeAndEdge(NodeFunc&& nodeFunc, EdgeFunc&& edgeFunc) const;
 
 private:
     std::vector<Node> m_nodes;
@@ -54,7 +60,7 @@ private:
     std::vector<NodeIndex> UnlinkIncomingNodes(NodeIndex index);
     std::vector<NodeIndex> UnlinkOutgoingNodes(NodeIndex index);
     std::unordered_map<NodeIndex, NodeIndex> CreateIslandFromSubGraph(const Graph& subGraph);
-    void LinkNodes(NodeId fromId, NodeId toId);
+    void LinkNodes(NodeIndex fromId, NodeIndex toId);
 };
 
 template<class F>
@@ -92,7 +98,7 @@ inline void Graph::ForEachOutEdge(NodeIndex fromIndex, F&& doStuff) const
 }
 
 template<class NodeFunc, class EdgeFunc>
-inline void Graph::ForEachNodeAndEdge(NodeFunc&& nodeFunc, EdgeFunc&& edgeFunc)
+inline void Graph::ForEachNodeAndEdge(NodeFunc&& nodeFunc, EdgeFunc&& edgeFunc) const
 {
     static_assert(std::is_invocable_r_v<void, decltype(nodeFunc), const Node&>, "NodeFunc needs to have signature void(const Node&)");
     static_assert(std::is_invocable_r_v<void, decltype(edgeFunc), NodeIndex, NodeIndex>, "EdgeFunc needs to have signature void(NodeIndex from, NodeIndex to)");

@@ -14,6 +14,8 @@ public:
     TransformationRule& GetWeightedRandomRule(RandomDevice&& rd);
 private:
     std::vector<TransformationRule> m_ruleContainer;
+
+    int GetTotalWeight() const;
 };
 
 template<class RandomDevice>
@@ -29,12 +31,12 @@ inline TransformationRule& RuleContainer::GetWeightedRandomRule(RandomDevice&& r
 {
     static_assert(std::is_integral_v<decltype(std::declval<RandomDevice>()())>, "RandomDevice should produce Integer values");
 
-    auto rngResult = rd() % 100;
+    auto rngResult = rd() % GetTotalWeight();
     int accumulator = 0;
 
     for (auto& rule : m_ruleContainer)
     {
-        accumulator() += rule.GetWeight();
+        accumulator += rule.GetWeight();
         if (rngResult < accumulator)
         {
             if (rule.ShouldBeUsedOnce())
@@ -45,4 +47,7 @@ inline TransformationRule& RuleContainer::GetWeightedRandomRule(RandomDevice&& r
             return rule;
         }
     }
+
+    // should not reach here
+    return m_ruleContainer[0];
 }

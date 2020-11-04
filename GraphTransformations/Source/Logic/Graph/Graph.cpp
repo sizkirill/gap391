@@ -4,6 +4,7 @@
 #include <Utils/TinyXml2/tinyxml2.h>
 #include <Utils/Logger.h>
 #include <Utils/StringHash.h>
+#include "TransformationRule.h"
 
 NodeId Graph::AddNode(NodeType type)
 {
@@ -55,6 +56,20 @@ void Graph::SpliceSubGraph(NodeId nodeIdToReplace, const Graph& subGraph)
     }
 }
 
+std::vector<NodeIndex> Graph::FindNodeIndicesByType(NodeType type)
+{
+    std::vector<NodeIndex> result;
+    for (size_t i = 0; i < m_nodes.size(); ++i)
+    {
+        if (m_nodes[i].m_nodeType == type)
+        {
+            result.push_back(i);
+        }
+    }
+
+    return result;
+}
+
 Node& Graph::GetNode(NodeId id)
 {
     NodeIndex nodeIndex = GetIndex(id);
@@ -104,6 +119,8 @@ std::vector<NodeIndex> Graph::UnlinkIncomingNodes(NodeIndex index)
         }
     }
 
+    m_nodes[index].SetRefCount(1);
+
     return result;
 }
 
@@ -115,6 +132,7 @@ std::vector<NodeIndex> Graph::UnlinkOutgoingNodes(NodeIndex index)
     for (auto nodeIndex : m_adjacencyLists[index])
     {
         result.push_back(nodeIndex);
+        GetNode(nodeIndex).DecrementRef();
     }
 
     m_adjacencyLists[index].clear();
@@ -140,11 +158,11 @@ std::unordered_map<NodeIndex, NodeIndex> Graph::CreateIslandFromSubGraph(const G
     return result;
 }
 
-void Graph::LinkNodes(NodeId fromId, NodeId toId)
+void Graph::LinkNodes(NodeIndex fromId, NodeIndex toId)
 {
-    auto& toNode = GetNode(toId);
+    auto& toNode = m_nodes[toId];
 
-    m_adjacencyLists[GetIndex(fromId)].emplace(GetIndex(toId));
+    m_adjacencyLists[fromId].emplace(toId);
     toNode.IncrementRef();
 }
 
@@ -168,7 +186,7 @@ Graph Graph::BuildGraphFromXML(std::string_view pathToXml)
     std::unordered_map<NodeIndex, NodeIndex> xmlIdToGraphIdMap;
     Graph result;
 
-    for (auto pNodeElement = pRoot->FirstChildElement("Node"); pNodeElement = pNodeElement->NextSiblingElement("Node"); pNodeElement != nullptr)
+    for (auto pNodeElement = pRoot->FirstChildElement("Node"); pNodeElement != nullptr; pNodeElement = pNodeElement->NextSiblingElement("Node"))
     {
         const char* pNodeTypeStr = pNodeElement->Attribute("type");
         int xmlNodeId = pNodeElement->IntAttribute("id", -1);
@@ -183,7 +201,7 @@ Graph Graph::BuildGraphFromXML(std::string_view pathToXml)
         xmlIdToGraphIdMap.emplace(xmlNodeId, result.GetIndex(newNodeId));
     }
 
-    for (auto pEdgeElement = pRoot->FirstChildElement("Edge"); pEdgeElement = pEdgeElement->NextSiblingElement("Edge"); pEdgeElement != nullptr)
+    for (auto pEdgeElement = pRoot->FirstChildElement("Edge"); pEdgeElement != nullptr; pEdgeElement = pEdgeElement->NextSiblingElement("Edge"))
     {
         int from = pEdgeElement->IntAttribute("from", -1);
         int to = pEdgeElement->IntAttribute("to", -1);
