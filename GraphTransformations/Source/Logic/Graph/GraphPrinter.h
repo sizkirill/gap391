@@ -6,8 +6,6 @@
 template <class Printer>
 class GraphPrinter
 {
-    //static_assert(std::is_invocable_r_v<Printer&, Printer::operator<<, Printer&, int>, "Printer doesn't have appropriate << overload operator");
-    //static_assert(std::is_invocable_r_v<Printer&, Printer::operator<<, Printer&, const std::string&>, "Printer doesn't have appropriate << overload operator");
 public:
     GraphPrinter(Printer&& printer) : m_printer(std::forward<Printer>(printer)) {}
 
