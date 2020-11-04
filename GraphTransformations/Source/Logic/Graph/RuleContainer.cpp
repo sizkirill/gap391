@@ -26,6 +26,8 @@ RuleContainer::RuleContainer(std::string_view pathToXml)
     {
         m_ruleContainer.emplace_back(pRuleElement);
     }
+
+    m_totalWeight = GetTotalWeight();
 }
 
 int RuleContainer::GetTotalWeight() const
