@@ -1,0 +1,6 @@
+<Ruleset>
+    <Rule weight="100" shouldUseOnce="true">
+        <From type="Start" />
+        <To src="Assets/Graphs/RuleGraphs/StartRuleGraph.xml" />
+    </Rule>
+</Ruleset>

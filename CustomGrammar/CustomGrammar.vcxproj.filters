@@ -8,10 +8,10 @@
       <UniqueIdentifier>{93E89C0D-FFFC-C4BE-C87E-681E3452C1EF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Logic\Grammar">
-      <UniqueIdentifier>{b4c009b7-d87d-4b8a-8672-aaeb10f5a8b5}</UniqueIdentifier>
+      <UniqueIdentifier>{E9BCFB5D-557D-7794-1EB8-C0118A37BC70}</UniqueIdentifier>
     </Filter>
     <Filter Include="Views">
-      <UniqueIdentifier>{9771eaa1-db4d-47cf-8fd8-ed69bae1aefa}</UniqueIdentifier>
+      <UniqueIdentifier>{B38C4E0E-1FA1-76BF-E822-1A1F54F672F0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -21,16 +21,16 @@
     <ClInclude Include="Source\Logic\CustomGrammar_GameLayer.h">
       <Filter>Logic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Grammar\RegularGrammar.h">
+    <ClInclude Include="Source\Logic\Grammar\LineBuilder.h">
       <Filter>Logic\Grammar</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Grammar\RuleContainer.h">
+    <ClInclude Include="Source\Logic\Grammar\RegularGrammar.h">
       <Filter>Logic\Grammar</Filter>
     </ClInclude>
     <ClInclude Include="Source\Logic\Grammar\RoadGenerator.h">
       <Filter>Logic\Grammar</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Logic\Grammar\LineBuilder.h">
+    <ClInclude Include="Source\Logic\Grammar\RuleContainer.h">
       <Filter>Logic\Grammar</Filter>
     </ClInclude>
     <ClInclude Include="Source\Views\CameraView.h">
@@ -47,13 +47,13 @@
     <ClCompile Include="Source\Logic\CustomGrammar_GameLayer.cpp">
       <Filter>Logic</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Logic\Grammar\LineBuilder.cpp">
+      <Filter>Logic\Grammar</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Logic\Grammar\RegularGrammar.cpp">
       <Filter>Logic\Grammar</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic\Grammar\RuleContainer.cpp">
-      <Filter>Logic\Grammar</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Logic\Grammar\LineBuilder.cpp">
       <Filter>Logic\Grammar</Filter>
     </ClCompile>
     <ClCompile Include="Source\Views\CameraView.cpp">

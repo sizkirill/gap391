@@ -1,0 +1,12 @@
+<Graph>
+    <Node id="0" type="Entrance" />
+    <Node id="1" type="Boss" />
+    <Node id="2" type="Item" />
+    <Node id="3" type="Goal" />
+    <Edge from="0" to="1" />
+    <Edge from="0" to="2" />
+    <Edge from="1" to="2" />
+    <Edge from="2" to="3" />
+    <EntranceNode id="0" />
+    <ExitNode id="3" />
+</Graph>

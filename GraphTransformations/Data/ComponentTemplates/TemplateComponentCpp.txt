@@ -1,0 +1,26 @@
+#include "$class_name.h"
+#include <Utils/tinyxml2/tinyxml2.h>
+#include <Utils/StringHash.h>
+
+using yang::IComponent;
+
+#pragma warning(push)
+#pragma warning(disable:4307)
+
+template<>
+std::unique_ptr<yang::IComponent> yang::IComponent::CreateComponent<StringHash32($class_name::GetName())>(yang::Actor* pOwner) { return std::make_unique<$class_name>(pOwner); };
+
+#pragma warning(pop)
+
+$class_name::$class_name(yang::Actor* pOwner)
+    :IComponent(pOwner, GetName())
+{
+	
+}
+
+bool $class_name::Init(tinyxml2::XMLElement* pData)
+{
+    using namespace tinyxml2;
+
+    return true;
+}
