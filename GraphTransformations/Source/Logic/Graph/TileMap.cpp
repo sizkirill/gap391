@@ -10,7 +10,7 @@ void TileMap::BuildTileMap(const Graph& graph)
 {
     std::unordered_map<NodeIndex, int> nodeIndicesToMapIndices;
 
-    graph.ForEachNodeAndEdge([this, &nodeIndicesToMapIndices](const Node& node) 
+    graph.ForEachNodeAndOutgoingEdge([this, &nodeIndicesToMapIndices](const Node& node) 
         {
             if (nodeIndicesToMapIndices.count(node.GetIndex()) == 0)
             {

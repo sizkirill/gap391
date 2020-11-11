@@ -58,6 +58,93 @@ void Graph::SpliceSubGraph(NodeId nodeIdToReplace, const Graph& subGraph)
     }
 }
 
+void Graph::SpliceSubGraph(std::vector<NodeIndex>& pattern, const TransformationRule& rule)
+{
+    using EdgeList = std::unordered_set<NodeIndex>;
+    using AdjacencyList = std::vector<std::unordered_set<NodeIndex>>;
+
+    EdgeList entranceEdges = m_incomingAdjacencyList[pattern.front()];
+    EdgeList exitEdges = m_outgoingAdjacencyList[pattern.back()];
+
+    //EdgeList entranceEdges = UnlinkIncomingNodes(pattern.front());
+    //EdgeList exitEdges = UnlinkOutgoingNodes(pattern.back());
+
+    AdjacencyList incomingEdges;
+    AdjacencyList outgoingEdges;
+
+    for (size_t i = 0; i < pattern.size(); ++i)
+    {
+        auto nodeIndex = pattern[i];
+        incomingEdges.emplace_back();
+        outgoingEdges.emplace_back();
+
+        if (i != 0) // 0 is the entrance node, constraint #3
+        {
+            for (auto incomingId : m_incomingAdjacencyList[nodeIndex])
+            {
+                if (std::find(pattern.begin(), pattern.end(), incomingId) == pattern.end())
+                {
+                    incomingEdges[i].emplace(incomingId);
+                }
+            }
+        }
+
+        if (i != pattern.size() - 1) // size-1 is the exit node, constraint #3
+        {
+            for (auto outgoingId : m_outgoingAdjacencyList[nodeIndex])
+            {
+                if (std::find(pattern.begin(), pattern.end(), outgoingId) == pattern.end())
+                {
+                    outgoingEdges[i].emplace(outgoingId);
+                }
+            }
+        }
+
+        DeleteNode(nodeIndex);
+    }
+
+    const auto& ruleResultGraph = rule.GetResultGraph();
+    const auto& ruleReplacementMap = rule.GetReplacementMap();
+
+    assert(pattern.size() == ruleReplacementMap.size() && pattern.size() == incomingEdges.size() && pattern.size() == outgoingEdges.size());
+
+    auto replacementMap = CreateIslandFromSubGraph(ruleResultGraph);
+
+    for (size_t i = 0; i < ruleReplacementMap.size(); ++i)
+    {
+        NodeIndex replacingSubGraphId = ruleResultGraph.m_nodes.at(ruleReplacementMap.at(i)).GetIndex();
+        NodeIndex replacingLevelGraphId = replacementMap[replacingSubGraphId];
+
+        if (ruleResultGraph.m_entrance != replacingSubGraphId)
+        {
+            for (auto neighborIndex : incomingEdges[i])
+            {
+                LinkNodes(neighborIndex, replacingLevelGraphId);
+            }
+        }
+
+        if (ruleResultGraph.m_exit != replacingSubGraphId)
+        {
+            for (auto neighborIndex : outgoingEdges[i])
+            {
+                LinkNodes(replacingLevelGraphId, neighborIndex);
+            }
+        }
+    }
+
+    auto entranceId = replacementMap[ruleResultGraph.m_entrance];
+    for (auto neighborId : entranceEdges)
+    {
+        LinkNodes(neighborId, entranceId);
+    }
+
+    auto exitId = replacementMap[ruleResultGraph.m_exit];
+    for (auto neighborId : exitEdges)
+    {
+        LinkNodes(exitId, neighborId);
+    }
+}
+
 std::vector<NodeIndex> Graph::FindNodeIndicesByType(NodeType type)
 {
     std::vector<NodeIndex> result;
@@ -70,6 +157,20 @@ std::vector<NodeIndex> Graph::FindNodeIndicesByType(NodeType type)
     }
 
     return result;
+}
+
+bool Graph::Transform(const TransformationRule& rule, yang::XorshiftRNG& rng)
+{
+    auto validNodes = FindValidNodePatterns(rule.GetSourceGraph());
+
+    if (validNodes.empty())
+        return false;
+
+    auto& chosenPattern = validNodes[rng.Rand<size_t>(0, validNodes.size())];
+
+    SpliceSubGraph(chosenPattern, rule);
+
+    return true;
 }
 
 size_t Graph::GetInDegree(NodeIndex index) const
@@ -87,6 +188,12 @@ size_t Graph::GetOutDegree(NodeIndex index) const
 size_t Graph::GetDegree(NodeIndex index) const
 {
     return GetInDegree(index) + GetOutDegree(index);
+}
+
+NodeType Graph::GetNodeType(NodeIndex index) const
+{
+    assert(index < m_nodes.size());
+    return m_nodes[index].GetNodeType();
 }
 
 Node& Graph::GetNode(NodeId id)
@@ -129,18 +236,16 @@ std::vector<NodeIndex> Graph::UnlinkIncomingNodes(NodeIndex index)
 {
     std::vector<NodeIndex> result;
 
-    for (size_t i = 0; i < m_outgoingAdjacencyList.size(); ++i)
+    assert(index < m_incomingAdjacencyList.size());
+    for (auto nodeIndex : m_incomingAdjacencyList[index])
     {
-        if (m_outgoingAdjacencyList[i].count(index))
-        {
-            result.push_back(i);
-            m_outgoingAdjacencyList[i].erase(index);
-        }
+        result.push_back(nodeIndex);
+        m_outgoingAdjacencyList[nodeIndex].erase(index);
     }
 
     m_incomingAdjacencyList[index].clear();
 
-    m_nodes[index].SetRefCount(1);
+    m_nodes[index].SetRefCount(0);
 
     return result;
 }
@@ -178,6 +283,71 @@ std::unordered_map<NodeIndex, NodeIndex> Graph::CreateIslandFromSubGraph(const G
         });
 
     return result;
+}
+
+Graph::NodeSequenceList Graph::FindValidNodePatterns(const Graph& pattern) const
+{
+    NodeSequenceList candidates;
+
+    ForEachNode([&pattern, &candidates](const Node& node)
+        {
+            if (node.GetNodeType() == pattern.m_nodes[0].GetNodeType())
+            {
+                candidates.emplace_back(1, node.GetIndex());
+            }
+        });
+
+    if (candidates.empty() || pattern.m_nodes.size() == 1)
+    {
+        return candidates;
+    }
+
+    NodeSequenceList validNodes;
+
+    for (auto& candidate : candidates)
+    {
+        FindValidNodePatternsWithDepthLimitedSearch(candidate[0], pattern, validNodes);
+    }
+
+    return validNodes;
+}
+
+void Graph::FindValidNodePatternsWithDepthLimitedSearch(NodeIndex rootNodeId, const Graph& pattern, NodeSequenceList& outNodes) const
+{
+    DiscoveredSet discovered;
+    NodeSequence workingSequence(pattern.Size(), yang::kInvalidValue<NodeIndex>);
+
+    FindValidNodePatternsWithDepthLimitedSearchHelper(rootNodeId, discovered, pattern, 0, workingSequence, 0, outNodes);
+}
+
+void Graph::FindValidNodePatternsWithDepthLimitedSearchHelper(NodeIndex nodeId, DiscoveredSet& discovered, const Graph& pattern, size_t nodePatternIndex, NodeSequence& workingNodeSequence, size_t workingNodeSequenceIndex, NodeSequenceList& outNodes) const
+{
+    discovered.emplace(nodeId);
+
+    if (m_nodes[nodeId].GetNodeType() == pattern.m_nodes[nodePatternIndex].GetNodeType())
+    {
+        workingNodeSequence[workingNodeSequenceIndex] = nodeId;
+
+        // done?
+        if (workingNodeSequenceIndex == pattern.m_nodes.size() - 1)
+        {
+            outNodes.push_back(workingNodeSequence);
+            workingNodeSequence[workingNodeSequenceIndex] = yang::kInvalidValue<NodeIndex>;
+            return;
+        }
+
+        for (auto neighborIndex : m_outgoingAdjacencyList[GetIndex(nodeId)])
+        {
+            if (discovered.count(neighborIndex) == 0)
+            {
+                FindValidNodePatternsWithDepthLimitedSearchHelper(neighborIndex, discovered, pattern, nodePatternIndex + 1, workingNodeSequence, workingNodeSequenceIndex + 1, outNodes);
+            }
+        }
+    }
+    else
+    {
+        workingNodeSequence[workingNodeSequenceIndex] = yang::kInvalidValue<NodeIndex>;
+    }
 }
 
 void Graph::LinkNodes(NodeIndex fromId, NodeIndex toId)

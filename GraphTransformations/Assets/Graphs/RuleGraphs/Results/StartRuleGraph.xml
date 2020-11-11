@@ -5,8 +5,8 @@
     <Node id="3" type="Goal" />
     <Edge from="0" to="1" />
     <Edge from="0" to="2" />
-    <Edge from="1" to="2" />
-    <Edge from="2" to="3" />
+    <Edge from="1" to="3" />
+    <Edge from="2" to="1" />
     <EntranceNode id="0" />
     <ExitNode id="3" />
 </Graph>

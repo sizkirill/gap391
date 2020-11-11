@@ -78,20 +78,15 @@ void CameraView::HandleInputEvent(yang::IEvent* pEvent)
                     // The initial start->startingGraph rule has a huge weight, so it is most likely the first one to run, but random may think otherwise =/ as a hack I'll leave it like that
                     TransformationRule& rule = m_ruleContainer.GetWeightedRandomRule(m_rngDevice);
 
-                    // get possible indices of a graph where we can apply the rule
-                    auto possibleIndices = m_graph.FindNodeIndicesByType(rule.GetSourceNodeType());
+                    done = m_graph.Transform(rule, m_rngDevice);
+                    if (!done)
+                        continue;
 
-                    // if there are none, continue to next iteration (there is always possible that entrance will expand into entrance->task, so the loop won't be infinite)
-                    if (possibleIndices.size() > 0)
-                    {
-                        done = true;
-                        auto index = possibleIndices[m_rngDevice.Rand(possibleIndices.size())];
-                        m_graph.SpliceSubGraph(index, rule.GetResultGraph());
-                        m_graphDrawer.Reset();
-                        m_graphDrawer.BuildTileMap(m_graph);
-                        m_graphDrawer.Finalize();
-                        m_graphPrinter.PrintIteration(rule, m_graph);
-                    } 
+                    m_graphDrawer.Reset();
+                    m_graphDrawer.BuildTileMap(m_graph);
+                    m_graphDrawer.Finalize();
+                    m_graphPrinter.PrintRule(rule);
+                    m_graphPrinter.PrintIteration(m_graph);
                 } while (!done);
             }
         }

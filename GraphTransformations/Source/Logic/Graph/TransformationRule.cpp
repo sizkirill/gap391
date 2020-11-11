@@ -20,20 +20,20 @@ TransformationRule::TransformationRule(tinyxml2::XMLElement* pData)
 
     if (XMLElement* pFrom = pData->FirstChildElement("From"); pFrom != nullptr)
     {
-        if (const char* pFromNodeType = pFrom->Attribute("type"); pFromNodeType != nullptr)
+        if (const char* pFromGraphSrc = pFrom->Attribute("src"); pFromGraphSrc != nullptr)
         {
-            m_sourceNodeType = FromString(std::string_view(pFromNodeType));
+            m_nodePattern = Graph::BuildGraphFromXML(std::string_view(pFromGraphSrc));
         }
         else
         {
-            LOG(Error, "No \'From\' node type provided, failed to initialize rule from XML");
-            m_sourceNodeType = NodeType::kMaxTypes;
+            LOG(Error, "No \'From\' graph provided, failed to initialize rule from XML");
+            m_isValid = false;
         }
     }
     else
     {
-        LOG(Error, "No \'From\' node provided, failed to initialize rule from XML");
-        m_sourceNodeType = NodeType::kMaxTypes;
+        LOG(Error, "No \'From\' graph, failed to initialize rule from XML");
+        m_isValid = false;
     }
 
     if (XMLElement* pTo = pData->FirstChildElement("To"); pTo != nullptr)
@@ -45,12 +45,40 @@ TransformationRule::TransformationRule(tinyxml2::XMLElement* pData)
         else
         {
             LOG(Error, "No \'To\' graph provided, failed to initialize rule from XML");
-            m_sourceNodeType = NodeType::kMaxTypes;
+            m_isValid = false;
         }
     }
     else
     {
         LOG(Error, "No \'To\' graph provided, failed to initialize rule from XML");
-        m_sourceNodeType = NodeType::kMaxTypes;
+        m_isValid = false;
+    }
+
+    if (XMLElement* pReplacementMap = pData->FirstChildElement("ReplacementMap"); pReplacementMap != nullptr)
+    {
+        for (XMLElement* pReplacement = pReplacementMap->FirstChildElement("Replacement"); pReplacement != nullptr; pReplacement = pReplacement->NextSiblingElement("Replacement"))
+        {
+            int from = pReplacement->IntAttribute("from", -1);
+            int to = pReplacement->IntAttribute("to", -1);
+
+            if (from == -1 || to == -1)
+            {
+                LOG(Error, "Failed to read replacement from XML");
+                m_isValid = false;
+            }
+
+            m_nodeReplacementMap[from] = to;
+        }
+
+        if (m_nodeReplacementMap.size() != m_nodePattern.Size())
+        {
+            LOG(Error, "Not all source nodes mapped to output");
+            m_isValid = false;
+        }
+    }
+    else
+    {
+        LOG(Error, "No replacement map provided, failed to initialize rule from XML");
+        m_isValid = false;
     }
 }

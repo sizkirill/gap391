@@ -10,7 +10,8 @@ public:
     GraphPrinter(Printer&& printer) : m_printer(std::forward<Printer>(printer)) {}
 
     void PrintGraph(const Graph& graph);
-    void PrintIteration(const TransformationRule& rule, const Graph& graph);
+    void PrintRule(const TransformationRule& rule);
+    void PrintIteration(const Graph& graph);
 private:
     Printer m_printer;
     size_t m_currentIteration = 0;
@@ -33,16 +34,25 @@ inline void GraphPrinter<Printer>::PrintGraph(const Graph& graph)
         },
         [this](NodeIndex from, NodeIndex to)
         {
+            m_printer << "        <- [" << from << "]\n";
+        },
+        [this](NodeIndex from, NodeIndex to)
+        {
             m_printer << "        -> [" << to << "]\n";
         });
     m_printer << "\n";
 }
 
 template<class Printer>
-inline void GraphPrinter<Printer>::PrintIteration(const TransformationRule& rule, const Graph& graph)
+inline void GraphPrinter<Printer>::PrintRule(const TransformationRule& rule)
 {
     m_printer << "***Iteration #" << m_currentIteration << "***\n";
     m_printer << "Choosing rule: " << rule.GetName() << ".\n";
+}
+
+template<class Printer>
+inline void GraphPrinter<Printer>::PrintIteration(const Graph& graph)
+{
     PrintGraph(graph);
     ++m_currentIteration;
 }

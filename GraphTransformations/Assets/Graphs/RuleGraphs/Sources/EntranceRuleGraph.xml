@@ -1,0 +1,5 @@
+<Graph>
+    <Node id="0" type="Entrance" />
+    <EntranceNode id="0" />
+    <ExitNode id="0" />
+</Graph>

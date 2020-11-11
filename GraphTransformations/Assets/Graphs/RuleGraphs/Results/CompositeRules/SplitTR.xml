@@ -1,0 +1,12 @@
+<Graph>
+    <Node id="0" type="Task" />
+    <Node id="1" type="Task" />
+    <Node id="2" type="Task" />
+    <Node id="3" type="Rest" />
+    <Edge from="0" to="1" />
+    <Edge from="0" to="2" />
+    <Edge from="1" to="3" />
+    <Edge from="1" to="3" />
+    <EntranceNode id="0" />
+    <ExitNode id="3" />
+</Graph>

@@ -1,42 +1,99 @@
 <Ruleset>
     <Rule name="Start" weight="99999999" shouldUseOnce="true">
-        <From type="Start" />
-        <To src="Assets/Graphs/RuleGraphs/StartRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/StartRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/StartRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Task after entrance" weight="8">
-        <From type="Entrance" />
-        <To src="Assets/Graphs/RuleGraphs/EntranceRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/EntranceRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/EntranceRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Miniboss before item" weight="5" shouldUseOnce="true">
-        <From type="Item" />
-        <To src="Assets/Graphs/RuleGraphs/MinibossRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/MinibossRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/MinibossRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Multiply Task" weight="10">
-        <From type="Task" />
-        <To src="Assets/Graphs/RuleGraphs/MultiplyTaskRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/MultiplyTaskRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/MultiplyTaskRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Split Task" weight="25">
-        <From type="Task" />
-        <To src="Assets/Graphs/RuleGraphs/SplitTaskRuleGraph.xml" />
-    </Rule>
-    <Rule name="Task with rest" weight="15">
-        <From type="Task" />
-        <To src="Assets/Graphs/RuleGraphs/TaskRestRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/SplitTaskRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/SplitTaskRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Diamond Split Task" weight="8">
-        <From type="Task" />
-        <To src="Assets/Graphs/RuleGraphs/DiamondSplitRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/DiamondSplitRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/DiamondSplitRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Add monster" weight="5">
-        <From type="Task" />
-        <To src="Assets/Graphs/RuleGraphs/AddMonsterRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/AddMonsterRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/AddMonsterRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Add puzzle" weight="5">
-        <From type="Task" />
-        <To src="Assets/Graphs/RuleGraphs/AddPuzzleRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/AddPuzzleRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/AddPuzzleRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
     </Rule>
     <Rule name="Add treasure" weight="5">
-        <From type="Task" />
-        <To src="Assets/Graphs/RuleGraphs/AddTreasureRuleGraph.xml" />
+        <From src="Assets/Graphs/RuleGraphs/Sources/AddTreasureRuleGraph.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/AddTreasureRuleGraph.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+        </ReplacementMap>
+    </Rule>
+    <Rule name="Add rest between tasks" weight="15">
+        <From src="Assets/Graphs/RuleGraphs/Sources/CompositeRules/AddRest.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/CompositeRules/AddRest.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+            <Replacement from="1" to="2" />
+        </ReplacementMap>
+    </Rule>
+    <Rule name="Split T-R" weight="5">
+        <From src="Assets/Graphs/RuleGraphs/Sources/CompositeRules/SplitTR.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/CompositeRules/SplitTR.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+            <Replacement from="1" to="3" />
+        </ReplacementMap>
+    </Rule>
+    <Rule name="Rest between tasks" weight="15">
+        <From src="Assets/Graphs/RuleGraphs/Sources/CompositeRules/RestBetweenTasks.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/CompositeRules/RestBetweenTasks.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+            <Replacement from="1" to="1" />
+            <Replacement from="2" to="2" />
+        </ReplacementMap>
+    </Rule>
+    <Rule name="Delete task" weight="10">
+        <From src="Assets/Graphs/RuleGraphs/Sources/CompositeRules/DeleteTask.xml" />
+        <To src="Assets/Graphs/RuleGraphs/Results/CompositeRules/DeleteTask.xml" />
+        <ReplacementMap>
+            <Replacement from="0" to="0" />
+            <Replacement from="1" to="1" />
+            <Replacement from="2" to="1" />
+        </ReplacementMap>
     </Rule>
 </Ruleset>
