@@ -60,12 +60,6 @@ void GraphDrawer::BuildTileMap(const Graph& graph)
         int currentNode = indicesQueue.front();
         indicesQueue.pop();
 
-        if (m_drawInfos[currentNode].m_neighborIndices.size() == 0)
-            continue;
-
-        //float angleStep = (Math::kPi) / m_drawInfos[currentNode].m_neighborIndices.size();
-        //float currentAngle = 0;
-
         std::vector<int> newConnections;
 
         for (auto connectionIndex : m_drawInfos[currentNode].m_neighborIndices)

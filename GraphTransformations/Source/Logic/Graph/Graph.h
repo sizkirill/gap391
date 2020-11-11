@@ -93,6 +93,7 @@ private:
 
 
     void LinkNodes(NodeIndex fromId, NodeIndex toId);
+    void UnlinkNodes(NodeIndex fromId, NodeIndex toId);
 };
 
 template<class F>
@@ -101,6 +102,11 @@ inline void Graph::ForEachNode(F&& doStuff) const
     static_assert(std::is_invocable_r_v<void, decltype(doStuff), const Node&>, "Function needs to have signature void(const Node&)");
     for (auto& node : m_nodes)
     {
+        if (node.GetNodeType() == NodeType::kMaxTypes)
+        {
+            continue;
+        }
+
         doStuff(node);
     }
 }
@@ -111,8 +117,18 @@ inline void Graph::ForEachEdge(F&& doStuff) const
     static_assert(std::is_invocable_r_v<void, decltype(doStuff), NodeIndex, NodeIndex>, "Function needs to have signature void(NodeIndex from, NodeIndex to)");
     for(size_t fromIndex = 0; fromIndex < m_outgoingAdjacencyList.size(); ++fromIndex)
     {
+        if (m_nodes[fromIndex].GetNodeType() == NodeType::kMaxTypes)
+        {
+            continue;
+        }
+
         for (auto toIndex : m_outgoingAdjacencyList[fromIndex])
         {
+            if (m_nodes[toIndex].GetNodeType() == NodeType::kMaxTypes)
+            {
+                continue;
+            }
+
             doStuff(fromIndex, toIndex);
         }
     }
@@ -148,6 +164,10 @@ inline void Graph::ForEachNodeAndOutgoingEdge(NodeFunc&& nodeFunc, EdgeFunc&& ed
     
     for (size_t i = 0; i < m_nodes.size(); ++i)
     {
+        if (m_nodes[i].GetNodeType() == NodeType::kMaxTypes)
+        {
+            continue;
+        }
         nodeFunc(m_nodes[i]);
         ForEachOutEdge(i, std::forward<EdgeFunc>(edgeFunc));
     }
@@ -162,6 +182,11 @@ inline void Graph::ForEachNodeAndEdge(NodeFunc&& nodeFunc, InEdgeFunc&& incoming
 
     for (size_t i = 0; i < m_nodes.size(); ++i)
     {
+        if (m_nodes[i].GetNodeType() == NodeType::kMaxTypes)
+        {
+            continue;
+        }
+
         nodeFunc(m_nodes[i]);
         ForEachInEdge(i, std::forward<InEdgeFunc>(incomingEdgeFunc));
         ForEachOutEdge(i, std::forward<OutEdgeFunc>(outgoingEdgeFunc));

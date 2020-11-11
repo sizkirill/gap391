@@ -31,10 +31,21 @@ NodeId Graph::AddNode(NodeType type)
 void Graph::DeleteNode(NodeId id)
 {
     auto& node = GetNode(id);
-    node.SetRefCount(0);
-    m_freeList.push_back(GetIndex(id));
-    m_outgoingAdjacencyList[GetIndex(id)].clear();
-    m_incomingAdjacencyList[GetIndex(id)].clear();
+
+    for (auto destId : m_outgoingAdjacencyList[node.GetIndex()])
+    {
+        m_incomingAdjacencyList[destId].erase(node.GetIndex());
+    }
+    for (auto srcId : m_incomingAdjacencyList[node.GetIndex()])
+    {
+        m_outgoingAdjacencyList[srcId].erase(node.GetIndex());
+    }
+
+    m_outgoingAdjacencyList[node.GetIndex()].clear();
+    m_incomingAdjacencyList[node.GetIndex()].clear();
+
+    m_freeList.push_back(node.GetIndex());
+    node.m_nodeType = NodeType::kMaxTypes;
 }
 
 void Graph::SpliceSubGraph(NodeId nodeIdToReplace, const Graph& subGraph)
@@ -245,7 +256,7 @@ std::vector<NodeIndex> Graph::UnlinkIncomingNodes(NodeIndex index)
 
     m_incomingAdjacencyList[index].clear();
 
-    m_nodes[index].SetRefCount(0);
+    m_nodes[index].SetRefCount(1);
 
     return result;
 }
@@ -357,6 +368,12 @@ void Graph::LinkNodes(NodeIndex fromId, NodeIndex toId)
     m_outgoingAdjacencyList[fromId].emplace(toId);
     m_incomingAdjacencyList[toId].emplace(fromId);
     toNode.IncrementRef();
+}
+
+void Graph::UnlinkNodes(NodeIndex fromId, NodeIndex toId)
+{
+    m_outgoingAdjacencyList[fromId].erase(toId);
+    m_incomingAdjacencyList[toId].erase(fromId);
 }
 
 Graph Graph::BuildGraphFromXML(std::string_view pathToXml)
