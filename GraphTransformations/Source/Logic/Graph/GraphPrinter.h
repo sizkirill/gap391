@@ -21,7 +21,7 @@ private:
 template<class Printer>
 inline void GraphPrinter<Printer>::PrintNode(const Node& node)
 {
-    m_printer << "Index: [" << node.GetIndex() << "]. RefCount: [" << node.GetRefCount() << "]. Type: " << ToString(node.m_nodeType) << "\n";
+    m_printer << "Index: [" << node.GetIndex() << "]. Type: " << ToString(node.m_nodeType) << "\n";
 }
 
 template<class Printer>

@@ -43,7 +43,15 @@ public:
     /// Creates a texture, containing the given text
     /// \param str - string to create texture from
     /// \return shared pointer to a texture resource
-	virtual std::shared_ptr<ITexture> CreateTextureFromString(const std::string& str) override final;
+	virtual std::shared_ptr<ITexture> CreateTextureFromString(const std::string& str) const override final;
+
+	virtual FontString CreateFontString(const std::string& str) const override final;
+	virtual std::shared_ptr<Sprite> SpriteFromChar(char c) const override final;
+	virtual int GetXOffset(char c) const override final;
+	virtual int GetYOffset(char c) const override final;
+	virtual int GetAdvance(char c) const override final;
+	virtual yang::IVec2 GetTextSize(const std::string& str) const override final;
+	virtual yang::IVec2 GetTextSize(std::string_view str) const override final;
 
 	/** Default Destructor */
 	~SDLFont();

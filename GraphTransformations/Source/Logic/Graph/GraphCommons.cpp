@@ -1,5 +1,7 @@
 #include "GraphCommons.h"
 #include <Utils/StringHash.h>
+#include <Application/Graphics/Textures/Sprite.h>
+#include <Application/Graphics/Fonts/IFont.h>
 
 NodeType FromString(std::string_view str)
 {
@@ -45,3 +47,42 @@ std::string ToString(NodeType type)
     default: return "Invalid";
     }
 }
+
+yang::IColor ColorFromNodeType(NodeType type)
+{
+    switch (type)
+    {
+    case NodeType::kEntrance: return 0xffff0000;
+    case NodeType::kBoss: return 0xff000000;
+    case NodeType::kItem: return 0xD2691E00;
+    case NodeType::kGoal: return 0x33ffff00;
+    case NodeType::kStart: return 0x66660000;
+    case NodeType::kTask: return 0x0000ff00;
+    case NodeType::kMiniboss: return 0xaa000000;
+    case NodeType::kMonster: return 0x55000000;
+    case NodeType::kPuzzle: return 0xdddddd00;
+    case NodeType::kRest: return 0x00ff0000;
+    case NodeType::kTreasure: return 0xD4AF3700;
+    default: return yang::IColor::kBlack;
+    }
+}
+
+std::shared_ptr<yang::Sprite> SpriteFromNodeType(NodeType type, std::shared_ptr<yang::IFont> pFont)
+{
+    switch (type)
+    {
+    case NodeType::kEntrance: return pFont->SpriteFromChar('E');
+    case NodeType::kBoss: return pFont->SpriteFromChar('B');
+    case NodeType::kItem: return pFont->SpriteFromChar('I');
+    case NodeType::kGoal: return pFont->SpriteFromChar('G');
+    case NodeType::kStart: return pFont->SpriteFromChar('S');
+    case NodeType::kTask: return pFont->SpriteFromChar('T');
+    case NodeType::kMiniboss: return pFont->SpriteFromChar('q');
+    case NodeType::kMonster: return pFont->SpriteFromChar('m');
+    case NodeType::kPuzzle: return pFont->SpriteFromChar('P');
+    case NodeType::kRest: return pFont->SpriteFromChar('R');
+    case NodeType::kTreasure: return pFont->SpriteFromChar('t');
+    default: return pFont->SpriteFromChar('0');
+    }
+}
+

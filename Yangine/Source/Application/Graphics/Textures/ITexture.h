@@ -2,6 +2,7 @@
 #include <Utils/Math.h>
 #include <Utils/Rectangle.h>
 #include <Application/Resources/Resource.h>
+#include <Utils/Color.h>
 /** \file ITexture.h */
 /** Texture resource interface description */
 
@@ -9,9 +10,6 @@
 //! \namespace yang Contains all Yangine code
 namespace yang
 {
-
-class IColor;
-class FColor;
 
 /** \class ITexture */
 /** Interface for the texture resource */
@@ -71,7 +69,7 @@ protected:
 	// Protected Member Variables
 	// --------------------------------------------------------------------- //
 	float m_alpha;				///< Texture opacity;
-
+	yang::IColor m_tint;
 	// --------------------------------------------------------------------- //
 	// Protected Member Functions
 	// --------------------------------------------------------------------- //
@@ -97,5 +95,6 @@ public:
 	/// \return opacity in range [0.f, 1.0f]
 	float GetAlpha() const { return m_alpha; }
 
+	yang::IColor GetTint() const { return m_tint; }
 };
 }

@@ -21,7 +21,8 @@ NodeId Graph::AddNode(NodeType type)
     else
     {
         m_nodes.push_back({ newId, type });
-        m_adjacencyLists.emplace_back();
+        m_outgoingAdjacencyList.emplace_back();
+        m_incomingAdjacencyList.emplace_back();
     }
 
     return newId;
@@ -32,7 +33,8 @@ void Graph::DeleteNode(NodeId id)
     auto& node = GetNode(id);
     node.SetRefCount(0);
     m_freeList.push_back(GetIndex(id));
-    m_adjacencyLists[GetIndex(id)].clear();
+    m_outgoingAdjacencyList[GetIndex(id)].clear();
+    m_incomingAdjacencyList[GetIndex(id)].clear();
 }
 
 void Graph::SpliceSubGraph(NodeId nodeIdToReplace, const Graph& subGraph)
@@ -68,6 +70,23 @@ std::vector<NodeIndex> Graph::FindNodeIndicesByType(NodeType type)
     }
 
     return result;
+}
+
+size_t Graph::GetInDegree(NodeIndex index) const
+{
+    assert(index < m_incomingAdjacencyList.size());
+    return m_incomingAdjacencyList[index].size();
+}
+
+size_t Graph::GetOutDegree(NodeIndex index) const
+{
+    assert(index < m_outgoingAdjacencyList.size());
+    return m_outgoingAdjacencyList[index].size();
+}
+
+size_t Graph::GetDegree(NodeIndex index) const
+{
+    return GetInDegree(index) + GetOutDegree(index);
 }
 
 Node& Graph::GetNode(NodeId id)
@@ -110,14 +129,16 @@ std::vector<NodeIndex> Graph::UnlinkIncomingNodes(NodeIndex index)
 {
     std::vector<NodeIndex> result;
 
-    for (size_t i = 0; i < m_adjacencyLists.size(); ++i)
+    for (size_t i = 0; i < m_outgoingAdjacencyList.size(); ++i)
     {
-        if (m_adjacencyLists[i].count(index))
+        if (m_outgoingAdjacencyList[i].count(index))
         {
             result.push_back(i);
-            m_adjacencyLists[i].erase(index);
+            m_outgoingAdjacencyList[i].erase(index);
         }
     }
+
+    m_incomingAdjacencyList[index].clear();
 
     m_nodes[index].SetRefCount(1);
 
@@ -128,14 +149,15 @@ std::vector<NodeIndex> Graph::UnlinkOutgoingNodes(NodeIndex index)
 {
     std::vector<NodeIndex> result;
 
-    assert(index < m_adjacencyLists.size());
-    for (auto nodeIndex : m_adjacencyLists[index])
+    assert(index < m_outgoingAdjacencyList.size());
+    for (auto nodeIndex : m_outgoingAdjacencyList[index])
     {
         result.push_back(nodeIndex);
+        m_incomingAdjacencyList[nodeIndex].erase(index);
         GetNode(nodeIndex).DecrementRef();
     }
 
-    m_adjacencyLists[index].clear();
+    m_outgoingAdjacencyList[index].clear();
     
     return result;
 }
@@ -162,7 +184,8 @@ void Graph::LinkNodes(NodeIndex fromId, NodeIndex toId)
 {
     auto& toNode = m_nodes[toId];
 
-    m_adjacencyLists[fromId].emplace(toId);
+    m_outgoingAdjacencyList[fromId].emplace(toId);
+    m_incomingAdjacencyList[toId].emplace(fromId);
     toNode.IncrementRef();
 }
 

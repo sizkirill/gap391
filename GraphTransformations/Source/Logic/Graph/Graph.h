@@ -17,6 +17,7 @@ struct Node
     NodeIndex GetIndex() const;
     NodeRefCount GetRefCount() const;
     NodeId SetRefCount(NodeRefCount refCount);
+    NodeType GetNodeType() const { return m_nodeType; }
     void IncrementRef();
     void DecrementRef();
 };
@@ -44,9 +45,14 @@ public:
     template <class NodeFunc, class EdgeFunc>
     void ForEachNodeAndEdge(NodeFunc&& nodeFunc, EdgeFunc&& edgeFunc) const;
 
+    size_t GetInDegree(NodeIndex index) const;
+    size_t GetOutDegree(NodeIndex index) const;
+    size_t GetDegree(NodeIndex index) const;
+
 private:
     std::vector<Node> m_nodes;
-    std::vector<std::unordered_set<NodeIndex>> m_adjacencyLists;
+    std::vector<std::unordered_set<NodeIndex>> m_outgoingAdjacencyList;
+    std::vector<std::unordered_set<NodeIndex>> m_incomingAdjacencyList;
     std::vector<NodeIndex> m_freeList;
 
     NodeIndex m_entrance;
@@ -77,9 +83,9 @@ template<class F>
 inline void Graph::ForEachEdge(F&& doStuff) const
 {
     static_assert(std::is_invocable_r_v<void, decltype(doStuff), NodeIndex, NodeIndex>, "Function needs to have signature void(NodeIndex from, NodeIndex to)");
-    for(size_t fromIndex = 0; fromIndex < m_adjacencyLists.size(); ++fromIndex)
+    for(size_t fromIndex = 0; fromIndex < m_outgoingAdjacencyList.size(); ++fromIndex)
     {
-        for (auto toIndex : m_adjacencyLists[fromIndex])
+        for (auto toIndex : m_outgoingAdjacencyList[fromIndex])
         {
             doStuff(fromIndex, toIndex);
         }
@@ -90,8 +96,8 @@ template<class F>
 inline void Graph::ForEachOutEdge(NodeIndex fromIndex, F&& doStuff) const
 {
     static_assert(std::is_invocable_r_v<void, decltype(doStuff), NodeIndex, NodeIndex>, "Function needs to have signature void(NodeIndex from, NodeIndex to)");
-    assert(fromIndex < m_adjacencyLists.size());
-    for (auto toIndex : m_adjacencyLists[fromIndex])
+    assert(fromIndex < m_outgoingAdjacencyList.size());
+    for (auto toIndex : m_outgoingAdjacencyList[fromIndex])
     {
         doStuff(fromIndex, toIndex);
     }

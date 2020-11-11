@@ -375,6 +375,9 @@
     <ClInclude Include="Source\Views\IView.h">
       <Filter>Views</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Application\Graphics\Fonts\FontString.h">
+      <Filter>Application\Graphics\Fonts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\ApplicationLayer.cpp">
@@ -601,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="Source\Views\IView.cpp">
       <Filter>Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Graphics\Fonts\FontString.cpp">
+      <Filter>Application\Graphics\Fonts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -91,13 +91,11 @@ bool yang::SDLRenderer::DrawTexture(ITexture* pTexture, IVec2 position, const Te
 		pointToRotate.y = (float)drawParams.m_pointToRotate.value().y;
 	}
 
-	//FVec2 transformedPosition = m_cameraTransform.TransformPoint(FVec2(position));
+	FVec2 transformedPosition = m_cameraTransform.TransformPoint(FVec2(position));
 	IVec2 dimensions = pTexture->GetDimensions();
-	FRect dstRect{(float)position.x, (float)position.y, (float)dimensions.x, (float)dimensions.y};
+	SDL_FRect dstRect{transformedPosition.x, transformedPosition.y, (float)dimensions.x, (float)dimensions.y};
 
-	SDL_FRect destination = ToSDLFRect(m_cameraTransform.TransformAARect(dstRect));
-
-	if (SDL_RenderCopyExF(m_pRenderer.get(), pSDLTexture, nullptr, &destination, drawParams.m_angle + Math::ToDegrees(m_cameraRotation),
+	if (SDL_RenderCopyExF(m_pRenderer.get(), pSDLTexture, nullptr, &dstRect, drawParams.m_angle + Math::ToDegrees(m_cameraRotation),
 		(drawParams.m_pointToRotate ? &pointToRotate : nullptr), ToRendererFlip(drawParams.m_flip)))
     {
         LOG(Error, "Unable to draw SDL_Texture. Error: %s", SDL_GetError());
@@ -114,10 +112,7 @@ bool yang::SDLRenderer::DrawTexture(ITexture* pTexture, const IRect& dest, const
         return false;
     }
 
-	FVec2 destOrigin = m_cameraTransform.TransformPoint(FVec2((float)dest.x, (float)dest.y));
-	//SDL_FRect destination = ToSDLFRect(m_cameraTransform.TransformAARect(dest));
-	SDL_FRect destination {destOrigin.x, destOrigin.y, (float)dest.width * m_cameraScaleFactors.x, (float)dest.height * m_cameraScaleFactors.y};
-
+    SDL_FRect destination = ToSDLFRect(m_cameraTransform.TransformAARect(dest));
     SDL_Texture* pSDLTexture = reinterpret_cast<SDL_Texture*>(pTexture->GetNativeTexture());
 
 	SDL_FPoint pointToRotate;
@@ -145,9 +140,9 @@ bool yang::SDLRenderer::DrawTexture(ITexture* pTexture, const IRect& src, const 
     }
 
     SDL_Rect source = ToSDLRect(src);
-	//FVec2 destOrigin = m_cameraTransform.TransformPoint(FVec2((float)dest.x, (float)dest.y));
-    SDL_FRect destination = ToSDLFRect(m_cameraTransform.TransformAARect(dest));
-	//SDL_FRect destination {destOrigin.x, destOrigin.y, (float)(dest.width+1) * m_cameraScaleFactors.x, (float)(dest.height+1) * m_cameraScaleFactors.y};
+	FVec2 destOrigin = m_cameraTransform.TransformPoint(FVec2((float)dest.x, (float)dest.y));
+    //SDL_FRect destination = ToSDLFRect(m_cameraTransform.TransformAARect(dest));
+	SDL_FRect destination {destOrigin.x, destOrigin.y, (float)dest.width * m_cameraScaleFactors.x, (float)dest.height * m_cameraScaleFactors.y};
     SDL_Texture* pSDLTexture = reinterpret_cast<SDL_Texture*>(pTexture->GetNativeTexture());
 
 	SDL_FPoint pointToRotate;

@@ -10,6 +10,9 @@
     <Filter Include="Logic\Graph">
       <UniqueIdentifier>{5303bf5c-165a-4b2c-bf1b-cfcefe3cbabb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Views">
+      <UniqueIdentifier>{11894fba-998e-4001-9993-526f6e057487}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application\GraphApp.h">
@@ -33,6 +36,15 @@
     <ClInclude Include="Source\Logic\Graph\GraphPrinter.h">
       <Filter>Logic\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Logic\Graph\TileMap.h">
+      <Filter>Logic\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Views\CameraView.h">
+      <Filter>Views</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logic\Graph\GraphDrawer.h">
+      <Filter>Logic\Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\GraphApp.cpp">
@@ -54,6 +66,15 @@
       <Filter>Logic\Graph</Filter>
     </ClCompile>
     <ClCompile Include="Source\Logic\Graph\RuleContainer.cpp">
+      <Filter>Logic\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Graph\TileMap.cpp">
+      <Filter>Logic\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Views\CameraView.cpp">
+      <Filter>Views</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logic\Graph\GraphDrawer.cpp">
       <Filter>Logic\Graph</Filter>
     </ClCompile>
   </ItemGroup>

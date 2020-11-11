@@ -166,6 +166,7 @@
     <ClInclude Include="Source\Application\Audio\SDLAudio.h" />
     <ClInclude Include="Source\Application\Audio\Sound\ISound.h" />
     <ClInclude Include="Source\Application\Audio\Sound\SDLSound.h" />
+    <ClInclude Include="Source\Application\Graphics\Fonts\FontString.h" />
     <ClInclude Include="Source\Application\Graphics\Fonts\IFont.h" />
     <ClInclude Include="Source\Application\Graphics\Fonts\IFontLoader.h" />
     <ClInclude Include="Source\Application\Graphics\Fonts\SDLFont.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="Source\Application\Audio\SDLAudio.cpp" />
     <ClCompile Include="Source\Application\Audio\Sound\ISound.cpp" />
     <ClCompile Include="Source\Application\Audio\Sound\SDLSound.cpp" />
+    <ClCompile Include="Source\Application\Graphics\Fonts\FontString.cpp" />
     <ClCompile Include="Source\Application\Graphics\Fonts\IFont.cpp" />
     <ClCompile Include="Source\Application\Graphics\Fonts\IFontLoader.cpp" />
     <ClCompile Include="Source\Application\Graphics\Fonts\SDLFont.cpp" />

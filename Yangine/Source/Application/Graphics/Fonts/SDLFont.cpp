@@ -4,6 +4,8 @@
 #include <Application/Graphics/IGraphics.h>
 #include <Application/Graphics/SDLRenderer.h>
 #include <Application/Graphics/Textures/SDLTexture.h>
+#include <Application/Graphics/Textures/Sprite.h>
+#include <Application/Graphics/Fonts/FontString.h>
 
 using yang::SDLFont;
 
@@ -27,7 +29,7 @@ bool yang::SDLFont::Init(IGraphics* pGraphics)
 
 	int fontLineHeight = TTF_FontLineSkip(m_pFont);
 	
-	int textureDimension = 10 * fontLineHeight;
+	int textureDimension = 20 * fontLineHeight;
 
 	m_pSDLRenderer = static_cast<SDLRenderer*>(pGraphics);
 
@@ -44,9 +46,9 @@ bool yang::SDLFont::Init(IGraphics* pGraphics)
 	// Hardcoded offset to 4
 	m_offset = 4;
 
-	m_glyphs.reserve(95); // 127 - 32
+	m_glyphs.reserve(255-32);
 
-	for (char c = 32; c < 127; ++c)
+	for (unsigned char c = 32; c < 255; ++c)
 	{
 		SDL_Surface* pGlyphSurface = TTF_RenderGlyph_Blended(m_pFont, c, { 255,255,255,255 });
 
@@ -83,7 +85,7 @@ bool yang::SDLFont::Init(IGraphics* pGraphics)
     return true;
 }
 
-std::shared_ptr<yang::ITexture> yang::SDLFont::CreateTextureFromString(const std::string& str)
+std::shared_ptr<yang::ITexture> yang::SDLFont::CreateTextureFromString(const std::string& str) const
 {
 	IVec2 textureDimensions;
 	TTF_SizeText(m_pFont, str.c_str(), &textureDimensions.x, &textureDimensions.y);
@@ -93,9 +95,9 @@ std::shared_ptr<yang::ITexture> yang::SDLFont::CreateTextureFromString(const std
 	IRect dest{0,0,0,0};
 	int currentX = 0;
 	int currentY = 0;
-	for (auto c : str)
+	for (unsigned char c : str)
 	{
-		Glyph& glyph = m_glyphs[static_cast<size_t>(c) - 32];
+		const Glyph& glyph = m_glyphs[static_cast<size_t>(c) - 32];
 		dest.x = currentX + glyph.m_minX;
 		dest.width = glyph.m_srcRect.width;
 		dest.height = glyph.m_srcRect.height;
@@ -107,6 +109,55 @@ std::shared_ptr<yang::ITexture> yang::SDLFont::CreateTextureFromString(const std
 	m_pSDLRenderer->SetRenderTarget(nullptr);
 
 	return pTexture;
+}
+
+yang::FontString yang::SDLFont::CreateFontString(const std::string& str) const
+{
+	FontString result;
+	result.m_text.reserve(str.size());
+	result.m_pFont = shared_from_this();
+	result.m_string = str;
+	for (auto c : str)
+	{
+		result.m_text.emplace_back(SpriteFromChar(c));
+	}
+
+	return result;
+}
+
+std::shared_ptr<yang::Sprite> yang::SDLFont::SpriteFromChar(char c) const
+{
+	const Glyph& glyph = m_glyphs[static_cast<size_t>(c) - 32];
+	return std::make_shared<Sprite>(m_pFontAtlas, glyph.m_srcRect);
+}
+
+int yang::SDLFont::GetXOffset(char c) const
+{
+	return m_glyphs[static_cast<size_t>(c) - 32].m_minX;
+}
+
+int yang::SDLFont::GetYOffset(char c) const
+{
+	return m_glyphs[static_cast<size_t>(c) - 32].m_maxY;
+}
+
+int yang::SDLFont::GetAdvance(char c) const
+{
+	return m_glyphs[static_cast<size_t>(c) - 32].m_advance;
+}
+
+yang::IVec2 yang::SDLFont::GetTextSize(const std::string& str) const
+{
+	IVec2 result;
+	TTF_SizeText(m_pFont, str.c_str(), &result.x, &result.y);
+	return result;
+}
+
+yang::IVec2 yang::SDLFont::GetTextSize(std::string_view str) const
+{
+	IVec2 result;
+	TTF_SizeText(m_pFont, str.data(), &result.x, &result.y);
+	return result;
 }
 
 SDLFont::~SDLFont()

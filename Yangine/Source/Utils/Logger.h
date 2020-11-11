@@ -22,16 +22,24 @@
 /// \a Severity - category severity
 /// \a Color - color to log
 /// \a Intensity - intensity of the color to log
+#ifndef LOGS_DISABLED
 #define LOG_CATEGORY(Name, Severity, Color, Intensity) \
-	yang::Logger::Get()->AddCategory(#Name, Severity, yang::ConsoleColor::k##Color, yang::ColorIntensity::k##Intensity); \
+	yang::Logger::Get()->AddCategory(#Name, Severity, yang::ConsoleColor::k##Color, yang::ColorIntensity::k##Intensity);
+#else
+#define LOG_CATEGORY(...)
+#endif
 	
 /// \def LOG(Category, format, ...)
 /// Adds log to a logging queue
 /// \a Category - log category to log in
 /// \a format - string to log
 /// \a ... - format arguments for the string above
+#ifndef LOGS_DISABLED
 #define LOG(Category, format, ...) \
 	yang::Logger::Get()->AddLog(#Category, __LINE__, __FILE__, format, __VA_ARGS__);
+#else
+#define LOG(...)
+#endif
 
 // Little gross way of logging once xD
 /// \def LOG_ONCE(Category, Identifier, format, ...)
@@ -40,9 +48,12 @@
 /// \a Identifier - unique identifier of the log
 /// \a format - string to log
 /// \a ... - format arguments for the string above
+#ifndef LOGS_DISABLED
 #define LOG_ONCE(Category, Identifier, format, ...) \
     static bool hasLogged##Category##Identifier = []() {LOG(Category, "Description: %s. \n %s", #Identifier, format); return true;}();
-
+#else
+#define LOG_ONCE(...)
+#endif
 
 //! \namespace yang Contains all Yangine code
 namespace yang

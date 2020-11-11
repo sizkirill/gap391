@@ -45,6 +45,7 @@ bool yang::SDLTexture::SetTint(const IColor& color)
         return false;
     }
 
+    m_tint = color;
     return true;
 }
 

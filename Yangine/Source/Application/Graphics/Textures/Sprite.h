@@ -22,7 +22,7 @@ class Sprite
 {
 public:
     Sprite() = default;
-    Sprite(std::shared_ptr<ITexture> pTexture, IRect sourceRect, TextureDrawParams params);
+    Sprite(std::shared_ptr<ITexture> pTexture, IRect sourceRect, TextureDrawParams params = {});
     bool Init(std::string_view pathToTexture, IRect sourceRect, TextureDrawParams params);
     bool Init(tinyxml2::XMLElement* pData);
 private:

@@ -97,7 +97,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LOGS_DISABLED;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Yangine\Source;..\Toolset\Include;Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -121,7 +121,7 @@ xcopy "$(SolutionDir)Toolset\$(PlatformShortName)\*.pdb" "$(OutDir)" /d /i /y</C
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LOGS_DISABLED;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Yangine\Source;..\Toolset\Include;Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -145,7 +145,7 @@ xcopy "$(SolutionDir)Toolset\$(PlatformShortName)\*.pdb" "$(OutDir)" /d /i /y</C
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LOGS_DISABLED;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Yangine\Source;..\Toolset\Include;Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -172,7 +172,7 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LOGS_DISABLED;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Yangine\Source;..\Toolset\Include;Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -200,9 +200,12 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
     <ClInclude Include="Source\Logic\GraphGame.h" />
     <ClInclude Include="Source\Logic\Graph\Graph.h" />
     <ClInclude Include="Source\Logic\Graph\GraphCommons.h" />
+    <ClInclude Include="Source\Logic\Graph\GraphDrawer.h" />
     <ClInclude Include="Source\Logic\Graph\GraphPrinter.h" />
     <ClInclude Include="Source\Logic\Graph\RuleContainer.h" />
+    <ClInclude Include="Source\Logic\Graph\TileMap.h" />
     <ClInclude Include="Source\Logic\Graph\TransformationRule.h" />
+    <ClInclude Include="Source\Views\CameraView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\GraphApp.cpp" />
@@ -210,8 +213,11 @@ xcopy "$(ProjectDir)\Data" "$(OutDir)Data" /e /s /h /i /y</Command>
     <ClCompile Include="Source\Logic\GraphGame.cpp" />
     <ClCompile Include="Source\Logic\Graph\Graph.cpp" />
     <ClCompile Include="Source\Logic\Graph\GraphCommons.cpp" />
+    <ClCompile Include="Source\Logic\Graph\GraphDrawer.cpp" />
     <ClCompile Include="Source\Logic\Graph\RuleContainer.cpp" />
+    <ClCompile Include="Source\Logic\Graph\TileMap.cpp" />
     <ClCompile Include="Source\Logic\Graph\TransformationRule.cpp" />
+    <ClCompile Include="Source\Views\CameraView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Yangine\Engine.vcxproj">
